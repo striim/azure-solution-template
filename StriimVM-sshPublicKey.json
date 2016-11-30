@@ -97,19 +97,14 @@
           }
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
-            "version": "latest"
-          },
           "osDisk": {
-            "name": "osdisk",
+            "name": "[concat(parameters('vmName'),'-osDisk')]",
+            "osType":"[parameters('osType')]",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/', variables('osDiskName'),'.vhd')]"
+              "uri": "https://manishresourcegroup662.blob.core.windows.net/vmcontainerbd506b5e-10ec-44e4-a531-5beaccf5792e/osDisk.bd506b5e-10ec-44e4-a531-5beaccf5792e.vhd"
             },
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "Attach"
           }
         },
         "networkProfile": {

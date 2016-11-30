@@ -58,18 +58,6 @@
         "artifactsBaseUrl": "Base URL of the Publisher Template gallery package"
       },
       "defaultValue": ""
-    },
-    "ubuntuOSVersion": {
-      "type": "string",
-      "defaultValue": "14.04.2-LTS",
-      "allowedValues": [
-        "12.04.5-LTS",
-        "14.04.2-LTS",
-        "15.10"
-      ],
-      "metadata": {
-        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.2-LTS, 15.10."
-      }
     }
   },
   "variables": {
@@ -87,7 +75,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
     "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'Simple-Linux-VM-',parameters('authenticationType'),'.json')]",
+    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'StriimVM-',parameters('authenticationType'),'.json')]",
     "newStorageAccountName": "[concat(parameters('clusterName'),'009')]",
     "dnsNameForPublicIP": "parameters('clustername')"
   },
