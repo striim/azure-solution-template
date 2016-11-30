@@ -172,6 +172,12 @@
           "adminUserName": {
             "value": "[parameters('adminUserName')]"
           },
+          "sshKey": {
+            "value": "[parameters('sshKey')]"
+          },
+          "sshKeyPath": {
+            "value": "[variables('sshKeyPath')]"
+          },
           "clusterVmSize": {
             "value": "[parameters('clusterVmSize')]"
           },
