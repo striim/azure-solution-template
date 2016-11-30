@@ -1,0 +1,80 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/VM_IP.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS11_v2"
+    },
+    "adminUserName": {
+      "type": "string"
+    },
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "networkInterfaceId": {
+      "type": "string"
+    },
+    "striimClusterName" : {
+      "type": "string"
+    },
+    "striimClusterPassword": {
+      "type": "securestring"
+    },
+    "striimAdminPassword": {
+      "type": "securestring"
+    },
+    "companyName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-03-30",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "osType": "Linux",
+            "name": "StriimVHD1-osDisk.369e3325-9909-4469-9a77-a271d94dcc79.vhd",
+            "createOption": "FromImage",
+            "image": {
+              "uri": "https://manishresourcegroup662.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/StriimVHD1-osDisk.369e3325-9909-4469-9a77-a271d94dcc79.vhd"
+            },
+            "vhd": {
+              "uri": "https://manishresourcegroup662.blob.core.windows.net/vmcontainerbd506b5e-10ec-44e4-a531-5beaccf5792e/osDisk.bd506b5e-10ec-44e4-a531-5beaccf5793e.vhd"
+            },
+            "caching": "ReadWrite"
+          }
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[parameters('networkInterfaceId')]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "https://manishresourcegroup316.blob.core.windows.net/"
+          }
+        },
+        "provisioningState": 0
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "westus",
+      "name": "[parameters('vmName')]"
+    }
+  ]
+}
