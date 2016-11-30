@@ -15,22 +15,9 @@
         "descritpion": "Password for SSH"
       }
     },
-    "authenticationType": {
-      "type": "string",
-      "metadata": {
-        "descritpion": "Type of authentication "
-      }
-    },
-    "sshKey": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SSH rsa public key file as a string."
-      }
-    },
     "clusterVmSize": {
       "type": "string",
-      "defaultValue": "Standard_A2",
+      "defaultValue": "Standard_DS11_v2",
       "metadata": {
         "description": "Size of the VM"
       }
@@ -68,7 +55,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
     "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'StriimVM-',parameters('authenticationType'),'.json')]",
+    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'StriimVM-password.json')]",
     "newStorageAccountName": "[concat(parameters('clusterName'),'009')]",
     "dnsNameForPublicIP": "parameters('clustername')"
   },
