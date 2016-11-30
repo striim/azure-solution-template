@@ -51,13 +51,6 @@
       "metadata": {
         "description": "Name of the VM"
       }
-    },
-    "artifactsBaseUrl": {
-      "type": "string",
-      "metadata": {
-        "artifactsBaseUrl": "Base URL of the Publisher Template gallery package"
-      },
-      "defaultValue": ""
     }
   },
   "variables": {
@@ -74,7 +67,7 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "templateBaseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
+    "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
     "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'StriimVM-',parameters('authenticationType'),'.json')]",
     "newStorageAccountName": "[concat(parameters('clusterName'),'009')]",
     "dnsNameForPublicIP": "parameters('clustername')"
