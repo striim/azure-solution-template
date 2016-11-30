@@ -98,8 +98,8 @@
         },
         "storageProfile": {
           "osDisk": {
-            "name": "[concat(parameters('vmName'),'-osDisk')]",
-            "osType":"[parameters('osType')]",
+            "name": "[concat(parameters('clusterName'),'-osDisk')]",
+            "osType":"Linux",
             "vhd": {
               "uri": "https://manishresourcegroup662.blob.core.windows.net/vmcontainerbd506b5e-10ec-44e4-a531-5beaccf5792e/osDisk.bd506b5e-10ec-44e4-a531-5beaccf5792e.vhd"
             },
