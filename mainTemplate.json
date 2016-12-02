@@ -5,14 +5,14 @@
     "adminUserName": {
       "type": "string",
       "metadata": {
-        "description": "User name for the Virtual Machine."
+        "description": "admin user name for the Virtual Machine."
       }
     },
     "password": {
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "descritpion": "Password for SSH"
+        "descritpion": "Password for admin user of the VM as well as the Striim admin user"
       }
     },
     "clusterVmSize": {
@@ -20,7 +20,23 @@
       "defaultValue": "Standard_DS11_v2",
       "metadata": {
         "description": "Size of the VM"
-      }
+      },
+	  "allowedValues": [
+        "Standard_A0",
+        "Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A5",
+        "Standard_A6",
+        "Standard_A7",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D5",
+		"Standard_DS11_v2"
+      ]
     },
 
     "clusterNodeCount": {
@@ -30,15 +46,33 @@
         "description": "Number of VM to create"
       }
     },
-
-
-
     "clusterName": {
       "type": "string",
       "metadata": {
-        "description": "Name of the VM"
+        "description": "Name of the Striim Cluster"
       }
-    }
+    },
+	"companyName":{
+		"type": "string",
+        "defaultValue": "",
+		"metadata": {
+			"description":"Name of the company to which License is issued" 
+		}
+	},
+	"clusterPassword":{
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "descritpion": "Password for the Striim cluster"
+      }
+	},
+	"striimLicenseKey":{
+		"type": "string",
+        "defaultValue": "",
+		"metadata": {
+			"description":"Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license.Keep it empty for trial for a single node trial license" 
+		}
+	}
   },
   "variables": {
 
