@@ -63,7 +63,7 @@
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "descritpion": "Password for the Striim cluster"
+        "description": "Password for the Striim cluster"
       }
 	},
 	"striimLicenseKey":{
