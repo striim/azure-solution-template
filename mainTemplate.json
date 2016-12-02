@@ -12,7 +12,7 @@
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "descritpion": "Password for admin user of the VM as well as the Striim admin user"
+        "description": "Password for admin user of the VM as well as the Striim admin user"
       }
     },
     "clusterVmSize": {
