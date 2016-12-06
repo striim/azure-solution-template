@@ -66,6 +66,13 @@
         "description": "Password for the Striim cluster"
       }
 	},
+	"striimProductKey":{
+		"type": "string",
+        "defaultValue": "",
+		"metadata": {
+			"description":"Enter the Product Key that you received when you purchased this product, or leave blank to continue with a trial license." 
+		}
+	},
 	"striimLicenseKey":{
 		"type": "string",
         "defaultValue": "",
@@ -75,23 +82,22 @@
 	}
   },
   "variables": {
-
-    "addressPrefix": "10.0.0.0/16",
-    "subnet1Name": "Subnet-1",
-    "subnet1Prefix": "10.0.0.0/24",
-    "publicIPAddressName": "sshIP",
-    "publicIPAddressType": "Dynamic",
-    "vmStorageAccountContainerName": "vhds",
-    "nicName": "sshNIC",
-    "storageAccountType": "Standard_LRS",
-    "virtualNetworkName": "sshVNET",
-    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
-    "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'StriimVM-password.json')]",
-    "newStorageAccountName": "[concat(parameters('clusterName'),'009')]",
-    "dnsNameForPublicIP": "parameters('clustername')"
+	  "addressPrefix": "10.0.0.0/16",
+	  "subnet1Name": "Subnet-1",
+	  "subnet1Prefix": "10.0.0.0/24",
+	  "publicIPAddressName": "sshIP",
+	  "publicIPAddressType": "Dynamic",
+	  "vmStorageAccountContainerName": "vhds",
+	  "nicName": "sshNIC",
+	  "storageAccountType": "Standard_LRS",
+	  "virtualNetworkName": "sshVNET",
+	  "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+	  "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+	  "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
+	  "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
+	  "clusterNodesTemplateUrl": "[concat(variables('templateBaseUrl'), 'StriimVM-password.json')]",
+	  "newStorageAccountName": "[concat(parameters('clusterName'),'009')]",
+	  "dnsNameForPublicIP": "parameters('clustername')"
   },
   "resources": [
     {
@@ -160,35 +166,15 @@
         ]
       }
     },
-	{
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[concat(parameters('clusterName'),'-SecurityGroup')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "securityRules": [
-          {
-            "name": "SSH",
-            "properties": {
-              "description": "Allows All traffic",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            }
-          }
-        ]
-      }
-    },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[parameters('clusterName')]",
+      "name": "[concat(parameters('clusterName'),'-node',copyIndex()]",
       "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "foo",
+        "count": "[parameters('clusterNodeCount')]"
+      },
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -199,7 +185,7 @@
           "vmSize": "[parameters('clusterVmSize')]"
         },
         "osProfile": {
-          "computerName": "[concat(parameters('clusterName'),'-node1')]",
+          "computerName": "[concat(parameters('clusterName'),'-node',copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('password')]"
         },
@@ -223,6 +209,31 @@
               "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
             }
           ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('clusterName'),'-node', copyIndex(),'/StriimConfigurer')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "foo",
+        "count": "[parameters('clusterNodeCount')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex())]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+			"[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
+          ],
+          "commandToExecute": "[concat('sudo bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('password'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]"
         }
       }
     }
