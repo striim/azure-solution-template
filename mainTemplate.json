@@ -233,7 +233,7 @@
           "fileUris": [
 			"[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
           ],
-          "commandToExecute": "[concat('sudo bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('password'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]"
+          "commandToExecute": "[concat('bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('password'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]"
         }
       }
     }
