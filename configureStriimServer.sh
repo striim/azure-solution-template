@@ -3,6 +3,11 @@
 ###################################################
 # Configures Striim Server and restarts 
 #
+# Usage:
+#  1. ./configureStriimServer.sh <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> <PRODUCT KEY> <LICENSE KEY>
+#  2. ./configureStriimServer.sh <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD>
+#  
+#
 ###################################################
 
 STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;

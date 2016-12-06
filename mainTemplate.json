@@ -185,39 +185,44 @@
       }
     },
     {
-      "name": "cluster-nodes",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('clusterName')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
         "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]"
       ],
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('clusterNodesTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
+        "hardwareProfile": {
+          "vmSize": "[parameters('clusterVmSize')]"
         },
-        "parameters": {
-          "newStorageAccountName": {
-            "value": "[variables('newStorageAccountName')]"
-          },
-          "adminUserName": {
-            "value": "[parameters('adminUserName')]"
-          },
-          "clusterVmSize": {
-            "value": "[parameters('clusterVmSize')]"
-          },
-          "clusterName": {
-            "value": "[parameters('clusterName')]"
-          },
-          "password": {
-            "value": "[parameters('password')]"
-          },
-          "nicName": {
-            "value": "[variables('nicName')]"
+        "osProfile": {
+          "computerName": "[concat(parameters('clusterName'),'-node1')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('password')]"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "name": "[concat(parameters('clusterName'),'-osDisk')]",
+            "osType":"Linux",
+            "image": {
+              "uri": "https://manishresourcegroup662.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/StriimVHD1-osDisk.369e3325-9909-4469-9a77-a271d94dcc79.vhd"
+            },
+            "vhd": {
+              "uri": "[concat('https://manishresourcegroup662.blob.core.windows.net/vmcontainerbd506b5e-10ec-44e4-a531-5beaccf5792e/',parameters('clusterName'),'.bd506b5e-10ec-44e4-a531-5beaccf5792f.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+            }
+          ]
         }
       }
     }
