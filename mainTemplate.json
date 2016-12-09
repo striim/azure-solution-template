@@ -123,11 +123,11 @@
         "name": "foo",
         "count": "[parameters('clusterNodeCount')]"
       },
-      "properties": {
+	  "properties": {
         "publicIPAllocationMethod": "Dynamic",
-		"dnsSettings": {
-    	     "domainNameLabel": "[concat(parameters('dnsPrefix'),'-node',copyIndex())]"
-      	}	
+        "dnsSettings": {
+          "domainNameLabel": "[concat(parameters('dnsPrefix'), '-node', copyIndex())]"
+        }
       }
     },
     {
