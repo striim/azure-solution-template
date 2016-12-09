@@ -1,6 +1,18 @@
 # Installs Striim Real-time Integration and Analytics Engine Cluster on Azure
 
+## Get Started 
+### Master Branch No UI
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstriim%2Fazure-solution-template%2Fmaster%2FmainTemplate.json)
+
+### Master Branch UI
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/?clientOptimizations=false#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/%7B%22initialData%22:%7B%7D,%22providerConfig%22:%7B%22createUiDefinition%22:%22%7B%22initialData%22%3A%7B%7D%2C%22providerConfig%22%3A%7B%22createUiDefinition%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2Fstriim%2Fazure-solution-template%2Fmaster%2FcreateUiDefinition.json%22%7D%7D)
+
+### Develop Branch No UI
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstriim%2Fazure-solution-template%2Fdevelop%2FmainTemplate.json)
+
+### Develop Branch UI
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/?clientOptimizations=false#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/%7B%22initialData%22:%7B%7D,%22providerConfig%22:%7B%22createUiDefinition%22:%22%7B%22initialData%22%3A%7B%7D%2C%22providerConfig%22%3A%7B%22createUiDefinition%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2Fstriim%2Fazure-solution-template%2Fdevelop%2FcreateUiDefinition.json%22%7D%7D)
+
 
 ## Introduction to Striim
 The Striim™ platform makes it easy to create streaming data pipelines – including change data capture (CDC) – for real-time log correlation, cloud integration, IoT edge processing, and streaming analytics.
