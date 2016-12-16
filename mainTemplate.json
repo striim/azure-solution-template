@@ -208,10 +208,10 @@
             "name": "[concat(parameters('clusterName'),'-osDisk')]",
             "osType":"Linux",
             "image": {
-              "uri": "https://manishresourcegroup662.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/StriimVHD1-osDisk.369e3325-9909-4469-9a77-a271d94dcc79.vhd"
+                "uri":"http://vhdcreationrgdisks606.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/Striim367-osDisk.19f42f18-3ecd-4e31-84df-3d1fef6aef39.vhd?sv=2014-02-14&sr=c&sig=yf3V%2Bj%2Fz3gZmFY%2BB4L7wJd3CxW%2FIe%2BDHb%2Bk6azO28oc%3D&st=2016-12-15T08%3A00%3A00Z&se=2016-12-23T08%3A00%3A00Z&sp=rl"
             },
             "vhd": {
-              "uri": "[concat('https://manishresourcegroup662.blob.core.windows.net/vmcontainerbd506b5e-10ec-44e4-a531-5beaccf5792e/',parameters('clusterName'),copyIndex(),'.bd506b5e-10ec-44e4-a531-5beaccf5792f.vhd')]"
+                "uri": "[concat('http://', variables('newStorageAccountName'), '.blob.core.windows.net/vhds/', variables('clusterName'),copyIndex(),'-imgstrm-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
