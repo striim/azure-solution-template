@@ -108,7 +108,7 @@
 	  "virtualNetworkName": "sshVNET",
 	  "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
 	  "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-	  "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
+	  "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
 	  "newStorageAccountName": "[concat(parameters('clusterName'),'009')]"
   },
   "resources": [
