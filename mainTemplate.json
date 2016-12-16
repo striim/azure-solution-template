@@ -211,7 +211,7 @@
           "adminPassword": "[parameters('password')]"
         },
         "storageProfile": {
-		  "imageReference": "variables('imageReference')",
+		  "imageReference": "[variables('imageReference')]",
           "osDisk": {
             "name": "[concat(parameters('clusterName'),'-osDisk')]",
             "osType":"Linux",
