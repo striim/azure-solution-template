@@ -1,259 +1,264 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "adminUserName": {
-      "type": "string",
-      "metadata": {
-        "description": "admin user name for the Virtual Machine."
-      }
-    },
-    "password": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Password for admin user of the VM"
-      }
-    },
-    "dnsPrefix": {
-        "type": "string",
-        "metadata": {
-            "description": "DNS prefix for the VMs. DNS for node would be of form <dnsPrefix>-node0"
-        }
-    },
-    "clusterVmSize": {
-      "type": "string",
-      "defaultValue": "Standard_DS3_v2",
-      "metadata": {
-        "description": "Size of the VM"
-      },
-	  "allowedValues": [
-		"Standard_DS1_v2",
-		"Standard_DS2_v2",
-		"Standard_DS3_v2",
-		"Standard_DS4_v2",
-		"Standard_DS5_v2",
-		"Standard_DS11_v2", 
-		"Standard_DS12_v2", 
-		"Standard_DS13_v2", 
-		"Standard_DS14_v2", 
-		"Standard_DS15_v2"
-      ]
-    },
-
-    "clusterNodeCount": {
-      "type": "int",
-      "defaultValue": 1,
-      "metadata": {
-        "description": "Number of VM to create"
-      }
-    },
-    "clusterName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the Striim Cluster"
-      }
-    },
-	"companyName":{
-		"type": "string",
-        "defaultValue": "",
-		"metadata": {
-			"description":"Name of the company to which License is issued" 
-		}
-	},
-	"clusterPassword":{
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Password for the Striim cluster"
-      }
-	},
-    "striimAdminPassword":{
-        "type": "securestring",
-        "defaultvalue":"",
-        "metadata": {
-            "description": "Password for 'admin' user of Striim."
-        }
-    },
-	"striimProductKey":{
-		"type": "string",
-        "defaultValue": "",
-		"metadata": {
-			"description":"Enter the Product Key that you received when you purchased this product, or leave blank to continue with a trial license." 
-		}
-	},
-	"striimLicenseKey":{
-		"type": "string",
-        "defaultValue": "",
-		"metadata": {
-			"description":"Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license.Keep it empty for trial for a single node trial license" 
-		}
-	}
-  },
-  "variables": {
-     "imageReference": {
-        "publisher": "OpenLogic",
-        "offer": "CentOS",
-        "sku": "6.7",
-        "version": "latest"
-      }, 
-	  "apiVersion": "2015-06-15",
-	  "addressPrefix": "10.0.0.0/16",
-	  "subnet1Name": "Subnet-1",
-	  "subnet1Prefix": "10.0.0.0/24",
-	  "publicIPAddressName": "sshIP",
-	  "publicIPAddressType": "Dynamic",
-	  "nicName": "sshNIC",
-	  "storageAccountType": "Standard_LRS",
-	  "virtualNetworkName": "sshVNET",
-	  "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-	  "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-	  "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
-	  "newStorageAccountName": "[concat(parameters('clusterName'),'009')]"
-  },
-  "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('newStorageAccountName')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "[variables('storageAccountType')]"
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('publicIPAddressName'),copyIndex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "foo",
-        "count": "[parameters('clusterNodeCount')]"
-      },
-	  "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-          "domainNameLabel": "[concat(parameters('dnsPrefix'), copyIndex())]"
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('addressPrefix')]"
-          ]
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUserName": {
+            "metadata": {
+                "description": "admin user name for the Virtual Machine."
+            },
+            "type": "string"
         },
-        "subnets": [
-          {
-            "name": "[variables('subnet1Name')]",
+        "clusterName": {
+            "metadata": {
+                "description": "Name of the Striim Cluster"
+            },
+            "type": "string"
+        },
+        "clusterNodeCount": {
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Number of VM to create"
+            },
+            "type": "int"
+        },
+        "clusterPassword": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Password for the Striim cluster"
+            },
+            "type": "securestring"
+        },
+        "clusterVmSize": {
+            "allowedValues": [
+                "Standard_DS1_v2",
+                "Standard_DS2_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_DS11_v2",
+                "Standard_DS12_v2",
+                "Standard_DS13_v2",
+                "Standard_DS14_v2",
+                "Standard_DS15_v2"
+            ],
+            "defaultValue": "Standard_DS3_v2",
+            "metadata": {
+                "description": "Size of the VM"
+            },
+            "type": "string"
+        },
+        "companyName": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the company to which License is issued"
+            },
+            "type": "string"
+        },
+        "dnsPrefix": {
+            "metadata": {
+                "description": "DNS prefix for the VMs. DNS for node would be of form <dnsPrefix>-node0"
+            },
+            "type": "string"
+        },
+        "password": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Password for admin user of the VM"
+            },
+            "type": "securestring"
+        },
+        "striimAdminPassword": {
+            "defaultvalue": "",
+            "metadata": {
+                "description": "Password for 'admin' user of Striim."
+            },
+            "type": "securestring"
+        },
+        "striimLicenseKey": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license.Keep it empty for trial for a single node trial license"
+            },
+            "type": "string"
+        },
+        "striimProductKey": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Enter the Product Key that you received when you purchased this product, or leave blank to continue with a trial license."
+            },
+            "type": "string"
+        }
+    },
+    "variables": {
+        "addressPrefix": "10.0.0.0/16",
+        "apiVersion": "2015-06-15",
+        "imageReference": {
+            "offer": "CentOS",
+            "publisher": "OpenLogic",
+            "sku": "6.7",
+            "version": "latest"
+        },
+        "newStorageAccountName": "[concat(parameters('clusterName'),'-storage')]",
+        "nicName": "striimNIC",
+        "publicIPAddressName": "striimIP",
+        "publicIPAddressType": "Dynamic",
+        "storageAccountType": "Standard_LRS",
+        "subnet1Name": "Subnet-1",
+        "subnet1Prefix": "10.0.0.0/24",
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
+        "virtualNetworkName": "striimVNET",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "name": "[variables('newStorageAccountName')]",
             "properties": {
-              "addressPrefix": "[variables('subnet1Prefix')]"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'),copyIndex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "foo",
-        "count": "[parameters('clusterNodeCount')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'),copyIndex())]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
+                "accountType": "[variables('storageAccountType')]"
+            },
+            "type": "Microsoft.Storage/storageAccounts"
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "copy": {
+                "count": "[parameters('clusterNodeCount')]",
+                "name": "foo"
+            },
+            "location": "[resourceGroup().location]",
+            "name": "[concat(variables('publicIPAddressName'),copyIndex())]",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName'),copyIndex()))]"
-              },
-              "subnet": {
-                "id": "[variables('subnet1Ref')]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(parameters('clusterName'),'-node',copyIndex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "foo",
-        "count": "[parameters('clusterNodeCount')]"
-      },
-      "dependsOn": [
-		"[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
-        "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[parameters('clusterVmSize')]"
+                "dnsSettings": {
+                    "domainNameLabel": "[concat(parameters('dnsPrefix'), copyIndex())]"
+                },
+                "publicIPAllocationMethod": "Dynamic"
+            },
+            "type": "Microsoft.Network/publicIPAddresses"
         },
-        "osProfile": {
-          "computerName": "[concat(parameters('clusterName'),'-node',copyIndex())]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('password')]"
+        {
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "name": "[variables('virtualNetworkName')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet1Prefix')]"
+                        }
+                    }
+                ]
+            },
+            "type": "Microsoft.Network/virtualNetworks"
         },
-        "storageProfile": {
-		  "imageReference": "[variables('imageReference')]",
-          "osDisk": {
-            "name": "[concat(parameters('clusterName'),'-osDisk')]",
-			"vhd": {
-				"uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('clusterName'),copyIndex(), uniquestring(resourceGroup().id), 'osDisk.vhd')]"
-			},
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
+        {
+            "apiVersion": "2015-05-01-preview",
+            "copy": {
+                "count": "[parameters('clusterNodeCount')]",
+                "name": "foo"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'),copyIndex())]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            ],
+            "location": "[resourceGroup().location]",
+            "name": "[concat(variables('nicName'),copyIndex())]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName'),copyIndex()))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnet1Ref')]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "type": "Microsoft.Network/networkInterfaces"
         },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex()))]"
-            }
-          ]
+        {
+            "apiVersion": "2015-05-01-preview",
+            "copy": {
+                "count": "[parameters('clusterNodeCount')]",
+                "name": "foo"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
+                "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]"
+            ],
+            "location": "[resourceGroup().location]",
+            "name": "[concat(parameters('clusterName'),'-node',copyIndex())]",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('clusterVmSize')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex()))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "adminPassword": "[parameters('password')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "computerName": "[concat(parameters('clusterName'),'-node',copyIndex())]"
+                },
+                "storageProfile": {
+                    "imageReference": "[variables('imageReference')]",
+                    "osDisk": {
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "name": "[concat(parameters('clusterName'),'-osDisk')]",
+                        "vhd": {
+                            "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('clusterName'),copyIndex(), uniquestring(resourceGroup().id), 'osDisk.vhd')]"
+                        }
+                    }
+                }
+            },
+            "type": "Microsoft.Compute/virtualMachines"
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "copy": {
+                "count": "[parameters('clusterNodeCount')]",
+                "name": "foo"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex())]"
+            ],
+            "location": "[resourceGroup().location]",
+            "name": "[concat(parameters('clusterName'),'-node', copyIndex(),'/StriimConfigurer')]",
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Azure.Extensions",
+                "settings": {
+                    "commandToExecute": "[concat('bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "fileUris": [
+                        "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
+                    ]
+                },
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0"
+            },
+            "type": "Microsoft.Compute/virtualMachines/extensions"
         }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('clusterName'),'-node', copyIndex(),'/StriimConfigurer')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "foo",
-        "count": "[parameters('clusterNodeCount')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex())]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.Azure.Extensions",
-        "type": "CustomScript",
-        "typeHandlerVersion": "2.0",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "fileUris": [
-			"[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
-          ],
-          "commandToExecute": "[concat('bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]"
+    ],
+    "outputs": {
+        "serverPublicEndpoint": {
+            "type": "string",
+            "value": "[concat('http://',reference(concat(variables('publicIPAddressName'),'0')).dnsSettings.fqdn,':9080/')]"
         }
-      }
     }
-  ]
 }
