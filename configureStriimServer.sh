@@ -4,8 +4,7 @@
 # Configures Striim Server and restarts 
 #
 # Usage:
-#  1. ./configureStriimServer.sh <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> <PRODUCT KEY> <LICENSE KEY>
-#  2. ./configureStriimServer.sh <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD>
+#  $ ./configureStriimServer.sh <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> [<PRODUCT KEY> <LICENSE KEY>]
 #  
 #
 ###################################################
@@ -23,6 +22,17 @@ function modifyStriimConfig() {
         sed -i.bak -r "s/($configName *= *\").*/\1$configValue\"/" $STRIIM_CONF_FILE;        
     fi
 }
+
+function installStriim() {
+    wget --no-check-certificate 'https://striim-downloads.s3.amazonaws.com/striim-dbms-3.6.7-Linux.rpm'
+    wget --no-check-certificate 'https://striim-downloads.s3.amazonaws.com/striim-node-3.6.7-Linux.rpm'
+    rpm -i -v striim-dbms-3.6.7-Linux.rpm 
+    rpm -i -v striim-node-3.6.7-Linux.rpm 
+    rm -rf striim-dbms-3.6.7-Linux.rpm
+    rm -rf striim-node-3.6.7-Linux.rpm
+}
+
+installStriim
 
 for config in "WA_COMPANY_NAME" "WA_CLUSTER_NAME" "WA_CLUSTER_PASSWORD" "WA_ADMIN_PASSWORD" "WA_PRODUCT_KEY" "WA_LICENSE_KEY"; 
 do

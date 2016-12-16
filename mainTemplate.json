@@ -91,6 +91,12 @@
 	}
   },
   "variables": {
+     "imageReference": {
+        "publisher": "OpenLogic",
+        "offer": "CentOS",
+        "sku": "6.7",
+        "version": "latest"
+      }, 
 	  "apiVersion": "2015-06-15",
 	  "addressPrefix": "10.0.0.0/16",
 	  "subnet1Name": "Subnet-1",
@@ -205,12 +211,10 @@
           "adminPassword": "[parameters('password')]"
         },
         "storageProfile": {
+		  "imageReference": "variables('imageReference')",
           "osDisk": {
             "name": "[concat(parameters('clusterName'),'-osDisk')]",
             "osType":"Linux",
-            "image": {
-                "uri":"http://vhdcreationrgdisks606.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/Striim367-osDisk.19f42f18-3ecd-4e31-84df-3d1fef6aef39.vhd?sv=2014-02-14&sr=c&sig=yf3V%2Bj%2Fz3gZmFY%2BB4L7wJd3CxW%2FIe%2BDHb%2Bk6azO28oc%3D&st=2016-12-15T08%3A00%3A00Z&se=2016-12-23T08%3A00%3A00Z&sp=rl"
-            },
 			"vhd": {
 				"uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('clusterName'),copyIndex(), uniquestring(resourceGroup().id), 'osDisk.vhd')]"
 			},
