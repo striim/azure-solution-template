@@ -214,7 +214,6 @@
 		  "imageReference": "[variables('imageReference')]",
           "osDisk": {
             "name": "[concat(parameters('clusterName'),'-osDisk')]",
-            "osType":"Linux",
 			"vhd": {
 				"uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('clusterName'),copyIndex(), uniquestring(resourceGroup().id), 'osDisk.vhd')]"
 			},
