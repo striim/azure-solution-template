@@ -133,7 +133,7 @@
 	  "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[concat(parameters('dnsPrefix'), '-node', copyIndex())]"
+          "domainNameLabel": "[concat(parameters('dnsPrefix'), copyIndex())]"
         }
       }
     },
@@ -251,7 +251,7 @@
           "fileUris": [
 			"[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
           ],
-          "commandToExecute": "[concat('bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('password'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]"
+          "commandToExecute": "[concat('bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]"
         }
       }
     }
