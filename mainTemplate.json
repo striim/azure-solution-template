@@ -106,7 +106,7 @@
         "subnet1Name": "Subnet-1",
         "subnet1Prefix": "10.0.0.0/24",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
         "virtualNetworkName": "striimVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
