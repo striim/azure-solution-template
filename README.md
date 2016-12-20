@@ -8,6 +8,11 @@
 
 
 
+<a
+href="https://portal.azure.com/#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/{"initialData":{},"providerConfig":{"createUiDefinition":"https%3A%2F%2Fraw.githubusercontent.com%2Fstriim%2Fazure-solution-template%2Fdevelop%2FcreateUiDefinition.json"}}">[Preview createUiDefinition.json]</a>
+
+
+
 ## Introduction to Striim
 The Striim™ platform makes it easy to create streaming data pipelines – including change data capture (CDC) – for real-time log correlation, cloud integration, IoT edge processing, and streaming analytics.
 
