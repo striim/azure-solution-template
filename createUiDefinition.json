@@ -70,6 +70,8 @@
                 "label": "Cluster Node VM size",
                 "toolTip": "Select VM Size",
                 "recommendedSizes": [
+                    "Standard_DS1_v2",
+                    "Standard_DS2_v2",
                     "Standard_DS3_v2"
                 ],
                 "constraints": {
@@ -142,7 +144,7 @@
                 "toolTip": "Enter a unique logical name for the Striim cluster",
                 "constraints": {
                     "required": true,
-                    "regex": "^[a-z]{3-20}$",
+                    "regex" : "^[a-z]{3,20}$",
                     "validationMessage": "Use a name between 3 and 20 character long with only lowercase alphabets"
                 }
             },
