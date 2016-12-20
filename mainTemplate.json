@@ -8,11 +8,12 @@
             },
             "type": "string"
         },
-        "clusterName": {
+        "password": {
+            "defaultValue": "",
             "metadata": {
-                "description": "Name of the Striim Cluster"
+                "description": "Password for admin user of the VM"
             },
-            "type": "string"
+            "type": "securestring"
         },
         "clusterNodeCount": {
             "defaultValue": 1,
@@ -20,13 +21,6 @@
                 "description": "Number of VM to create"
             },
             "type": "int"
-        },
-        "clusterPassword": {
-            "defaultValue": "",
-            "metadata": {
-                "description": "Password for the Striim cluster"
-            },
-            "type": "securestring"
         },
         "clusterVmSize": {
             "allowedValues": [
@@ -47,6 +41,12 @@
             },
             "type": "string"
         },
+        "dnsPrefix": {
+            "metadata": {
+                "description": "DNS prefix for the VMs. DNS for node would be of form <dnsPrefix>-node0"
+            },
+            "type": "string"
+        },
         "companyName": {
             "defaultValue": "",
             "metadata": {
@@ -54,16 +54,16 @@
             },
             "type": "string"
         },
-        "dnsPrefix": {
+        "clusterName": {
             "metadata": {
-                "description": "DNS prefix for the VMs. DNS for node would be of form <dnsPrefix>-node0"
+                "description": "Name of the Striim Cluster"
             },
             "type": "string"
         },
-        "password": {
+        "clusterPassword": {
             "defaultValue": "",
             "metadata": {
-                "description": "Password for admin user of the VM"
+                "description": "Password for the Striim cluster"
             },
             "type": "securestring"
         },
