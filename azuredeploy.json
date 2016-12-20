@@ -8,7 +8,7 @@
       },
       "type": "string"
     },
-    "password": {
+    "adminPassword": {
       "defaultValue": "",
       "metadata": {
         "description": "Password for admin user of the VM"
@@ -211,7 +211,7 @@
           ]
         },
         "osProfile": {
-          "adminPassword": "[parameters('password')]",
+          "adminPassword": "[parameters('adminPassword')]",
           "adminUsername": "[parameters('adminUsername')]",
           "computerName": "[concat(parameters('clusterName'),'-node',copyIndex())]"
         },

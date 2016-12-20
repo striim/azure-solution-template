@@ -225,18 +225,17 @@
       }
     ],
     "outputs": {
-      "location": "[location()]",
       "adminUsername": "[basics('vmUsername')]",
       "adminPassword": "[basics('vmPassword')]",
-      "striimDomainName": "[basics('striimDomainName').domainNameLabel]",
-      "clusterMasterVmSize": "[basics('clusterMasterVmSize')]",
-      "clusterVmCount": "[steps('striimSettings').clusterVmCount]",
-      "striimClusterName": "[steps('striimSettings').striimClusterName]",
-      "striimClusterPassword": "[steps('striimSettings').striimClusterPassword]",
+      "dnsPrefix": "[basics('striimDomainName').domainNameLabel]",
+      "clusterVmSize": "[basics('clusterMasterVmSize')]",
+      "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
+      "clusterName": "[steps('striimSettings').striimClusterName]",
+      "clusterPassword": "[steps('striimSettings').striimClusterPassword]",
       "striimAdminPassword": "[steps('striimSettings').striimAdminPassword]",
       "companyName": "[steps('striimLicensing').companyName]",
-      "productKey": "[steps('striimLicensing').productKey]",
-      "licenseKey": "[steps('striimLicensing').licenseKey]"
+      "striimProductKey": "[steps('striimLicensing').productKey]",
+      "striimLicenseKey": "[steps('striimLicensing').licenseKey]"
     }
   }
 }
