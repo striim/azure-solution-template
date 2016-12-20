@@ -217,7 +217,7 @@
             "name": "licenseKey",
             "type": "Microsoft.Common.TextBox",
             "label": "License Key. (Leave blank for trial license)",
-            "defaultValue": "0.0.0.0/0",
+            "defaultValue": "",
             "toolTip": "Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license",
             "constraints": {
               "required": false
