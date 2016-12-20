@@ -229,8 +229,8 @@
     "outputs": {
       "adminUsername": "[basics('vmUsername')]",
       "adminPassword": "[basics('vmPassword')]",
-      "dnsPrefix": "[basics('striimDomainName').domainNameLabel]",
-      "clusterVmSize": "[basics('clusterMasterVmSize')]",
+      "dnsPrefix": "[steps('striimSettings').striimDomainName.domainNameLabel]",
+      "clusterVmSize": "[steps('striimSettings').clusterMasterVmSize]",
       "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
       "clusterName": "[steps('striimSettings').striimClusterName]",
       "clusterPassword": "[steps('striimSettings').striimClusterPassword]",
