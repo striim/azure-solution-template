@@ -113,7 +113,7 @@
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "name": "[variables('newStorageAccountName')]",
             "properties": {
@@ -122,7 +122,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
@@ -138,7 +138,7 @@
         },
         {
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "name": "[variables('virtualNetworkName')]",
             "properties": {
@@ -159,7 +159,7 @@
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
@@ -189,7 +189,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
@@ -231,7 +231,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
