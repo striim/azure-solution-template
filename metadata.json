@@ -1,0 +1,7 @@
+{
+    "itemDisplayName": "Deploy Striim Enterprise",
+    "description": "Deploy Striim Enterprise cluster to quickly and easily get started with Striim in Azure.",
+    "summary": "Deploy Striim Enterprise cluster in azure.",
+    "githubUsername": "rajeshnair",
+    "dateUpdated": "2016-12-20"
+}
