@@ -102,6 +102,7 @@
         "nicName": "striimNIC",
         "publicIPAddressName": "striimIP",
         "publicIPAddressType": "Dynamic",
+        "securityGroupName": "striimNSG",
         "storageAccountType": "Standard_LRS",
         "subnet1Name": "Subnet-1",
         "subnet1Prefix": "10.0.0.0/24",
@@ -118,6 +119,100 @@
             "name": "[variables('newStorageAccountName')]",
             "properties": {
                 "accountType": "[variables('storageAccountType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "[variables('apiVersion')]",
+            "name": "[variables('securityGroupName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "SSH",
+                        "properties": {
+                            "description": "Allows SSH traffic",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "http",
+                        "properties": {
+                            "description": "Allows Http(s) traffic",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "9080-9081",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 110,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "hazelcast",
+                        "properties": {
+                            "description": "Allows hazelcast clustering",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "5701-5710",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 120,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "messagingSystem",
+                        "properties": {
+                            "description": "Allows stream messaging",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "49152-65535",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 130,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "AllowAllOutbound",
+                        "properties": {
+                            "description": "Allows all outbound communication",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 140,
+                            "direction": "Outbound"
+                        }
+                    },
+                    {
+                        "name": "hazelcastDiscovery",
+                        "properties": {
+                            "description": "Allows hazelcast discovery",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "54327",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 150,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
             }
         },
         {
@@ -181,6 +276,9 @@
                             },
                             "subnet": {
                                 "id": "[variables('subnet1Ref')]"
+                            },
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
                             }
                         }
                     }
