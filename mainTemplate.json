@@ -47,13 +47,6 @@
             },
             "type": "string"
         },
-        "companyName": {
-            "defaultValue": "",
-            "metadata": {
-                "description": "Name of the company to which License is issued"
-            },
-            "type": "string"
-        },
         "clusterName": {
             "metadata": {
                 "description": "Name of the Striim Cluster"
@@ -73,20 +66,6 @@
                 "description": "Password for 'admin' user of Striim."
             },
             "type": "securestring"
-        },
-        "striimLicenseKey": {
-            "defaultValue": "",
-            "metadata": {
-                "description": "Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license.Keep it empty for trial for a single node trial license"
-            },
-            "type": "string"
-        },
-        "striimProductKey": {
-            "defaultValue": "",
-            "metadata": {
-                "description": "Enter the Product Key that you received when you purchased this product, or leave blank to continue with a trial license."
-            },
-            "type": "string"
         }
     },
     "variables": {
@@ -98,6 +77,9 @@
             "sku": "6.7",
             "version": "latest"
         },
+        "companyName": "AzureCompany",
+        "striimProductKey": "",
+        "striimLicenseKey": "",
         "newStorageAccountName": "[concat(parameters('clusterName'),'store')]",
         "nicName": "striimNIC",
         "publicIPAddressName": "striimIP",
@@ -347,7 +329,7 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimServer.sh ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimServer.sh ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
                     "fileUris": [
                         "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
                     ]

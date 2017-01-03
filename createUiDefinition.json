@@ -183,47 +183,6 @@
                 }
             }
         ]
-      },
-      {
-        "name": "striimLicensing",
-        "label": "Striim Licensing Settings",
-        "subLabel": {
-          "preValidation": "Required",
-          "postValidation": "Done"
-        },
-        "bladeTitle": "Striim Licensing Settings",
-        "elements": [
-          {
-            "name": "companyName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Company to which license has been issued",
-            "defaultValue": "",
-            "toolTip": "Enter the name of your company",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
-            "name": "productKey",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Product Key. (Leave blank for trial license)",
-            "defaultValue": "",
-            "toolTip": "Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license",
-            "constraints": {
-              "required": false
-            }
-          },
-          {
-            "name": "licenseKey",
-            "type": "Microsoft.Common.TextBox",
-            "label": "License Key. (Leave blank for trial license)",
-            "defaultValue": "",
-            "toolTip": "Enter the License Key that you received when you purchased this product, or leave blank to continue with a trial license",
-            "constraints": {
-              "required": false
-            }
-          }
-        ]
       }
     ],
     "outputs": {
@@ -234,10 +193,7 @@
       "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
       "clusterName": "[steps('striimSettings').striimClusterName]",
       "clusterPassword": "[steps('striimSettings').striimClusterPassword]",
-      "striimAdminPassword": "[steps('striimSettings').striimAdminPassword]",
-      "companyName": "[steps('striimLicensing').companyName]",
-      "striimProductKey": "[steps('striimLicensing').productKey]",
-      "striimLicenseKey": "[steps('striimLicensing').licenseKey]"
+      "striimAdminPassword": "[steps('striimSettings').striimAdminPassword]"
     }
   }
 }
