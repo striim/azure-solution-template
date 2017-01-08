@@ -74,9 +74,9 @@ WA_DEPLOYMENT_GROUPS="default"
 EOF
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
-WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY}"
+WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P
+${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS}"
 
-export JAVA_SYSTEM_PROPERTIES="-Dcom.webaction.config.enable-tcpipClustering=True -Dcom.webaction.config.servernode.address=10.0.0.4,${WA_IP_ADDRESS}"
 EOF
 
 stop striim-dbms;
