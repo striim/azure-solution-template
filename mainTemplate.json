@@ -329,7 +329,7 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimServer.sh ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimServer.sh ',copyIndex(),' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
                     "fileUris": [
                         "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
                     ]
