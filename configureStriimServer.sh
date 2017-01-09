@@ -4,7 +4,7 @@
 # Configures Striim Server and restarts 
 #
 # Usage:
-#  $ ./configureStriimServer.sh <INDEX> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> [<PRODUCT KEY> <LICENSE KEY>]
+#  $ ./configureStriimServer.sh <INDEX> <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> [<PRODUCT KEY> <LICENSE KEY>]
 #  
 #
 ###################################################
@@ -12,6 +12,8 @@
 STRIIM_VERSION="3.6.7-azure-ui-fixes-PreRelease";
 
 VM_INDEX="$1"
+shift
+VM_FQDN="$1"
 shift
 COMPANY_NAME="$1"
 shift 
@@ -71,13 +73,22 @@ WA_PRODUCT_KEY="$PRODUCT_KEY"
 WA_LICENSE_KEY="$LICENSE_KEY"
 WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
+WA_SERVER_FQDN="$VM_FQDN"
 EOF
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
 WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P
-${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS}"
+${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS} -f ${WA_SERVER_FQDN}"
 
 EOF
+
+cat << EOF > /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+$localIpAddress    $VM_FQDN
+EOF
+
+
 
 stop striim-dbms;
 stop striim-node;
