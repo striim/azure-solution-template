@@ -35,18 +35,18 @@ function errorExit() {
 
 function installStriim() {
     if [ $VM_INDEX -eq "0" ]; then
-        wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm"
+        wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
         rpm -i -v striim-dbms-$STRIIM_VERSION-Linux.rpm 
         rm -rf striim-dbms-$STRIIM_VERSION-Linux.rpm
         
         wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
-        tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz"
-        rm -rf /var/striim/wactionrepos
-        mv wactionrepos /var/striim/
-        rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
+        if [ $? -eq 0 ]; then
+            tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
+            rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
+        fi
     fi
     
-    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm"
+    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
     
@@ -77,8 +77,7 @@ WA_SERVER_FQDN="$VM_FQDN"
 EOF
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
-WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P
-${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS} -f ${WA_SERVER_FQDN}"
+WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS} -f ${WA_SERVER_FQDN}"
 
 EOF
 
@@ -87,8 +86,6 @@ cat << EOF > /etc/hosts
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 $localIpAddress    $VM_FQDN
 EOF
-
-
 
 stop striim-dbms;
 stop striim-node;
