@@ -248,6 +248,9 @@
             "location": "[resourceGroup().location]",
             "name": "[concat(variables('nicName'),copyIndex())]",
             "properties": {
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
+                },
                 "ipConfigurations": [
                     {
                         "name": "ipconfig1",
@@ -329,7 +332,7 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimServer.sh ',copyIndex(),' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimServer.sh ',copyIndex(),' ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
                     "fileUris": [
                         "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
                     ]
