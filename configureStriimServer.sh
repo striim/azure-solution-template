@@ -9,7 +9,7 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.6.7-azure-ui-fixes-PreRelease";
+STRIIM_VERSION="3.6.8-azure-sols-PreRelease";
 
 VM_INDEX="$1"
 shift
