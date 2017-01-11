@@ -319,44 +319,22 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "[variables('apiVersion')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node0')]"
-            ],
-            "location": "[resourceGroup().location]",
-            "name": "[concat(parameters('clusterName'),'-node0','/StriimMasterConfigurer')]",
-            "properties": {
-                "autoUpgradeMinorVersion": true,
-                "publisher": "Microsoft.Azure.Extensions",
-                "settings": {
-                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',' ',reference(concat(variables('publicIPAddressName'),'0')).dnsSettings.fqdn,' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
-                    "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimMasterNode.sh')]"
-                    ]
-                },
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.0"
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "[variables('apiVersion')]",
             "copy": {
-                "count": "[sub(parameters('clusterNodeCount'),'1')]",
+                "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
             },
             "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex(1))]",
-                "[concat(parameters('clusterName'),'-node0','/StriimMasterConfigurer')]"
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex())]"
             ],
             "location": "[resourceGroup().location]",
-            "name": "[concat(parameters('clusterName'),'-node', copyIndex(1),'/StriimWorkerConfigurer')]",
+            "name": "[concat(parameters('clusterName'),'-node', copyIndex(),'/StriimConfigurer')]",
             "properties": {
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex(1))).dnsSettings.fqdn,' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimServer.sh ',copyIndex(),' ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
                     "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimWorkerNode.sh')]"
+                        "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
                     ]
                 },
                 "type": "CustomScript",
