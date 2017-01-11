@@ -1,176 +1,25 @@
 {
-  "handler": "Microsoft.Compute.MultiVm",
-  "version": "0.0.1-preview",
-  "parameters": {
-    "basics": [
-      {
-        "name": "vmUsername",
-        "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "VM user name",
-        "defaultValue": "",
-        "toolTip": "",
-        "constraints": {
-          "required": true
-        },
-        "osPlatform": "Linux"
-      },
-      {
-        "name": "vmPassword",
-        "type": "Microsoft.Common.PasswordBox",
-        "label": {
-          "password": "VM user password",
-          "confirmPassword": "Confirm password"
-        },
-        "toolTip": "",
-        "constraints": {
-          "required": true,
-          "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{6,72}$",
-          "validationMessage": "Password must be at least 6 characters long and have 3 out of the following: one number, one lower case, one upper case, or one special character"
-        },
-        "options": {
-          "hideConfirmation": false
-        }
-      }
-    ],
-    "steps": [
-      {
-        "name": "striimSettings",
-        "label": "Striim Cluster Settings",
-        "subLabel": {
-          "preValidation": "Required",
-          "postValidation": "Done"
-        },
-        "bladeTitle": "Striim Cluster Settings",
-        "elements": [
+    "handler": "Microsoft.Compute.MultiVm",
+    "version": "0.0.1-preview",
+    "parameters": {
+        "basics": [
             {
-                "name": "striimDomainName",
-                "type": "Microsoft.Network.PublicIpAddressCombo",
-                "label": {
-                    "domainNameLabel": "Domain name for Striim"
-                },
-                "toolTip": {
-                    "domainNameLabel": "Striim will be accessible from this domain"
-                },
-                "defaultValue": {
-                    "domainNameLabel": "change_me_to_be_unique"
-                },
-                "constraints": {
-                    "required": {
-                        "domainNameLabel": true
-                    }
-                },
-                "options": {
-                    "hideNone": true,
-                    "hideDomainNameLabel": false
-                }
-            },
-            {
-                "name": "clusterMasterVmSize",
-                "type": "Microsoft.Compute.SizeSelector",
-                "label": "Cluster Node VM size",
-                "toolTip": "Select VM Size",
-                "recommendedSizes": [
-                    "Standard_DS1_v2",
-                    "Standard_DS2_v2",
-                    "Standard_DS3_v2"
-                ],
-                "constraints": {
-                    "allowedSizes": [
-                        "Standard_DS1_v2",
-                        "Standard_DS2_v2",
-                        "Standard_DS3_v2",
-                        "Standard_DS4_v2",
-                        "Standard_DS5_v2",
-                        "Standard_DS11_v2",
-                        "Standard_DS12_v2",
-                        "Standard_DS13_v2",
-                        "Standard_DS14_v2",
-                        "Standard_DS15_v2"
-                    ]
-                },
-                "osPlatform": "Linux",
-                "count": 1,
-                "visible": "true"
-            },
-            {
-                "name": "clusterVmCount",
-                "type": "Microsoft.Common.DropDown",
-                "label": "Number of nodes in Striim cluster",
-                "defaultValue": "1",
-                "toolTip": "Number of peer nodes in the Striim cluster",
-                "constraints": {
-                    "allowedValues": [
-                        {
-                            "label": "1",
-                            "value": 1
-                        },
-                        {
-                            "label": "2",
-                            "value": 2
-                        },
-                        {
-                            "label": "3",
-                            "value": 3
-                        },
-                        {
-                            "label": "4",
-                            "value": 4
-                        },
-                        {
-                            "label": "5",
-                            "value": 5
-                        },
-                        {
-                            "label": "6",
-                            "value": 6
-                        },
-                        {
-                            "label": "7",
-                            "value": 7
-                        },
-                        {
-                            "label": "8",
-                            "value": 8
-                        }
-                    ]
-                },
-                "visible": "true"
-            },
-            {
-                "name": "striimClusterName",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Name of the Striim Cluster",
+                "name": "vmUsername",
+                "type": "Microsoft.Compute.UserNameTextBox",
+                "label": "VM user name",
                 "defaultValue": "",
-                "toolTip": "Enter a unique logical name for the Striim cluster",
-                "constraints": {
-                    "required": true,
-                    "regex" : "^[a-z]{3,20}$",
-                    "validationMessage": "Use a name between 3 and 20 character long with only lowercase alphabets"
-                }
-            },
-            {
-                "name": "striimClusterPassword",
-                "type": "Microsoft.Common.PasswordBox",
-                "label": {
-                    "password": "Striim Cluster password",
-                    "confirmPassword": "Confirm cluster password"
-                },
                 "toolTip": "",
                 "constraints": {
-                    "required": true,
-                    "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{6,72}$",
-                    "validationMessage": "Password must be at least 6 characters long and have 3 out of the following: one number, one lower case, one upper case, or one special character"
+                    "required": true
                 },
-                "options": {
-                    "hideConfirmation": false
-                }
+                "osPlatform": "Linux"
             },
             {
-                "name": "striimAdminPassword",
+                "name": "vmPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                    "password": "Striim admin password",
-                    "confirmPassword": "Confirm admin password"
+                    "password": "VM user password",
+                    "confirmPassword": "Confirm password"
                 },
                 "toolTip": "",
                 "constraints": {
@@ -182,18 +31,169 @@
                     "hideConfirmation": false
                 }
             }
-        ]
-      }
-    ],
-    "outputs": {
-      "adminUserName": "[basics('vmUsername')]",
-      "adminPassword": "[basics('vmPassword')]",
-      "dnsPrefix": "[steps('striimSettings').striimDomainName.domainNameLabel]",
-      "clusterVmSize": "[steps('striimSettings').clusterMasterVmSize]",
-      "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
-      "clusterName": "[steps('striimSettings').striimClusterName]",
-      "clusterPassword": "[steps('striimSettings').striimClusterPassword]",
-      "striimAdminPassword": "[steps('striimSettings').striimAdminPassword]"
+        ],
+        "steps": [
+            {
+                "name": "striimSettings",
+                "label": "Striim Cluster Settings",
+                "subLabel": {
+                    "preValidation": "Required",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Striim Cluster Settings",
+                "elements": [
+                    {
+                        "name": "striimDomainName",
+                        "type": "Microsoft.Network.PublicIpAddressCombo",
+                        "label": {
+                            "domainNameLabel": "Domain name for Striim"
+                        },
+                        "toolTip": {
+                            "domainNameLabel": "Striim will be accessible from this domain"
+                        },
+                        "defaultValue": {
+                            "domainNameLabel": "change_me_to_be_unique"
+                        },
+                        "constraints": {
+                            "required": {
+                                "domainNameLabel": true
+                            }
+                        },
+                        "options": {
+                            "hidePublicIpAddress": true,
+                            "hideDomainNameLabel": false
+                        }
+                    },
+                    {
+                        "name": "clusterMasterVmSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Cluster Node VM size",
+                        "toolTip": "Select VM Size",
+                        "recommendedSizes": [
+                            "Standard_DS1_v2",
+                            "Standard_DS2_v2",
+                            "Standard_DS3_v2"
+                        ],
+                        "constraints": {
+                            "allowedSizes": [
+                                "Standard_DS1_v2",
+                                "Standard_DS2_v2",
+                                "Standard_DS3_v2",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2",
+                                "Standard_DS11_v2",
+                                "Standard_DS12_v2",
+                                "Standard_DS13_v2",
+                                "Standard_DS14_v2",
+                                "Standard_DS15_v2"
+                            ]
+                        },
+                        "osPlatform": "Linux",
+                        "count": 1,
+                        "visible": "true"
+                    },
+                    {
+                        "name": "clusterVmCount",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Number of nodes in Striim cluster",
+                        "defaultValue": "1",
+                        "toolTip": "Number of peer nodes in the Striim cluster",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "1",
+                                    "value": 1
+                                },
+                                {
+                                    "label": "2",
+                                    "value": 2
+                                },
+                                {
+                                    "label": "3",
+                                    "value": 3
+                                },
+                                {
+                                    "label": "4",
+                                    "value": 4
+                                },
+                                {
+                                    "label": "5",
+                                    "value": 5
+                                },
+                                {
+                                    "label": "6",
+                                    "value": 6
+                                },
+                                {
+                                    "label": "7",
+                                    "value": 7
+                                },
+                                {
+                                    "label": "8",
+                                    "value": 8
+                                }
+                            ]
+                        },
+                        "visible": "true"
+                    },
+                    {
+                        "name": "striimClusterName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Name of the Striim Cluster",
+                        "defaultValue": "",
+                        "toolTip": "Enter a unique logical name for the Striim cluster",
+                        "constraints": {
+                            "required": true,
+                            "regex" : "^[a-z]{3,20}$",
+                            "validationMessage": "Use a name between 3 and 20 character long with only lowercase alphabets"
+                        }
+                    },
+                    {
+                        "name": "striimClusterPassword",
+                        "type": "Microsoft.Common.PasswordBox",
+                        "label": {
+                            "password": "Striim Cluster password",
+                            "confirmPassword": "Confirm cluster password"
+                        },
+                        "toolTip": "",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{6,72}$",
+                            "validationMessage": "Password must be at least 6 characters long and have 3 out of the following: one number, one lower case, one upper case, or one special character"
+                        },
+                        "options": {
+                            "hideConfirmation": false
+                        }
+                    },
+                    {
+                        "name": "striimAdminPassword",
+                        "type": "Microsoft.Common.PasswordBox",
+                        "label": {
+                            "password": "Striim admin password",
+                            "confirmPassword": "Confirm admin password"
+                        },
+                        "toolTip": "",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{6,72}$",
+                            "validationMessage": "Password must be at least 6 characters long and have 3 out of the following: one number, one lower case, one upper case, or one special character"
+                        },
+                        "options": {
+                            "hideConfirmation": false
+                        }
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "adminUserName": "[basics('vmUsername')]",
+            "adminPassword": "[basics('vmPassword')]",
+            "dnsPrefix": "[steps('striimSettings').striimDomainName.domainNameLabel]",
+            "clusterVmSize": "[steps('striimSettings').clusterMasterVmSize]",
+            "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
+            "clusterName": "[steps('striimSettings').striimClusterName]",
+            "clusterPassword": "[steps('striimSettings').striimClusterPassword]",
+            "striimAdminPassword": "[steps('striimSettings').striimAdminPassword]"
+        }
     }
-  }
 }

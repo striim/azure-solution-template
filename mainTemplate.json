@@ -69,283 +69,135 @@
         }
     },
     "variables": {
-        "addressPrefix": "10.0.0.0/16",
-        "apiVersion": "2015-06-15",
-        "imageReference": {
-            "offer": "CentOS",
-            "publisher": "OpenLogic",
-            "sku": "6.7",
-            "version": "latest"
-        },
+        "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
         "striimProductKey": "",
         "striimLicenseKey": "",
-        "newStorageAccountName": "[concat(parameters('clusterName'),'store')]",
-        "nicName": "striimNIC",
-        "publicIPAddressName": "striimIP",
-        "publicIPAddressType": "Dynamic",
-        "securityGroupName": "striimNSG",
-        "storageAccountType": "Standard_LRS",
-        "subnet1Name": "Subnet-1",
-        "subnet1Prefix": "10.0.0.0/24",
-        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
-        "virtualNetworkName": "striimVNET",
-        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/"
     },
     "resources": [
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('apiVersion')]",
-            "location": "[resourceGroup().location]",
-            "name": "[variables('newStorageAccountName')]",
-            "properties": {
-                "accountType": "[variables('storageAccountType')]"
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "[variables('apiVersion')]",
-            "name": "[variables('securityGroupName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "securityRules": [
-                    {
-                        "name": "SSH",
-                        "properties": {
-                            "description": "Allows SSH traffic",
-                            "protocol": "Tcp",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "22",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 100,
-                            "direction": "Inbound"
-                        }
-                    },
-                    {
-                        "name": "http",
-                        "properties": {
-                            "description": "Allows Http(s) traffic",
-                            "protocol": "Tcp",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "9080-9081",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 110,
-                            "direction": "Inbound"
-                        }
-                    },
-                    {
-                        "name": "hazelcast",
-                        "properties": {
-                            "description": "Allows hazelcast clustering",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "5701-5710",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 120,
-                            "direction": "Inbound"
-                        }
-                    },
-                    {
-                        "name": "messagingSystem",
-                        "properties": {
-                            "description": "Allows stream messaging",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "49152-65535",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 130,
-                            "direction": "Inbound"
-                        }
-                    },
-                    {
-                        "name": "AllowAllOutbound",
-                        "properties": {
-                            "description": "Allows all outbound communication",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 140,
-                            "direction": "Outbound"
-                        }
-                    },
-                    {
-                        "name": "hazelcastDiscovery",
-                        "properties": {
-                            "description": "Allows hazelcast discovery",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "54327",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 150,
-                            "direction": "Inbound"
-                        }
+		{
+			"name": "shared-resources",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[variables('templateApiVersion')]",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
+					"contentVersion": "1.2.2"
+				},
+				"parameters": {
+                    "clusterName":{
+                        "value":"[parameters('clusterName')]"
                     }
-                ]
-            }
-        },
+				}
+			}
+		},
         {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "[variables('apiVersion')]",
-            "copy": {
-                "count": "[parameters('clusterNodeCount')]",
-                "name": "foo"
-            },
-            "location": "[resourceGroup().location]",
-            "name": "[concat(variables('publicIPAddressName'),copyIndex())]",
-            "properties": {
-                "dnsSettings": {
-                    "domainNameLabel": "[concat(parameters('dnsPrefix'), copyIndex())]"
-                },
-                "publicIPAllocationMethod": "Dynamic"
-            }
-        },
-        {
-            "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "[variables('apiVersion')]",
-            "location": "[resourceGroup().location]",
-            "name": "[variables('virtualNetworkName')]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('addressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[variables('subnet1Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnet1Prefix')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "[variables('apiVersion')]",
-            "copy": {
-                "count": "[parameters('clusterNodeCount')]",
-                "name": "foo"
-            },
+            "name": "master-node",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('templateApiVersion')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'),copyIndex())]",
-                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+                "Microsoft.Resources/deployments/shared-resources"
             ],
-            "location": "[resourceGroup().location]",
-            "name": "[concat(variables('nicName'),copyIndex())]",
             "properties": {
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
-                },
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName'),copyIndex()))]"
-                            },
-                            "subnet": {
-                                "id": "[variables('subnet1Ref')]"
-                            },
-                            "networkSecurityGroup": {
-                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
-                            }
-                        }
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[concat(variables('templateBaseUrl'), '/masterNode.json')]",
+					"contentVersion": "1.2.2"
+				},
+				"parameters": {
+                    "adminUserName":{
+                        "value":"[parameters('adminUserName')]"
+                    },
+                    "adminPassword":{
+                        "value":"[parameters('adminPassword')]"
+                    },
+                    "clusterNodeCount":{
+                        "value":"[parameters('clusterNodeCount')]"
+                    },
+                    "clusterVmSize":{
+                        "value":"[parameters('clusterVmSize')]"
+                    },
+                    "dnsPrefix":{
+                        "value":"[parameters('dnsPrefix')]"
+                    },
+                    "clusterName":{
+                        "value":"[parameters('clusterName')]"
+                    },
+                    "clusterPassword":{
+                        "value":"[parameters('clusterPassword')]"
+                    },
+                    "striimAdminPassword":{
+                        "value":"[parameters('striimAdminPassword')]"
+                    },
+                    "companyName":{
+                        "value":"[variables('companyName')]"
+                    },
+                    "striimProductKey":{
+                        "value":"[variables('striimProductKey')]"
+                    },
+                    "striimLicenseKey":{
+                        "value":"[variables('striimLicenseKey')]"
                     }
-                ]
+				}
             }
         },
         {
-            "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "[variables('apiVersion')]",
-            "copy": {
-                "count": "[parameters('clusterNodeCount')]",
-                "name": "foo"
-            },
+            "name": "worker-nodes",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('templateApiVersion')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
-                "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]"
+                "Microsoft.Resources/deployments/master-node"
             ],
-            "location": "[resourceGroup().location]",
-            "name": "[concat(parameters('clusterName'),'-node',copyIndex())]",
-            "tags": {
-                "cluster-id" : "Striim",
-                "Striim" : "5701"
-            },
             "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[parameters('clusterVmSize')]"
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex()))]"
-                        }
-                    ]
-                },
-                "osProfile": {
-                    "adminPassword": "[parameters('adminPassword')]",
-                    "adminUsername": "[parameters('adminUsername')]",
-                    "computerName": "[concat(parameters('clusterName'),'-node',copyIndex())]"
-                },
-                "storageProfile": {
-                    "imageReference": "[variables('imageReference')]",
-                    "osDisk": {
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage",
-                        "name": "[concat(parameters('clusterName'),'-osDisk')]",
-                        "vhd": {
-                            "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('clusterName'),copyIndex(), uniquestring(resourceGroup().id), 'osDisk.vhd')]"
-                        }
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[concat(variables('templateBaseUrl'), '/workerNodes.json')]",
+					"contentVersion": "1.2.2"
+				},
+				"parameters": {
+                    "adminUserName":{
+                        "value":"[parameters('adminUserName')]"
+                    },
+                    "adminPassword":{
+                        "value":"[parameters('adminPassword')]"
+                    },
+                    "clusterNodeCount":{
+                        "value":"[sub(parameters('clusterNodeCount'),1)]"
+                    },
+                    "clusterVmSize":{
+                        "value":"[parameters('clusterVmSize')]"
+                    },
+                    "dnsPrefix":{
+                        "value":"[parameters('dnsPrefix')]"
+                    },
+                    "clusterName":{
+                        "value":"[parameters('clusterName')]"
+                    },
+                    "clusterPassword":{
+                        "value":"[parameters('clusterPassword')]"
+                    },
+                    "striimAdminPassword":{
+                        "value":"[parameters('striimAdminPassword')]"
+                    },
+                    "companyName":{
+                        "value":"[variables('companyName')]"
+                    },
+                    "striimProductKey":{
+                        "value":"[variables('striimProductKey')]"
+                    },
+                    "striimLicenseKey":{
+                        "value":"[variables('striimLicenseKey')]"
                     }
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "[variables('apiVersion')]",
-            "copy": {
-                "count": "[parameters('clusterNodeCount')]",
-                "name": "foo"
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex())]"
-            ],
-            "location": "[resourceGroup().location]",
-            "name": "[concat(parameters('clusterName'),'-node', copyIndex(),'/StriimConfigurer')]",
-            "properties": {
-                "autoUpgradeMinorVersion": true,
-                "publisher": "Microsoft.Azure.Extensions",
-                "settings": {
-                    "commandToExecute": "[concat('bash configureStriimServer.sh ',copyIndex(),' ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',variables('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',variables('striimProductKey'),' ',variables('striimLicenseKey'))]",
-                    "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
-                    ]
-                },
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.0"
+				}
             }
         }
     ],
     "outputs": {
         "serverPublicEndpoint": {
             "type": "string",
-            "value": "[concat('http://',reference(concat(variables('publicIPAddressName'),'0')).dnsSettings.fqdn,':9080/')]"
+            "value": "[concat('http://',variables('dnsPrefix'),':9080/')]"
         }
     }
 }
