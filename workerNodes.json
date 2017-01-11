@@ -87,7 +87,6 @@
         }
     },
     "variables": {
-        "addressPrefix": "10.0.0.0/16",
         "apiVersion": "2015-06-15",
         "imageReference": {
             "offer": "CentOS",
@@ -99,8 +98,13 @@
         "nicName": "striimNIC",
         "publicIPAddressName": "striimIP",
         "publicIPAddressType": "Dynamic",
+        "subnet1Name": "Subnet-1",
+        "subnet1Prefix": "10.0.0.0/24",
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "securityGroupName": "striimNSG",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
+        "virtualNetworkName": "striimVNET",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
     "resources": [
         {

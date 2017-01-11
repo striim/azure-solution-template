@@ -95,12 +95,17 @@
             "version": "latest"
         },
         "newStorageAccountName": "[concat(parameters('clusterName'),'store')]",
+        "subnet1Name": "Subnet-1",
+        "subnet1Prefix": "10.0.0.0/24",
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "nicName": "striimMasterNodeNIC",
         "publicIPAddressName": "striimMasterNodeIP",
         "publicIPAddressType": "Dynamic",
         "securityGroupName": "striimNSG",
         "storageAccountType": "Standard_LRS",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
+        "virtualNetworkName": "striimVNET",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
     "resources": [
         {
