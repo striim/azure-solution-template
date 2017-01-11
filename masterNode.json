@@ -87,7 +87,7 @@
         }
     },
     "variables": {
-        "apiVersion": "2016-09-01",
+        "apiVersion": "2016-05-01",
         "imageReference": {
             "offer": "CentOS",
             "publisher": "OpenLogic",
