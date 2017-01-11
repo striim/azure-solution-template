@@ -199,7 +199,7 @@
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-masternode')]"
             ],
             "location": "[resourceGroup().location]",
-            "name": "[concat(parameters('clusterName'),'-node','/StriimMasterNodeConfigurer')]",
+            "name": "[concat(parameters('clusterName'),'-masternode','/StriimMasterNodeConfigurer')]",
             "properties": {
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
