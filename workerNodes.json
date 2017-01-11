@@ -162,8 +162,7 @@
                 "name": "foo"
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
-                "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]"
             ],
             "location": "[resourceGroup().location]",
             "name": "[concat(parameters('clusterName'),'-node',copyIndex())]",
