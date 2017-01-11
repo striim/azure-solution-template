@@ -197,7 +197,7 @@
     "outputs": {
         "serverPublicEndpoint": {
             "type": "string",
-            "value": "[concat('http://',variables('dnsPrefix'),':9080/')]"
+            "value": "[concat('http://',parameters('dnsPrefix'),':9080/')]"
         }
     }
 }
