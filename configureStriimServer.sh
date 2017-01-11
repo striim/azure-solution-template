@@ -4,13 +4,15 @@
 # Configures Striim Server and restarts 
 #
 # Usage:
-#  $ ./configureStriimServer.sh <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> [<PRODUCT KEY> <LICENSE KEY>]
+#  $ ./configureStriimServer.sh <INDEX> <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> [<PRODUCT KEY> <LICENSE KEY>]
 #  
 #
 ###################################################
 
 STRIIM_VERSION="3.6.8-azure-sols-PreRelease";
 
+VM_INDEX="$1"
+shift
 VM_FQDN="$1"
 shift
 COMPANY_NAME="$1"
@@ -32,6 +34,17 @@ function errorExit() {
 }
 
 function installStriim() {
+    if [ $VM_INDEX -eq "0" ]; then
+        wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
+        rpm -i -v striim-dbms-$STRIIM_VERSION-Linux.rpm 
+        rm -rf striim-dbms-$STRIIM_VERSION-Linux.rpm
+        
+        wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
+        if [ $? -eq 0 ]; then
+            tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
+            rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
+        fi
+    fi
     
     wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
@@ -74,7 +87,9 @@ cat << EOF > /etc/hosts
 $localIpAddress    $VM_FQDN
 EOF
 
+stop striim-dbms;
 stop striim-node;
+start striim-dbms;
 start striim-node;
 
 
