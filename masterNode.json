@@ -1,0 +1,218 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.2.2",
+    "parameters": {
+        "adminUserName": {
+            "metadata": {
+                "description": "admin user name for the Virtual Machine."
+            },
+            "type": "string"
+        },
+        "adminPassword": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Password for admin user of the VM"
+            },
+            "type": "securestring"
+        },
+        "clusterNodeCount": {
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Number of VM to create"
+            },
+            "type": "int"
+        },
+        "clusterVmSize": {
+            "allowedValues": [
+                "Standard_DS1_v2",
+                "Standard_DS2_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_DS11_v2",
+                "Standard_DS12_v2",
+                "Standard_DS13_v2",
+                "Standard_DS14_v2",
+                "Standard_DS15_v2"
+            ],
+            "defaultValue": "Standard_DS3_v2",
+            "metadata": {
+                "description": "Size of the VM"
+            },
+            "type": "string"
+        },
+        "dnsPrefix": {
+            "metadata": {
+                "description": "DNS prefix for the VMs. DNS for node would be of form <dnsPrefix>-node0"
+            },
+            "type": "string"
+        },
+        "clusterName": {
+            "metadata": {
+                "description": "Name of the Striim Cluster"
+            },
+            "type": "string"
+        },
+        "clusterPassword": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Password for the Striim cluster"
+            },
+            "type": "securestring"
+        },
+        "striimAdminPassword": {
+            "defaultvalue": "",
+            "metadata": {
+                "description": "Password for 'admin' user of Striim."
+            },
+            "type": "securestring"
+        },
+        "companyName": {
+            "metadata": {
+                "description": "Customer Company Name"
+            },
+            "type": "string"
+        },
+        "striimProductKey": {
+            "metadata": {
+                "description": "striim Product Key"
+            },
+            "type": "string"
+        },
+        "striimLicenseKey": { 
+            "metadata": {
+                "description": "Striim License Key"
+            },
+            "type": "string"
+        }
+    },
+    "variables": {
+        "apiVersion": "2015-06-15",
+        "imageReference": {
+            "offer": "CentOS",
+            "publisher": "OpenLogic",
+            "sku": "6.7",
+            "version": "latest"
+        },
+        "newStorageAccountName": "[concat(parameters('clusterName'),'store')]",
+        "nicName": "striimMasterNodeNIC",
+        "publicIPAddressName": "striimMasterNodeIP",
+        "publicIPAddressType": "Dynamic",
+        "securityGroupName": "striimNSG",
+        "storageAccountType": "Standard_LRS",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "name": "[variables('publicIPAddressName')]",
+            "properties": {
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('dnsPrefix')]"
+                },
+                "publicIPAllocationMethod": "Dynamic"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+            ],
+            "location": "[resourceGroup().location]",
+            "name": "[variables('nicName')]",
+            "properties": {
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
+                },
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnet1Ref')]"
+                            },
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('securityGroupName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+            ],
+            "location": "[resourceGroup().location]",
+            "name": "[concat(parameters('clusterName'),'-masternode')]",
+            "tags": {
+                "cluster-id" : "Striim",
+                "Striim" : "5701"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('clusterVmSize')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "computerName": "[concat(parameters('clusterName'),'-masternode')]"
+                },
+                "storageProfile": {
+                    "imageReference": "[variables('imageReference')]",
+                    "osDisk": {
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "name": "[concat(parameters('clusterName'),'-osDisk')]",
+                        "vhd": {
+                            "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('clusterName'), uniquestring(resourceGroup().id), 'osDisk.vhd')]"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-masternode')]"
+            ],
+            "location": "[resourceGroup().location]",
+            "name": "[concat(parameters('clusterName'),'-node','/StriimMasterNodeConfigurer')]",
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Azure.Extensions",
+                "settings": {
+                    "commandToExecute": "[concat('bash configureStriimServer.sh ',' 0 ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "fileUris": [
+                        "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
+                    ]
+                },
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0"
+            }
+        }
+    ],
+    "outputs": {
+        "serverPublicEndpoint": {
+            "type": "string",
+            "value": "[concat('http://',reference(concat(variables('publicIPAddressName'),'0')).dnsSettings.fqdn,':9080/')]"
+        }
+    }
+}
