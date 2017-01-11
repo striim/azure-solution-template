@@ -70,6 +70,7 @@
     },
     "variables": {
         "apiVersion": "2016-05-01",
+        "templateApiVersion": "2016-09-01",
         "companyName": "AzureCompany",
         "striimProductKey": "",
         "striimLicenseKey": "",
@@ -79,7 +80,7 @@
 		{
 			"name": "shared-resources",
 			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "[variables('templateApiVersion')]",
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
@@ -96,7 +97,7 @@
         {
             "name": "master-node",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('templateApiVersion')]",
             "dependsOn": [
                 "Microsoft.Resources/deployments/shared-resources"
             ],
@@ -146,7 +147,7 @@
         {
             "name": "worker-nodes",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('templateApiVersion')]",
             "dependsOn": [
                 "Microsoft.Resources/deployments/master-node"
             ],
