@@ -341,7 +341,7 @@
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "[variables('apiVersion')]",
             "copy": {
-                "count": "[sub(parameters('clusterNodeCount'),1)]",
+                "count": "[sub(parameters('clusterNodeCount'),'1')]",
                 "name": "foo"
             },
             "dependsOn": [
