@@ -69,8 +69,7 @@
         }
     },
     "variables": {
-        "apiVersion": "2016-05-01",
-        "templateApiVersion": "2016-09-01",
+        "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
         "striimProductKey": "",
         "striimLicenseKey": "",
