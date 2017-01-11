@@ -84,7 +84,7 @@
 				"mode": "Incremental",
 				"templateLink": {
 					"uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
-					"contentVersion": "1.0.0.1"
+					"contentVersion": "1.2.2"
 				},
 				"parameters": {
                     "clusterName":{
@@ -104,7 +104,7 @@
 				"mode": "Incremental",
 				"templateLink": {
 					"uri": "[concat(variables('templateBaseUrl'), '/masterNode.json')]",
-					"contentVersion": "1.0.0.1"
+					"contentVersion": "1.2.2"
 				},
 				"parameters": {
                     "adminUserName":{
@@ -154,7 +154,7 @@
 				"mode": "Incremental",
 				"templateLink": {
 					"uri": "[concat(variables('templateBaseUrl'), '/workerNodes.json')]",
-					"contentVersion": "1.0.0.1"
+					"contentVersion": "1.2.2"
 				},
 				"parameters": {
                     "adminUserName":{
