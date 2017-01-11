@@ -197,7 +197,7 @@
     "outputs": {
         "serverPublicEndpoint": {
             "type": "string",
-            "value": "[concat('http://',reference(concat(variables('publicIPAddressName'),'0')).dnsSettings.fqdn,':9080/')]"
+            "value": "[concat('http://',variables('dnsPrefix'),':9080/')]"
         }
     }
 }
