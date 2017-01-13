@@ -4,15 +4,13 @@
 # Configures Striim Server and restarts 
 #
 # Usage:
-#  $ ./configureStriimServer.sh <INDEX> <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> <PRODUCT KEY> <LICENSE KEY>
+#  $ ./configureStriimServer.sh <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> <PRODUCT KEY> <LICENSE KEY>
 #  
 #
 ###################################################
 
 STRIIM_VERSION="3.6.8-azure-sols-PreRelease";
 
-VM_INDEX="$1"
-shift
 VM_FQDN="$1"
 shift
 COMPANY_NAME="$1"
@@ -34,16 +32,14 @@ function errorExit() {
 }
 
 function installStriim() {
-    if [ $VM_INDEX -eq "0" ]; then
-        wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
-        rpm -i -v striim-dbms-$STRIIM_VERSION-Linux.rpm 
-        rm -rf striim-dbms-$STRIIM_VERSION-Linux.rpm
+    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
+    rpm -i -v striim-dbms-$STRIIM_VERSION-Linux.rpm 
+    rm -rf striim-dbms-$STRIIM_VERSION-Linux.rpm
         
-        wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
-        if [ $? -eq 0 ]; then
-            tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
-            rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
-        fi
+    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
+    if [ $? -eq 0 ]; then
+        tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
+        rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
     fi
     
     wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
@@ -80,7 +76,7 @@ EOF
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
 WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P
-${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
+${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d ${WA_NODE_PUBLIC_IP} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
 
 EOF
 
@@ -90,8 +86,6 @@ cat << EOF > /etc/hosts
 $localIpAddress    $VM_FQDN
 EOF
 
-stop striim-dbms;
-stop striim-node;
 start striim-dbms;
 start striim-node;
 
