@@ -94,7 +94,7 @@
             "sku": "6.7",
             "version": "latest"
         },
-        "newStorageAccountName": "[concat('strmstr-',unique(resourceGroup().id))]",
+        "newStorageAccountName": "[concat('strmstr-',uniqueString(resourceGroup().id))]",
         "nicName": "striimNIC",
         "publicIPAddressName": "striimIP",
         "publicIPAddressType": "Dynamic",
