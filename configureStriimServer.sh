@@ -4,7 +4,7 @@
 # Configures Striim Server and restarts 
 #
 # Usage:
-#  $ ./configureStriimServer.sh <INDEX> <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> [<PRODUCT KEY> <LICENSE KEY>]
+#  $ ./configureStriimServer.sh <INDEX> <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> <PRODUCT KEY> <LICENSE KEY>
 #  
 #
 ###################################################
@@ -59,6 +59,7 @@ STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 [[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 
 localIpAddress=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
+publicIpAddress=`dig +short $VM_FQDN`
 
 rm $STRIIM_CONF_FILE
 cat << EOF >> $STRIIM_CONF_FILE
@@ -74,10 +75,12 @@ WA_LICENSE_KEY="$LICENSE_KEY"
 WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN="$VM_FQDN"
+WA_NODE_PUBLIC_IP="$publicIpAddress"
 EOF
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
-WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS} -f ${WA_SERVER_FQDN}"
+WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P
+${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d 10.0.0.4,${WA_IP_ADDRESS} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
 
 EOF
 
