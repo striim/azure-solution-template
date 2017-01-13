@@ -94,7 +94,7 @@
             "sku": "6.7",
             "version": "latest"
         },
-        "newStorageAccountName": "[concat('strmstr-',unique(resourceGroup().id))]",
+        "newStorageAccountName": "[concat('strmstr-',uniqueString(resourceGroup().id))]",
         "subnet1Name": "Subnet-1",
         "subnet1Prefix": "10.0.0.0/24",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
