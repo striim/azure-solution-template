@@ -204,9 +204,9 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimServer.sh ',' 0 ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
                     "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
+                        "[concat(variables('templateBaseUrl'),'/configureStriimMasterNode.sh')]"
                     ]
                 },
                 "type": "CustomScript",
@@ -215,9 +215,9 @@
         }
     ],
     "outputs": {
-        "serverPublicEndpoint": {
+        "striimMasterNodeFqdn": {
             "type": "string",
-            "value": "[concat('http://',reference(variables('publicIPAddressName')).dnsSettings.fqdn,':9080/')]"
+            "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
         }
     }
 }

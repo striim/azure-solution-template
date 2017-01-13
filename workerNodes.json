@@ -84,6 +84,12 @@
                 "description": "Striim License Key"
             },
             "type": "string"
+        },
+        "masterNodeFqdn": {
+            "metadata": {
+                "description": "Striim Master node FQDN"
+            },
+            "type": "string"
         }
     },
     "variables": {
@@ -219,9 +225,9 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimServer.sh ',' 1 ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
                     "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimServer.sh')]"
+                        "[concat(variables('templateBaseUrl'),'/configureStriimWorkerNode.sh')]"
                     ]
                 },
                 "type": "CustomScript",

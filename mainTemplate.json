@@ -189,6 +189,9 @@
                     },
                     "striimLicenseKey":{
                         "value":"[variables('striimLicenseKey')]"
+                    },
+                    "masterNodeFqdn": {
+                        "value": "[reference('master-node').outputs.striimMasterNodeFqdn.value]"
                     }
 				}
             }
