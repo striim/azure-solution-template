@@ -52,6 +52,7 @@
                             "domainNameLabel": "Striim will be accessible from this domain"
                         },
                         "defaultValue": {
+                            "publicIpAddressName": "striimMasterNodeIP",
                             "domainNameLabel": "change_me_to_be_unique"
                         },
                         "constraints": {
