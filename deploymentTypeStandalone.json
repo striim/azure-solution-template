@@ -82,9 +82,6 @@
             "name": "master-node",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[variables('templateApiVersion')]",
-            "dependsOn": [
-                "Microsoft.Resources/deployments/shared-resources"
-            ],
             "properties": {
 				"mode": "Incremental",
 				"templateLink": {

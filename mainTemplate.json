@@ -108,13 +108,16 @@
             "name": "nestedTemplate",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[variables('templateApiVersion')]",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/shared-resources"
+            ],
             "properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('nestedTemplateUrl')]",
-					"contentVersion": "1.2.2"
-				},
-				"parameters": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('nestedTemplateUrl')]",
+                    "contentVersion": "1.2.2"
+                },
+                "parameters": {
                     "adminUserName":{
                         "value":"[parameters('adminUserName')]"
                     },
@@ -148,7 +151,7 @@
                     "striimLicenseKey":{
                         "value":"[variables('striimLicenseKey')]"
                     }
-				}
+                }
             }
         }
     ],
