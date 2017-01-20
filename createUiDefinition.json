@@ -137,7 +137,7 @@
                                 }
                             ]
                         },
-                        "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
+                        "visible": "[notequals(steps('striimSettings').deploymentType, 'Standalone')]"
                     },
                     {
                         "name": "striimClusterName",
