@@ -23,6 +23,11 @@
             "type": "int"
         },
         "deploymentType": {
+            "allowedValues": [
+                "Standalone",
+                "Cluster"
+            ],
+            "defaultValue": "Cluster",
             "metadata": {
                 "description": "deployment type"
             },
