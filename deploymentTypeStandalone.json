@@ -22,20 +22,7 @@
             },
             "type": "int"
         },
-        "deploymentType": {
-            "metadata": {
-                "description": "deployment type"
-            },
-            "type": "string"
-        },
-        "solutionType": {
-            "allowedValues": [
-                "Basic",
-                "Standard",
-                "Enterprise",
-                "Premium"
-            ],
-            "defaultValue": "Standard",
+        "clusterVmSize": {
             "metadata": {
                 "description": "Size of the VM"
             },
@@ -66,47 +53,42 @@
                 "description": "Password for 'admin' user of Striim."
             },
             "type": "securestring"
+        },
+        "companyName": {
+            "metadata": {
+                "description": "Customer Company Name"
+            },
+            "type": "string"
+        },
+        "striimProductKey": {
+            "metadata": {
+                "description": "striim Product Key"
+            },
+            "type": "string"
+        },
+        "striimLicenseKey": { 
+            "metadata": {
+                "description": "Striim License Key"
+            },
+            "type": "string"
         }
     },
     "variables": {
         "templateApiVersion": "2015-11-01",
-        "companyName": "AzureCompany",
-        "striimProductKey": "",
-        "striimLicenseKey": "",
-        "solutionSize":"[variables(concat('solutionSize',parameters('solutionType')))]",
-        "solutionSizeBasic":"Standard_F4s",
-        "solutionSizeStandard":"Standard_F8s",
-        "solutionSizeEnterprise":"Standard_DS4_v2",
-        "solutionSizePremium":"Standard_DS5_v2",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
-        "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'))]"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
     },
     "resources": [
-		{
-			"name": "shared-resources",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('templateApiVersion')]",
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
-					"contentVersion": "1.2.2"
-				},
-				"parameters": {
-                    "clusterName":{
-                        "value":"[parameters('clusterName')]"
-                    }
-				}
-			}
-		},
         {
-            "name": "nestedTemplate",
+            "name": "master-node",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[variables('templateApiVersion')]",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/shared-resources"
+            ],
             "properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('nestedTemplateUrl')]",
+					"uri": "[concat(variables('templateBaseUrl'), '/masterNode.json')]",
 					"contentVersion": "1.2.2"
 				},
 				"parameters": {
@@ -120,7 +102,7 @@
                         "value":"[parameters('clusterNodeCount')]"
                     },
                     "clusterVmSize":{
-                        "value":"[variables('solutionSize')]"
+                        "value":"[parameters('clusterVmSize')]"
                     },
                     "dnsPrefix":{
                         "value":"[parameters('dnsPrefix')]"
