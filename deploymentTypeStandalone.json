@@ -114,13 +114,13 @@
                         "value":"[parameters('striimAdminPassword')]"
                     },
                     "companyName":{
-                        "value":"[variables('companyName')]"
+                        "value":"[parameters('companyName')]"
                     },
                     "striimProductKey":{
-                        "value":"[variables('striimProductKey')]"
+                        "value":"[parameters('striimProductKey')]"
                     },
                     "striimLicenseKey":{
-                        "value":"[variables('striimLicenseKey')]"
+                        "value":"[parameters('striimLicenseKey')]"
                     }
 				}
             }
