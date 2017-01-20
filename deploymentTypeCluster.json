@@ -119,7 +119,7 @@
                         "value":"[parameters('clusterNodeCount')]"
                     },
                     "clusterVmSize":{
-                        "value":"[variables('solutionSize')]"
+                        "value":"[parameters('clusterVmSize')]"
                     },
                     "dnsPrefix":{
                         "value":"[parameters('dnsPrefix')]"
