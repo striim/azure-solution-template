@@ -83,7 +83,7 @@
         "solutionSizeStandard":"Standard_F8s",
         "solutionSizeEnterprise":"Standard_DS4_v2",
         "solutionSizePremium":"Standard_DS5_v2",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
         "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
     },
     "resources": [
