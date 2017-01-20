@@ -46,6 +46,7 @@
                         "name": "striimDomainName",
                         "type": "Microsoft.Network.PublicIpAddressCombo",
                         "label": {
+                            
                             "domainNameLabel": "Domain name for Striim"
                         },
                         "toolTip": {
@@ -61,7 +62,7 @@
                             }
                         },
                         "options": {
-                            "hidePublicIpAddress": true,
+                            "hidePublicIpAddressLabel": true,
                             "hideDomainNameLabel": false
                         }
                     },
