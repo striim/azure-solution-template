@@ -78,10 +78,30 @@
         "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
     },
     "resources": [
+		{
+			"name": "shared-resources",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[variables('templateApiVersion')]",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
+					"contentVersion": "1.2.2"
+				},
+				"parameters": {
+                    "clusterName":{
+                        "value":"[parameters('clusterName')]"
+                    }
+				}
+			}
+		},
         {
             "name": "master-node",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[variables('templateApiVersion')]",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/shared-resources"
+            ],
             "properties": {
 				"mode": "Incremental",
 				"templateLink": {
