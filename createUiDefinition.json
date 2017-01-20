@@ -47,6 +47,7 @@
                         "type": "Microsoft.Common.DropDown",
                         "label": "Striim Solution Edition",
                         "toolTip": "Select the right size for your requirement",
+                        "defaultValue": "Standard",
                         "constraints": {
                             "allowedValues": [
                                 {
