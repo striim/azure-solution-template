@@ -37,67 +37,66 @@
                 "name": "striimSettings",
                 "label": "Striim Cluster Settings",
                 "subLabel": {
-                    "preValidation": "Required",
+                    "preValidation": "Configure Striim Cluster",
                     "postValidation": "Done"
                 },
                 "bladeTitle": "Striim Cluster Settings",
                 "elements": [
                     {
-                        "name": "striimDomainName",
-                        "type": "Microsoft.Network.PublicIpAddressCombo",
-                        "label": {
-                            "domainNameLabel": "Domain name for Striim"
-                        },
-                        "toolTip": {
-                            "domainNameLabel": "Striim will be accessible from this domain"
-                        },
-                        "defaultValue": {
-                            "domainNameLabel": "change_me_to_be_unique"
-                        },
+                        "name": "solutionSize",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Striim Solution Edition",
+                        "toolTip": "Select the right size for your requirement",
+                        "defaultValue": "Standard",
                         "constraints": {
-                            "required": {
-                                "domainNameLabel": true
-                            }
+                            "allowedValues": [
+                                {
+                                    "label": "Basic",
+                                    "value": "Basic"
+                                },
+                                {
+                                    "label": "Standard",
+                                    "value": "Standard"
+                                },
+                                {
+                                    "label": "Enterprise",
+                                    "value": "Enterprise"
+                                },
+                                {
+                                    "label": "Premium",
+                                    "value": "Premium"
+                                }
+                            ],
+                            "required": true
                         },
-                        "options": {
-                            "hidePublicIpAddress": true,
-                            "hideDomainNameLabel": false
-                        }
+                        "visible": "true"
                     },
                     {
-                        "name": "clusterMasterVmSize",
-                        "type": "Microsoft.Compute.SizeSelector",
-                        "label": "Cluster Node VM size",
-                        "toolTip": "Select VM Size",
-                        "recommendedSizes": [
-                            "Standard_DS1_v2",
-                            "Standard_DS2_v2",
-                            "Standard_DS3_v2"
-                        ],
+                        "name": "deploymentType",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Striim deployment type",
+                        "defaultValue": "Single node",
+                        "toolTip": "Single node deployment will deploy all Striim components on a single VM, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster Master VM, and desired number of worker VMs", 
                         "constraints": {
-                            "allowedSizes": [
-                                "Standard_DS1_v2",
-                                "Standard_DS2_v2",
-                                "Standard_DS3_v2",
-                                "Standard_DS4_v2",
-                                "Standard_DS5_v2",
-                                "Standard_DS11_v2",
-                                "Standard_DS12_v2",
-                                "Standard_DS13_v2",
-                                "Standard_DS14_v2",
-                                "Standard_DS15_v2"
-                            ]
-                        },
-                        "osPlatform": "Linux",
-                        "count": 1,
-                        "visible": "true"
+                            "allowedValues": [
+                                {
+                                    "label": "Single node",
+                                    "value": "Standalone"
+                                },
+                                {
+                                    "label": "Cluster",
+                                    "value": "Cluster"
+                                }
+                            ],
+                            "required": true
+                        }
                     },
                     {
                         "name": "clusterVmCount",
                         "type": "Microsoft.Common.DropDown",
-                        "label": "Number of nodes in Striim cluster",
+                        "label": "Number of worker nodes in Striim cluster",
                         "defaultValue": "1",
-                        "toolTip": "Number of peer nodes in the Striim cluster",
+                        "toolTip": "Number of worker nodes in the Striim cluster",
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -134,7 +133,7 @@
                                 }
                             ]
                         },
-                        "visible": "true"
+                        "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
                     {
                         "name": "striimClusterName",
@@ -164,6 +163,41 @@
                         "options": {
                             "hideConfirmation": false
                         }
+                    }
+                ]
+            },
+            {
+                "name": "accessSettings",
+                "label": "Striim Access Settings",
+                "subLabel": {
+                    "preValidation": "Configure how you access the Striim",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Striim Access Settings",
+                "elements": [
+                    {
+                        "name": "striimDomainName",
+                        "type": "Microsoft.Network.PublicIpAddressCombo",
+                        "label": {
+
+                            "domainNameLabel": "Domain name for Striim"
+                        },
+                        "toolTip": {
+                            "domainNameLabel": "Striim will be accessible from this domain"
+                        },
+                        "defaultValue": {
+                            "publicIpAddressName": "striimMasterNodeIP",
+                            "domainNameLabel": "change_me_to_be_unique"
+                        },
+                        "constraints": {
+                            "required": {
+                                "domainNameLabel": true
+                            }
+                        },
+                        "options": {
+                            "hidePublicIpAddressLabel": true,
+                            "hideDomainNameLabel": false
+                        }
                     },
                     {
                         "name": "striimAdminPassword",
@@ -188,12 +222,13 @@
         "outputs": {
             "adminUserName": "[basics('vmUsername')]",
             "adminPassword": "[basics('vmPassword')]",
-            "dnsPrefix": "[steps('striimSettings').striimDomainName.domainNameLabel]",
-            "clusterVmSize": "[steps('striimSettings').clusterMasterVmSize]",
+            "dnsPrefix": "[steps('accessSettings').striimDomainName.domainNameLabel]",
+            "solutionType": "[steps('striimSettings').solutionSize]",
+            "deploymentType": "[steps('striimSettings').deploymentType]",
             "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
             "clusterName": "[steps('striimSettings').striimClusterName]",
             "clusterPassword": "[steps('striimSettings').striimClusterPassword]",
-            "striimAdminPassword": "[steps('striimSettings').striimAdminPassword]"
+            "striimAdminPassword": "[steps('accessSettings').striimAdminPassword]"
         }
     }
 }
