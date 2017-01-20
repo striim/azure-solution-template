@@ -95,9 +95,9 @@
     "variables": {
         "apiVersion": "2015-06-15",
         "imageReference": {
-            "offer": "CentOS",
-            "publisher": "OpenLogic",
-            "sku": "6.7",
+            "offer": "realtimedataintegrationtosqlserver",
+            "publisher": "striim",
+            "sku": "integrationforsqlserveronazure",
             "version": "latest"
         },
         "newStorageAccountName": "[concat('strmstr',uniqueString(resourceGroup().id))]",
