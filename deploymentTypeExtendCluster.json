@@ -96,7 +96,7 @@
                         "value":"[parameters('adminPassword')]"
                     },
                     "clusterNodeCount":{
-                        "value":"[parameters('clusterNodeCount'))]"
+                        "value":"[parameters('clusterNodeCount')]"
                     },
                     "clusterVmSize":{
                         "value":"[parameters('clusterVmSize')]"
