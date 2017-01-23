@@ -133,7 +133,7 @@
                                 }
                             ]
                         },
-                        "visible": "[notequals(steps('striimSettings').deploymentType, 'Standalone')]"
+                        "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
                     {
                         "name": "striimClusterName",
