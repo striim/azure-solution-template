@@ -25,8 +25,7 @@
         "deploymentType": {
             "allowedValues": [
                 "Standalone",
-                "Cluster",
-                "ExtendCluster"
+                "Cluster"
             ],
             "defaultValue": "Cluster",
             "metadata": {
@@ -88,6 +87,23 @@
         "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
     },
     "resources": [
+		{
+			"name": "shared-resources",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[variables('templateApiVersion')]",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
+					"contentVersion": "1.2.2"
+				},
+				"parameters": {
+                    "clusterName":{
+                        "value":"[parameters('clusterName')]"
+                    }
+				}
+			}
+		},
         {
             "name": "nestedTemplate",
             "type": "Microsoft.Resources/deployments",

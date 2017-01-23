@@ -86,10 +86,6 @@
                                 {
                                     "label": "Cluster",
                                     "value": "Cluster"
-                                },
-                                {
-                                    "label": "Add nodes to existing Cluster",
-                                    "value": "ExtendCluster"
                                 }
                             ],
                             "required": true
