@@ -82,9 +82,9 @@
     "variables": {
         "apiVersion": "2015-06-15",
         "imageReference": {
-            "offer": "integrationforsqlserveronazure",
-            "publisher": "striim",
-            "sku": "integrationforsqlserveronazure",
+            "offer": "CentOS",
+            "publisher": "OpenLogic",
+            "sku": "6.7",
             "version": "latest"
         },
         "newStorageAccountName": "[concat('strmstr',uniqueString(resourceGroup().id))]",
