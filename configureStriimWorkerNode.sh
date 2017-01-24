@@ -47,7 +47,6 @@ STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
 [[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 
-localIpAddress=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
 
 cat << EOF > $STRIIM_CONF_FILE
 WA_VERSION="$STRIIM_VERSION"
@@ -71,13 +70,14 @@ WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`
 WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P
 ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d ${WA_MASTER_NODE_FQDN} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
 
-EOF
-
-cat << EOF > /etc/hosts
+cat << EFHOST > /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-$localIpAddress    $VM_FQDN
+${WA_IP_ADDRESS} ${WA_SERVER_FQDN}
+EFHOST
+
 EOF
+
 
 start striim-node;
 
