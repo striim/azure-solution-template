@@ -61,6 +61,7 @@
                                 "Standard_DS5_v2"
                             ] 
                         },    
+                        "osPlatform": "Linux",
                         "imageReference": {
                             "offer": "integrationforsqlserveronazure",
                             "publisher": "striim",
@@ -74,7 +75,7 @@
                         "type": "Microsoft.Common.DropDown",
                         "label": "Striim deployment type",
                         "defaultValue": "Single node",
-                        "toolTip": "Single node deployment will deploy all Striim components on a single VM, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster Master VM, and desired number of worker VMs", 
+                        "toolTip": "Single node deployment will deploy all Striim components on a single VM, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster master node containing metadata, and desired number of compute node", 
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -92,15 +93,11 @@
                     {
                         "name": "clusterVmCount",
                         "type": "Microsoft.Common.DropDown",
-                        "label": "Number of worker nodes in Striim cluster",
-                        "defaultValue": "1",
-                        "toolTip": "Number of worker nodes in the Striim cluster",
+                        "label": "Number of nodes in Striim cluster",
+                        "defaultValue": "2",
+                        "toolTip": "Number of nodes in the Striim cluster",
                         "constraints": {
                             "allowedValues": [
-                                {
-                                    "label": "1",
-                                    "value": 1
-                                },
                                 {
                                     "label": "2",
                                     "value": 2
