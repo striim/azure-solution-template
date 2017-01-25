@@ -43,34 +43,6 @@
                 "bladeTitle": "Striim Cluster Settings",
                 "elements": [
                     {
-                        "name": "solutionSize",
-                        "type": "Microsoft.Compute.SizeSelector",
-                        "label": "Striim Solution Size",
-                        "toolTip": "Select the right size for your requirement",
-                        "recommendedSizes": [
-                            "Standard_F4S",
-                            "Standard_F8S",
-                            "Standard_DS4_v2",
-                            "Standard_DS5_v2"
-                        ],  
-                        "constraints": {
-                            "allowedSizes": [
-                                "Standard_F4S",
-                                "Standard_F8S",
-                                "Standard_DS4_v2",
-                                "Standard_DS5_v2"
-                            ] 
-                        },    
-                        "osPlatform": "Linux",
-                        "imageReference": {
-                            "offer": "integrationforsqlserveronazure",
-                            "publisher": "striim",
-                            "sku": "integrationforsqlserveronazure"
-                        },
-                        "count": 1,
-                        "visible": "true"
-                    },
-                    {
                         "name": "deploymentType",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Striim deployment type",
@@ -131,6 +103,34 @@
                         "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
                     {
+                        "name": "solutionSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Striim Solution Size",
+                        "toolTip": "Select the right size for your requirement",
+                        "recommendedSizes": [
+                            "Standard_F4s",
+                            "Standard_F8s",
+                            "Standard_DS4_v2",
+                            "Standard_DS5_v2"
+                        ],  
+                        "constraints": {
+                            "allowedSizes": [
+                                "Standard_F4s",
+                                "Standard_F8s",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2"
+                            ] 
+                        },    
+                        "osPlatform": "Linux",
+                        "imageReference": {
+                            "offer": "integrationforsqlserveronazure",
+                            "publisher": "striim",
+                            "sku": "integrationforsqlserveronazure"
+                        },
+                        "count": "[steps('striimSettings').clusterVmCount]",
+                        "visible": "true"
+                    },
+                    {
                         "name": "striimClusterName",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Name of the Striim Cluster",
@@ -174,7 +174,6 @@
                         "name": "striimDomainName",
                         "type": "Microsoft.Network.PublicIpAddressCombo",
                         "label": {
-
                             "domainNameLabel": "Domain name for Striim"
                         },
                         "toolTip": {
