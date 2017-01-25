@@ -82,9 +82,9 @@
     "variables": {
         "apiVersion": "2015-06-15",
         "imageReference": {
-            "offer": "CentOS",
-            "publisher": "OpenLogic",
-            "sku": "6.7",
+            "offer": "integrationforsqlserveronazure",
+            "publisher": "striim",
+            "sku": "integrationforsqlserveronazure",
             "version": "latest"
         },
         "newStorageAccountName": "[concat('strmstr',uniqueString(resourceGroup().id))]",
@@ -166,6 +166,11 @@
             "tags": {
                 "cluster-id" : "Striim",
                 "Striim" : "5701"
+            },
+            "plan": {
+                "name":"[variables('imageReference').sku]",
+                "publisher": "[variables('imageReference').publisher]",
+                "product": "[variables('imageReference').offer]"
             },
             "properties": {
                 "hardwareProfile": {
