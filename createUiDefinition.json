@@ -44,31 +44,29 @@
                 "elements": [
                     {
                         "name": "solutionSize",
-                        "type": "Microsoft.Common.DropDown",
-                        "label": "Striim Solution Edition",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Striim Solution Size",
                         "toolTip": "Select the right size for your requirement",
-                        "defaultValue": "Standard",
+                        "recommendedSizes": [
+                            "Standard_F4S",
+                            "Standard_F8S",
+                            "Standard_DS4_v2",
+                            "Standard_DS5_v2"
+                        ],  
                         "constraints": {
-                            "allowedValues": [
-                                {
-                                    "label": "Basic",
-                                    "value": "Basic"
-                                },
-                                {
-                                    "label": "Standard",
-                                    "value": "Standard"
-                                },
-                                {
-                                    "label": "Enterprise",
-                                    "value": "Enterprise"
-                                },
-                                {
-                                    "label": "Premium",
-                                    "value": "Premium"
-                                }
-                            ],
-                            "required": true
+                            "allowedSizes": [
+                                "Standard_F4S",
+                                "Standard_F8S",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2"
+                            ] 
+                        },    
+                        "imageReference": {
+                            "offer": "integrationforsqlserveronazure",
+                            "publisher": "striim",
+                            "sku": "integrationforsqlserveronazure"
                         },
+                        "count": 1,
                         "visible": "true"
                     },
                     {
