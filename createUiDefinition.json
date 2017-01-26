@@ -47,7 +47,7 @@
                         "type": "Microsoft.Common.DropDown",
                         "label": "Striim deployment type",
                         "defaultValue": "Single node",
-                        "toolTip": "Single node deployment will deploy all Striim components on a single VM, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster master node containing metadata, and desired number of compute node", 
+                        "toolTip": "Single node deployment will deploy all Striim components on a single VM of size Standard_F4s, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster master node containing metadata, and desired number of compute node", 
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -106,7 +106,7 @@
                         "name": "solutionSize",
                         "type": "Microsoft.Compute.SizeSelector",
                         "label": "Striim Solution Size",
-                        "toolTip": "Select the right size for your requirement",
+                        "toolTip": "Select the right size for your requirement. Basic=Standard_F4s, Regular=Standard_F8s, Enterprise=Standard_DS4_v2, Premium=Standard_DS5_v2",
                         "recommendedSizes": [
                             "Standard_F4s",
                             "Standard_F8s",
@@ -120,7 +120,8 @@
                                 "Standard_DS4_v2",
                                 "Standard_DS5_v2"
                             ] 
-                        },    
+                        }, 
+                        "defaultValue": "Standard_F4s",   
                         "osPlatform": "Linux",
                         "imageReference": {
                             "offer": "CentOS",
@@ -129,7 +130,7 @@
                             "version": "latest"
                         },
                         "count": "[steps('striimSettings').clusterVmCount]",
-                        "visible": "true"
+                        "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
                     {
                         "name": "striimClusterName",
