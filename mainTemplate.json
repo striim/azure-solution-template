@@ -33,14 +33,14 @@
             },
             "type": "string"
         },
-        "solutionType": {
+        "solutionSize": {
             "allowedValues": [
-                "Basic",
-                "Standard",
-                "Enterprise",
-                "Premium"
+                "Standard_F4s",
+                "Standard_F8s",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2"
             ],
-            "defaultValue": "Standard",
+            "defaultValue": "Standard_F4s",
             "metadata": {
                 "description": "Size of the VM"
             },
@@ -74,16 +74,17 @@
         }
     },
     "variables": {
+		"imageReference": {
+			"offer": "CentOS",
+			"publisher": "OpenLogic",
+			"sku": "6.7",   
+			"version": "latest"
+		},
         "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
         "striimProductKey": "",
         "striimLicenseKey": "",
-        "solutionSize":"[variables(concat('solutionSize',parameters('solutionType')))]",
-        "solutionSizeBasic":"Standard_F4s",
-        "solutionSizeStandard":"Standard_F8s",
-        "solutionSizeEnterprise":"Standard_DS4_v2",
-        "solutionSizePremium":"Standard_DS5_v2",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/nested/",
         "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
     },
     "resources": [
@@ -128,7 +129,7 @@
                         "value":"[parameters('clusterNodeCount')]"
                     },
                     "clusterVmSize":{
-                        "value":"[variables('solutionSize')]"
+                        "value":"[parameters('solutionSize')]"
                     },
                     "dnsPrefix":{
                         "value":"[parameters('dnsPrefix')]"
@@ -144,6 +145,9 @@
                     },
                     "companyName":{
                         "value":"[variables('companyName')]"
+                    },
+                    "imageReference": {
+                        "value": "[variables('imageReference')]"
                     },
                     "striimProductKey":{
                         "value":"[variables('striimProductKey')]"

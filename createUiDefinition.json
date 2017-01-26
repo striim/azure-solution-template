@@ -43,40 +43,11 @@
                 "bladeTitle": "Striim Cluster Settings",
                 "elements": [
                     {
-                        "name": "solutionSize",
-                        "type": "Microsoft.Common.DropDown",
-                        "label": "Striim Solution Edition",
-                        "toolTip": "Select the right size for your requirement",
-                        "defaultValue": "Standard",
-                        "constraints": {
-                            "allowedValues": [
-                                {
-                                    "label": "Basic",
-                                    "value": "Basic"
-                                },
-                                {
-                                    "label": "Standard",
-                                    "value": "Standard"
-                                },
-                                {
-                                    "label": "Enterprise",
-                                    "value": "Enterprise"
-                                },
-                                {
-                                    "label": "Premium",
-                                    "value": "Premium"
-                                }
-                            ],
-                            "required": true
-                        },
-                        "visible": "true"
-                    },
-                    {
                         "name": "deploymentType",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Striim deployment type",
                         "defaultValue": "Single node",
-                        "toolTip": "Single node deployment will deploy all Striim components on a single VM, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster Master VM, and desired number of worker VMs", 
+                        "toolTip": "Single node deployment will deploy all Striim components on a single VM of size Standard_F4s, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster master node containing metadata, and desired number of compute node", 
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -94,15 +65,11 @@
                     {
                         "name": "clusterVmCount",
                         "type": "Microsoft.Common.DropDown",
-                        "label": "Number of worker nodes in Striim cluster",
-                        "defaultValue": "1",
-                        "toolTip": "Number of worker nodes in the Striim cluster",
+                        "label": "Number of nodes in Striim cluster",
+                        "defaultValue": "2",
+                        "toolTip": "Number of nodes in the Striim cluster",
                         "constraints": {
                             "allowedValues": [
-                                {
-                                    "label": "1",
-                                    "value": 1
-                                },
                                 {
                                     "label": "2",
                                     "value": 2
@@ -133,6 +100,35 @@
                                 }
                             ]
                         },
+                        "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
+                    },
+                    {
+                        "name": "solutionSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Striim Solution Size",
+                        "toolTip": "Select the right size for your requirement. Basic=Standard_F4s, Regular=Standard_F8s, Enterprise=Standard_DS4_v2, Premium=Standard_DS5_v2",
+                        "recommendedSizes": [
+                            "Standard_F4s",
+                            "Standard_F8s",
+                            "Standard_DS4_v2",
+                            "Standard_DS5_v2"
+                        ],  
+                        "constraints": {
+                            "allowedSizes": [
+                                "Standard_F4s",
+                                "Standard_F8s",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2"
+                            ] 
+                        }, 
+                        "osPlatform": "Linux",
+                        "imageReference": {
+                            "offer": "CentOS",
+                            "publisher": "OpenLogic",
+                            "sku": "6.7",   
+                            "version": "latest"
+                        },
+                        "count": "[steps('striimSettings').clusterVmCount]",
                         "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
                     {
@@ -179,7 +175,6 @@
                         "name": "striimDomainName",
                         "type": "Microsoft.Network.PublicIpAddressCombo",
                         "label": {
-
                             "domainNameLabel": "Domain name for Striim"
                         },
                         "toolTip": {
@@ -223,7 +218,7 @@
             "adminUserName": "[basics('vmUsername')]",
             "adminPassword": "[basics('vmPassword')]",
             "dnsPrefix": "[steps('accessSettings').striimDomainName.domainNameLabel]",
-            "solutionType": "[steps('striimSettings').solutionSize]",
+            "solutionSize": "[steps('striimSettings').solutionSize]",
             "deploymentType": "[steps('striimSettings').deploymentType]",
             "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
             "clusterName": "[steps('striimSettings').striimClusterName]",
