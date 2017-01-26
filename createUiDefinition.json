@@ -102,35 +102,35 @@
                         },
                         "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
-					{
-						"name": "solutionSize",
-						"type": "Microsoft.Compute.SizeSelector",
-						"label": "Striim Solution Size",
-						"toolTip": "Select the right size for your requirement",
-						"recommendedSizes": [
-							"Standard_F4s",
-							"Standard_F8s",
-							"Standard_DS4_v2",
-							"Standard_DS5_v2"
-						],  
-						"constraints": {
-							"allowedSizes": [
-								"Standard_F4s",
-								"Standard_F8s",
-								"Standard_DS4_v2",
-								"Standard_DS5_v2"
-							] 
-						},    
-						"osPlatform": "Linux",
-						"imageReference": {
-							"offer": "CentOS",
-							"publisher": "OpenLogic",
-							"sku": "6.7",
-							"version": "latest"
-						}, 
-						"count": "[steps('striimSettings').clusterVmCount]",
-						"visible": "true"
-					},
+                    {
+                        "name": "solutionSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Striim Solution Size",
+                        "toolTip": "Select the right size for your requirement",
+                        "recommendedSizes": [
+                            "Standard_F4s",
+                            "Standard_F8s",
+                            "Standard_DS4_v2",
+                            "Standard_DS5_v2"
+                        ],  
+                        "constraints": {
+                            "allowedSizes": [
+                                "Standard_F4s",
+                                "Standard_F8s",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2"
+                            ] 
+                        },    
+                        "osPlatform": "Linux",
+                        "imageReference": {
+                            "offer": "integrationforsqlserveronazure",
+                            "publisher": "striim",
+                            "sku": "v372",
+                            "version": "latest"
+                        },
+                        "count": "[steps('striimSettings').clusterVmCount]",
+                        "visible": "true"
+                    },
                     {
                         "name": "striimClusterName",
                         "type": "Microsoft.Common.TextBox",

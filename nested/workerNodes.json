@@ -164,11 +164,6 @@
                 "cluster-id" : "Striim",
                 "Striim" : "5701"
             },
-            "plan": {
-                "name":"[parameters('imageReference').sku]",
-                "publisher": "[parameters('imageReference').publisher]",
-                "product": "[parameters('imageReference').offer]"
-            },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('clusterVmSize')]"
