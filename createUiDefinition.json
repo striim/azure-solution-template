@@ -121,7 +121,6 @@
                                 "Standard_DS5_v2"
                             ] 
                         }, 
-                        "defaultValue": "Standard_F4s",   
                         "osPlatform": "Linux",
                         "imageReference": {
                             "offer": "CentOS",
@@ -219,7 +218,7 @@
             "adminUserName": "[basics('vmUsername')]",
             "adminPassword": "[basics('vmPassword')]",
             "dnsPrefix": "[steps('accessSettings').striimDomainName.domainNameLabel]",
-            "solutionType": "[steps('striimSettings').solutionSize]",
+            "solutionSize": "[steps('striimSettings').solutionSize]",
             "deploymentType": "[steps('striimSettings').deploymentType]",
             "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
             "clusterName": "[steps('striimSettings').striimClusterName]",
