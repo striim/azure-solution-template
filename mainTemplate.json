@@ -75,11 +75,11 @@
     },
     "variables": {
         "imageReference": {
-            "offer": "integrationforsqlserveronazure",
-            "publisher": "striim",
-            "sku": "v372",
+            "offer": "CentOS",
+            "publisher": "OpenLogic",
+            "sku": "6.7",
             "version": "latest"
-        },
+        }, 
         "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
         "striimProductKey": "",
