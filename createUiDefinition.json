@@ -123,9 +123,9 @@
                         },    
                         "osPlatform": "Linux",
                         "imageReference": {
-                            "offer": "integrationforsqlserveronazure",
-                            "publisher": "striim",
-                            "sku": "v372",
+                            "offer": "CentOS",
+                            "publisher": "OpenLogic",
+                            "sku": "6.7",   
                             "version": "latest"
                         },
                         "count": "[steps('striimSettings').clusterVmCount]",
