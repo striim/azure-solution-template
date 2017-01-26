@@ -60,6 +60,9 @@
             },
             "type": "string"
         },
+        "imageReference": {
+            "type": "object"
+        },
         "striimProductKey": {
             "metadata": {
                 "description": "striim Product Key"
@@ -81,12 +84,6 @@
     },
     "variables": {
         "apiVersion": "2015-06-15",
-        "imageReference": {
-            "offer": "integrationforsqlserveronazure",
-            "publisher": "striim",
-            "sku": "integrationforsqlserveronazure",
-            "version": "latest"
-        },
         "newStorageAccountName": "[concat('strmstr',uniqueString(resourceGroup().id))]",
         "nicName": "striimNIC",
         "publicIPAddressName": "striimIP",
@@ -95,7 +92,7 @@
         "subnet1Prefix": "10.0.0.0/24",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "securityGroupName": "striimNSG",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/scripts/",
         "virtualNetworkName": "striimVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
@@ -168,9 +165,9 @@
                 "Striim" : "5701"
             },
             "plan": {
-                "name":"[variables('imageReference').sku]",
-                "publisher": "[variables('imageReference').publisher]",
-                "product": "[variables('imageReference').offer]"
+                "name":"[parameters('imageReference').sku]",
+                "publisher": "[parameters('imageReference').publisher]",
+                "product": "[parameters('imageReference').offer]"
             },
             "properties": {
                 "hardwareProfile": {
@@ -189,7 +186,7 @@
                     "computerName": "[concat(parameters('clusterName'),'-node',copyIndex())]"
                 },
                 "storageProfile": {
-                    "imageReference": "[variables('imageReference')]",
+                    "imageReference": "[parameters('imageReference')]",
                     "osDisk": {
                         "caching": "ReadWrite",
                         "createOption": "FromImage",

@@ -60,6 +60,9 @@
             },
             "type": "string"
         },
+        "imageReference": {
+            "type": "object"
+        },
         "striimProductKey": {
             "metadata": {
                 "description": "striim Product Key"
@@ -116,11 +119,70 @@
                     "companyName":{
                         "value":"[parameters('companyName')]"
                     },
+                    "imageReference": {
+                        "value": "[parameters('imageReference')]"
+                    },
                     "striimProductKey":{
                         "value":"[parameters('striimProductKey')]"
                     },
                     "striimLicenseKey":{
                         "value":"[parameters('striimLicenseKey')]"
+                    }
+				}
+            }
+        },
+        {
+            "name": "worker-nodes",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('templateApiVersion')]",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/master-node"
+            ],
+            "properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[concat(variables('templateBaseUrl'), '/workerNodes.json')]",
+					"contentVersion": "1.2.2"
+				},
+				"parameters": {
+                    "adminUserName":{
+                        "value":"[parameters('adminUserName')]"
+                    },
+                    "adminPassword":{
+                        "value":"[parameters('adminPassword')]"
+                    },
+                    "clusterNodeCount":{
+                        "value":"[parameters('clusterNodeCount')]"
+                    },
+                    "clusterVmSize":{
+                        "value":"[parameters('clusterVmSize')]"
+                    },
+                    "dnsPrefix":{
+                        "value":"[parameters('dnsPrefix')]"
+                    },
+                    "clusterName":{
+                        "value":"[parameters('clusterName')]"
+                    },
+                    "clusterPassword":{
+                        "value":"[parameters('clusterPassword')]"
+                    },
+                    "striimAdminPassword":{
+                        "value":"[parameters('striimAdminPassword')]"
+                    },
+                    "companyName":{
+                        "value":"[parameters('companyName')]"
+                    },
+                    "imageReference": {
+                        "value": "[parameters('imageReference')]"
+                    },
+                    "striimProductKey":{
+                        "value":"[parameters('striimProductKey')]"
+                    },
+                    "striimLicenseKey":{
+                        "value":"[parameters('striimLicenseKey')]"
+                    },
+                    "masterNodeFqdn": {
+                        "value": "[reference('master-node').outputs.striimMasterNodeFqdn.value]"
                     }
 				}
             }

@@ -125,7 +125,8 @@
                         "imageReference": {
                             "offer": "integrationforsqlserveronazure",
                             "publisher": "striim",
-                            "sku": "integrationforsqlserveronazure"
+                            "sku": "v372",
+                            "version": "latest"
                         },
                         "count": "[steps('striimSettings').clusterVmCount]",
                         "visible": "true"
