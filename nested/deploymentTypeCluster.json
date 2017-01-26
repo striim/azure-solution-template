@@ -78,7 +78,7 @@
     },
     "variables": {
         "templateApiVersion": "2015-11-01",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/nested/"
     },
     "resources": [
         {
