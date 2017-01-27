@@ -9,7 +9,7 @@
 #
 ###################################################
 
-STRIIM_VERSION="azure-sols9-3.6.8-PreRelease";
+STRIIM_VERSION="3.6.8-azure-sols10-PreRelease";
 
 VM_FQDN="$1"
 shift
