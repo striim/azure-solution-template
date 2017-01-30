@@ -46,12 +46,12 @@
                         "name": "deploymentType",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Striim deployment type",
-                        "defaultValue": "Single node",
-                        "toolTip": "Single node deployment will deploy all Striim components on a single VM of size Standard_F4s, suitable for dev and test. Cluster mode deployment will deploy 1 Cluster master node containing metadata, and desired number of compute node", 
+                        "defaultValue": "Standalone",
+                        "toolTip": "Standalone mode deployment will deploy striim server on a single VM of size Standard_F4s. Cluster mode deployment will deploy striim servers on 2 or more VMs on selected VM size.", 
                         "constraints": {
                             "allowedValues": [
                                 {
-                                    "label": "Single node",
+                                    "label": "Standalone",
                                     "value": "Standalone"
                                 },
                                 {
@@ -65,9 +65,9 @@
                     {
                         "name": "clusterVmCount",
                         "type": "Microsoft.Common.DropDown",
-                        "label": "Number of nodes in Striim cluster",
+                        "label": "Number of VMs in Striim cluster",
                         "defaultValue": "2",
-                        "toolTip": "Number of nodes in the Striim cluster",
+                        "toolTip": "Number of VMs in the Striim cluster",
                         "constraints": {
                             "allowedValues": [
                                 {
