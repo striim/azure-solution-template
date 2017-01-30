@@ -54,8 +54,25 @@ STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
 [[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 
+cat << 'EOF' > $STRIIM_CONF_FILE
+function getLocalInterfaceIp() {
+    for seq in `seq 20`; do
+       IP_ADDR=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
+       if [ $IP_ADDR != "" ]; then
+           WA_IP_ADDRESS=$IP_ADDR
+           return 0
+       fi
+       /bin/sleep 1
+    done
+    /bin/logger -t striim-node "Cannot start as local interface IP address is not available"
+    exit 1
+}
 
-cat << EOF > $STRIIM_CONF_FILE
+getLocalInterfaceIp
+EOF
+
+cat << EOF >> $STRIIM_CONF_FILE
+
 WA_VERSION="$STRIIM_VERSION"
 WA_HOME="/opt/Striim-$STRIIM_VERSION"
 WA_START="Service"
@@ -70,7 +87,6 @@ WA_SERVER_FQDN="$VM_FQDN"
 EOF
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
-WA_IP_ADDRESS=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
 WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`
 
 WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d ${WA_NODE_PUBLIC_IP} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
