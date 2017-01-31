@@ -4,7 +4,7 @@
 # Configures Striim Server and restarts 
 #
 # Usage:
-#  $ ./configureStriimServer.sh <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD> <PRODUCT KEY> <LICENSE KEY>
+#  $ ./configureStriimServer.sh <FQDN> <COMPANY_NAME> <CLUSTER NAME> <CLUSTER PASSWORD> <ADMIN PASSWORD>
 #  
 #
 ###################################################
@@ -20,10 +20,6 @@ shift
 CLUSTER_PASSWORD="$1" 
 shift
 ADMIN_PASSWORD="$1" 
-shift
-PRODUCT_KEY="$1" 
-shift
-LICENSE_KEY="$1"    
 shift
 
 function errorExit() {
@@ -54,6 +50,8 @@ STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
 [[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 
+ln -s /var/striim/Samples /opt/Striim-$STRIIM_VERSION/Samples
+
 cat << 'EOF' > $STRIIM_CONF_FILE
 function getLocalInterfaceIp() {
     for seq in `seq 20`; do
@@ -79,12 +77,12 @@ WA_START="Service"
 WA_CLUSTER_NAME="$CLUSTER_NAME"
 WA_CLUSTER_PASSWORD="$CLUSTER_PASSWORD"
 WA_ADMIN_PASSWORD="$ADMIN_PASSWORD"
-WA_PRODUCT_KEY="$PRODUCT_KEY"
-WA_LICENSE_KEY="$LICENSE_KEY"
 WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN="$VM_FQDN"
 EOF
+
+cat /etc/striim/product.conf >> $STRIIM_CONF_FILE
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
 WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`

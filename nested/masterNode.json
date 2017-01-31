@@ -62,18 +62,6 @@
         },
         "imageReference": {
             "type": "object"
-        },
-        "striimProductKey": {
-            "metadata": {
-                "description": "striim Product Key"
-            },
-            "type": "string"
-        },
-        "striimLicenseKey": { 
-            "metadata": {
-                "description": "Striim License Key"
-            },
-            "type": "string"
         }
     },
     "variables": {
@@ -147,6 +135,11 @@
                 "cluster-id" : "Striim",
                 "Striim" : "5701"
             },
+            "plan": {
+                "name":"[parameters('imageReference').sku]",
+                "publisher": "[parameters('imageReference').publisher]",
+                "product": "[parameters('imageReference').offer]"
+            },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('clusterVmSize')]"
@@ -188,7 +181,7 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
                         "[concat(variables('templateBaseUrl'),'/configureStriimMasterNode.sh')]"
                     ]

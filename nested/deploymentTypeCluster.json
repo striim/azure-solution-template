@@ -62,18 +62,6 @@
         },
         "imageReference": {
             "type": "object"
-        },
-        "striimProductKey": {
-            "metadata": {
-                "description": "striim Product Key"
-            },
-            "type": "string"
-        },
-        "striimLicenseKey": { 
-            "metadata": {
-                "description": "Striim License Key"
-            },
-            "type": "string"
         }
     },
     "variables": {
@@ -121,12 +109,6 @@
                     },
                     "imageReference": {
                         "value": "[parameters('imageReference')]"
-                    },
-                    "striimProductKey":{
-                        "value":"[parameters('striimProductKey')]"
-                    },
-                    "striimLicenseKey":{
-                        "value":"[parameters('striimLicenseKey')]"
                     }
 				}
             }
@@ -174,12 +156,6 @@
                     },
                     "imageReference": {
                         "value": "[parameters('imageReference')]"
-                    },
-                    "striimProductKey":{
-                        "value":"[parameters('striimProductKey')]"
-                    },
-                    "striimLicenseKey":{
-                        "value":"[parameters('striimLicenseKey')]"
                     },
                     "masterNodeFqdn": {
                         "value": "[reference('master-node').outputs.striimMasterNodeFqdn.value]"

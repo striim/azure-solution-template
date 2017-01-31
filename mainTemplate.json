@@ -74,37 +74,35 @@
         }
     },
     "variables": {
-		"imageReference": {
-			"offer": "CentOS",
-			"publisher": "OpenLogic",
-			"sku": "6.7",   
-			"version": "latest"
-		},
+        "imageReference": {
+            "offer": "integrationforsqlserveronazure",
+            "publisher": "striim",
+            "sku": "v372",
+            "version": "latest"
+        },
         "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
-        "striimProductKey": "",
-        "striimLicenseKey": "",
         "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/nested/",
         "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
     },
     "resources": [
-		{
-			"name": "shared-resources",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('templateApiVersion')]",
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
-					"contentVersion": "1.2.2"
-				},
-				"parameters": {
+        {
+            "name": "shared-resources",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('templateApiVersion')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
+                    "contentVersion": "1.2.2"
+                },
+                "parameters": {
                     "clusterName":{
                         "value":"[parameters('clusterName')]"
                     }
-				}
-			}
-		},
+                }
+            }
+        },
         {
             "name": "nestedTemplate",
             "type": "Microsoft.Resources/deployments",
@@ -148,12 +146,6 @@
                     },
                     "imageReference": {
                         "value": "[variables('imageReference')]"
-                    },
-                    "striimProductKey":{
-                        "value":"[variables('striimProductKey')]"
-                    },
-                    "striimLicenseKey":{
-                        "value":"[variables('striimLicenseKey')]"
                     }
                 }
             }

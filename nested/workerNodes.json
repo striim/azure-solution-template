@@ -63,18 +63,6 @@
         "imageReference": {
             "type": "object"
         },
-        "striimProductKey": {
-            "metadata": {
-                "description": "striim Product Key"
-            },
-            "type": "string"
-        },
-        "striimLicenseKey": { 
-            "metadata": {
-                "description": "Striim License Key"
-            },
-            "type": "string"
-        },
         "masterNodeFqdn": {
             "metadata": {
                 "description": "Striim Master node FQDN"
@@ -164,6 +152,11 @@
                 "cluster-id" : "Striim",
                 "Striim" : "5701"
             },
+            "plan": {
+                "name":"[parameters('imageReference').sku]",
+                "publisher": "[parameters('imageReference').publisher]",
+                "product": "[parameters('imageReference').offer]"
+            },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('clusterVmSize')]"
@@ -209,7 +202,7 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('striimProductKey'),' ',parameters('striimLicenseKey'))]",
+                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
                         "[concat(variables('templateBaseUrl'),'/configureStriimWorkerNode.sh')]"
                     ]
