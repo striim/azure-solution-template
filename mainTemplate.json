@@ -82,8 +82,6 @@
 		},
         "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
-        "striimProductKey": "",
-        "striimLicenseKey": "",
         "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/nested/",
         "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
     },
@@ -148,12 +146,6 @@
                     },
                     "imageReference": {
                         "value": "[variables('imageReference')]"
-                    },
-                    "striimProductKey":{
-                        "value":"[variables('striimProductKey')]"
-                    },
-                    "striimLicenseKey":{
-                        "value":"[variables('striimLicenseKey')]"
                     }
                 }
             }
