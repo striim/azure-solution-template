@@ -74,12 +74,12 @@
         }
     },
     "variables": {
-        "imageReference": {
-            "offer": "integrationforsqlserveronazure",
-            "publisher": "striim",
-            "sku": "v372",
-            "version": "latest"
-        },
+		"imageReference": {
+			"offer": "STRIIM_OFFER",
+			"publisher": "striim",
+			"sku": "v372",
+			"version": "latest"
+		},
         "templateApiVersion": "2015-11-01",
         "companyName": "AzureCompany",
         "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/nested/",

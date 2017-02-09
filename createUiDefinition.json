@@ -123,7 +123,7 @@
                         }, 
                         "osPlatform": "Linux",
                         "imageReference": {
-                            "offer": "integrationforsqlserveronazure",
+                            "offer": "STRIIM_OFFER",
                             "publisher": "striim",
                             "sku": "v372",
                             "version": "latest"
