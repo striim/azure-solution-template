@@ -9,7 +9,7 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.7.2-PreRelease";
+STRIIM_VERSION="3.7.2";
 
 VM_FQDN="$1"
 shift
