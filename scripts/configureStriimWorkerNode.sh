@@ -89,6 +89,32 @@ EFHOST
 
 EOF
 
+cat << 'EOF' > /opt/Striim-$STRIIM_VERSION/conf/log4j.console.properties
+log4j.rootLogger=warn, R
+
+# output to the terminal
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d - %p %t %C.%M (%F:%L) %m%n
+
+
+# output to log file
+log4j.appender.R=org.apache.log4j.RollingFileAppender
+log4j.appender.R.File=${user.home}/striim.console.log
+log4j.appender.R.MaxFileSize=100KB
+log4j.appender.R.MaxBackupIndex=1
+
+log4j.appender.R.layout=org.apache.log4j.PatternLayout
+log4j.appender.R.layout.ConversionPattern=%d - %p %t %C.%M (%F:%L) %m%n
+
+
+
+# package/class logging level
+#log4j.logger.com.webaction.security.WASecurityManager=TRACE
+#log4j.logger.com.webaction.metaRepository.MDCache=TRACE
+#log4j.logger.com.webaction.tungsten.Tungsten=TRACE
+EOF
 
 start striim-node;
 
