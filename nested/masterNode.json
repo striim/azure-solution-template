@@ -74,7 +74,7 @@
         "publicIPAddressType": "Dynamic",
         "securityGroupName": "striimNSG",
         "storageAccountType": "Standard_LRS",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/scripts/",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/scripts/",
         "virtualNetworkName": "striimVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },

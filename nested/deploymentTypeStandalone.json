@@ -65,7 +65,7 @@
         }
     },
     "variables": {
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/nested/"
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/nested/"
     },
     "resources": [
         {
