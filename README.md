@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/striim/azure-solution-template.svg?branch=master)](https://travis-ci.org/striim/azure-solution-template)
+
 # Installs Striim Real-time Integration and Analytics Engine Cluster on Azure
 
 ## Get Started 
@@ -8,8 +10,7 @@
 
 
 
-<a
-href="https://portal.azure.com/#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/%7B%22initialData%22%3A%7B%7D%2C%22providerConfig%22%3A%7B%22createUiDefinition%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2Fstriim%2Fazure-solution-template%2Fdevelop%2FcreateUiDefinition.json%22%7D%7D">[Preview createUiDefinition.json]</a>
+
 
 
 
