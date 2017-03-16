@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.2.2",
+    "contentVersion": "1.2.2.0",
     "parameters": {
         "adminUserName": {
             "metadata": {
@@ -71,7 +71,6 @@
         }
     },
     "variables": {
-        "apiVersion": "2015-06-15",
         "newStorageAccountName": "[concat('strmstr',uniqueString(resourceGroup().id))]",
         "nicName": "striimNIC",
         "publicIPAddressName": "striimIP",
@@ -87,7 +86,7 @@
     "resources": [
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
@@ -103,7 +102,7 @@
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
@@ -138,7 +137,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
@@ -188,7 +187,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "copy": {
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"

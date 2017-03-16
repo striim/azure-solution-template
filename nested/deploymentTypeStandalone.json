@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.2.2",
+    "contentVersion": "1.2.2.0",
     "parameters": {
         "adminUserName": {
             "metadata": {
@@ -65,19 +65,18 @@
         }
     },
     "variables": {
-        "templateApiVersion": "2015-11-01",
         "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/nested/"
     },
     "resources": [
         {
             "name": "master-node",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('templateApiVersion')]",
+            "apiVersion": "2015-01-01",
             "properties": {
 				"mode": "Incremental",
 				"templateLink": {
 					"uri": "[concat(variables('templateBaseUrl'), '/masterNode.json')]",
-					"contentVersion": "1.2.2"
+					"contentVersion": "1.2.2.0"
 				},
 				"parameters": {
                     "adminUserName":{

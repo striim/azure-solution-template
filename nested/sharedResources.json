@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.2.2",
+    "contentVersion": "1.2.2.0",
     "parameters": {
         "clusterName": {
             "metadata": {
@@ -24,7 +24,7 @@
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "name": "[variables('newStorageAccountName')]",
             "properties": {
@@ -33,7 +33,7 @@
         },
         {
             "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "name": "[variables('securityGroupName')]",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -127,7 +127,7 @@
         },
         {
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "name": "[variables('virtualNetworkName')]",
             "properties": {

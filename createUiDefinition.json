@@ -58,8 +58,7 @@
                                     "label": "Cluster",
                                     "value": "Cluster"
                                 }
-                            ],
-                            "required": true
+                            ]
                         }
                     },
                     {
@@ -125,8 +124,7 @@
                         "imageReference": {
                             "offer": "STRIIM_OFFER",
                             "publisher": "striim",
-                            "sku": "v372",
-                            "version": "latest"
+                            "sku": "v372"
                         },
                         "count": "[steps('striimSettings').clusterVmCount]",
                         "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
@@ -175,6 +173,7 @@
                         "name": "striimDomainName",
                         "type": "Microsoft.Network.PublicIpAddressCombo",
                         "label": {
+                            "publicIpAddress": "Public IP address",
                             "domainNameLabel": "Domain name for Striim"
                         },
                         "toolTip": {
@@ -190,7 +189,6 @@
                             }
                         },
                         "options": {
-                            "hidePublicIpAddressLabel": true,
                             "hideDomainNameLabel": false
                         }
                     },
