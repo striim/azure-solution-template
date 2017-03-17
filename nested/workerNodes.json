@@ -79,7 +79,7 @@
         "subnet1Prefix": "10.0.0.0/24",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "securityGroupName": "striimNSG",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/scripts/",
+        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/master/scripts/",
         "virtualNetworkName": "striimVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
