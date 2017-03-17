@@ -29,8 +29,6 @@ Use the Deploy to Azure button to get started
  * Admin Username : Admin username of the VM
  * Admin Password : Admin password of the VM as well as the Striim admin user
  * Company Name : Name of the company to which you belong
- * Product Key : Product key if you have got the license. Leave it blank for a trial license which is restricted to 1 node.
- * License Key : License key if you have got the license. Leave it blank for a trial license which is restricted to 1 node
  
  
  
