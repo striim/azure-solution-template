@@ -1,6 +1,12 @@
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
+        jsonlint: {
+            src: ['*.json','nested/*.json'],
+            options: {
+                formatter: 'prose'
+            }
+        },
         tv4: {
             validateUiJson :{
                 options: {
@@ -19,11 +25,13 @@ module.exports = function(grunt) {
         }
     });
 
-    // Load the plugin that provides the "uglify" task.
+    // Load the plugins
+    grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-tv4');
 
     // Default task(s).
+
     grunt.registerTask('validateJson',['tv4:validateUiJson','tv4:validateMainTemplate']);
-    grunt.registerTask('default', 'validateJson');
+    grunt.registerTask('default', ['jsonlint','validateJson']);
 
 };
