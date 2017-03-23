@@ -7,6 +7,9 @@
                 "description": "Name of the Striim Cluster"
             },
             "type": "string"
+        },
+        "location": {
+            "type": "string"
         }
     },
     "variables": {
@@ -25,7 +28,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[variables('newStorageAccountName')]",
             "properties": {
                 "accountType": "[variables('storageAccountType')]"
@@ -35,7 +38,7 @@
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2015-06-15",
             "name": "[variables('securityGroupName')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "properties": {
                 "securityRules": [
                     {
@@ -128,7 +131,7 @@
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[variables('virtualNetworkName')]",
             "properties": {
                 "addressSpace": {

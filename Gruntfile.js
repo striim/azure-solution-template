@@ -11,7 +11,7 @@ module.exports = function(grunt) {
             validateUiJson :{
                 options: {
                     fresh:true,
-                    root: 'https://schema.management.azure.com/schemas/0.0.1-preview/CreateUIDefinition.MultiVm.json'
+                    root: 'https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json'
                 },
                 src: ['createUiDefinition.json']
             },

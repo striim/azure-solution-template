@@ -62,10 +62,13 @@
         },
         "imageReference": {
             "type": "object"
+        },
+        "location": {
+            "type": "string"
+        },
+        "baseUrl": {
+            "type": "string"
         }
-    },
-    "variables": {
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/nested/"
     },
     "resources": [
         {
@@ -73,12 +76,12 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2015-01-01",
             "properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[concat(variables('templateBaseUrl'), '/masterNode.json')]",
-					"contentVersion": "1.2.2.0"
-				},
-				"parameters": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('baseUrl'), '/masterNode.json')]",
+                    "contentVersion": "1.2.2.0"
+                },
+                "parameters": {
                     "adminUserName":{
                         "value":"[parameters('adminUserName')]"
                     },
@@ -108,8 +111,14 @@
                     },
                     "imageReference": {
                         "value": "[parameters('imageReference')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "baseUrl": {
+                        "value": "[parameters('baseUrl')]"
                     }
-				}
+                }
             }
         },
         {
@@ -120,12 +129,12 @@
                 "Microsoft.Resources/deployments/master-node"
             ],
             "properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[concat(variables('templateBaseUrl'), '/workerNodes.json')]",
-					"contentVersion": "1.2.2.0"
-				},
-				"parameters": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('baseUrl'), '/workerNodes.json')]",
+                    "contentVersion": "1.2.2.0"
+                },
+                "parameters": {
                     "adminUserName":{
                         "value":"[parameters('adminUserName')]"
                     },
@@ -158,8 +167,14 @@
                     },
                     "masterNodeFqdn": {
                         "value": "[reference('master-node').outputs.striimMasterNodeFqdn.value]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "baseUrl": {
+                        "value": "[parameters('baseUrl')]"
                     }
-				}
+                }
             }
         }
     ],

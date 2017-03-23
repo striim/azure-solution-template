@@ -71,6 +71,19 @@
                 "description": "Password for 'admin' user of Striim."
             },
             "type": "securestring"
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location where resources will be provisioned"
+            }
+        },
+        "baseUrl": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/nested/",
+            "metadata": {
+                "description": "The base URL for dependent assets"
+            }
         }
     },
     "variables": {
@@ -81,8 +94,7 @@
             "version": "latest"
         },
         "companyName": "AzureCompany",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/nested/",
-        "nestedTemplateUrl":"[concat(variables('templateBaseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
+        "nestedTemplateUrl":"[concat(parameters('baseUrl'),'deploymentType',parameters('deploymentType'),'.json')]"
     },
     "resources": [
         {
@@ -92,13 +104,16 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('templateBaseUrl'), '/sharedResources.json')]",
+                    "uri": "[concat(parameters('baseUrl'), '/sharedResources.json')]",
                     "contentVersion": "1.2.2.0"
                 },
                 "parameters": {
                     "clusterName":{
                         "value":"[parameters('clusterName')]"
-                    }
+                    },
+                    "location": {
+                        "value":"[parameters('location')]"
+                    } 
                 }
             }
         },
@@ -145,6 +160,12 @@
                     },
                     "imageReference": {
                         "value": "[variables('imageReference')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "baseUrl": {
+                        "value": "[parameters('baseUrl')]"
                     }
                 }
             }

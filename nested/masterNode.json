@@ -62,6 +62,12 @@
         },
         "imageReference": {
             "type": "object"
+        },
+        "location": {
+            "type": "string"
+        },
+        "baseUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -74,7 +80,6 @@
         "publicIPAddressType": "Dynamic",
         "securityGroupName": "striimNSG",
         "storageAccountType": "Standard_LRS",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/scripts/",
         "virtualNetworkName": "striimVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
@@ -82,7 +87,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[variables('publicIPAddressName')]",
             "properties": {
                 "dnsSettings": {
@@ -97,7 +102,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
             ],
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[variables('nicName')]",
             "properties": {
                 "networkSecurityGroup": {
@@ -128,7 +133,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
             ],
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[concat(parameters('clusterName'),'-masternode')]",
             "tags": {
                 "cluster-id" : "Striim",
@@ -174,7 +179,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-masternode')]"
             ],
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[concat(parameters('clusterName'),'-masternode','/StriimMasterNodeConfigurer')]",
             "properties": {
                 "autoUpgradeMinorVersion": true,
@@ -182,7 +187,7 @@
                 "settings": {
                     "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimMasterNode.sh')]"
+                        "[concat(parameters('baseUrl'),'/configureStriimMasterNode.sh')]"
                     ]
                 },
                 "type": "CustomScript",

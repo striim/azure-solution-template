@@ -68,6 +68,12 @@
                 "description": "Striim Master node FQDN"
             },
             "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "baseUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -79,7 +85,6 @@
         "subnet1Prefix": "10.0.0.0/24",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "securityGroupName": "striimNSG",
-        "templateBaseUrl": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/scripts/",
         "virtualNetworkName": "striimVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
     },
@@ -91,7 +96,7 @@
                 "count": "[parameters('clusterNodeCount')]",
                 "name": "foo"
             },
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[concat(variables('publicIPAddressName'),copyIndex())]",
             "properties": {
                 "dnsSettings": {
@@ -110,7 +115,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'),copyIndex())]"
             ],
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[concat(variables('nicName'),copyIndex())]",
             "properties": {
                 "networkSecurityGroup": {
@@ -145,7 +150,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]"
             ],
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[concat(parameters('clusterName'),'-node',copyIndex())]",
             "tags": {
                 "cluster-id" : "Striim",
@@ -195,7 +200,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('clusterName'),'-node', copyIndex())]"
             ],
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "name": "[concat(parameters('clusterName'),'-node', copyIndex(),'/StriimConfigurer')]",
             "properties": {
                 "autoUpgradeMinorVersion": true,
@@ -203,7 +208,7 @@
                 "settings": {
                     "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
-                        "[concat(variables('templateBaseUrl'),'/configureStriimWorkerNode.sh')]"
+                        "[concat(parameters('baseUrl'),'/configureStriimWorkerNode.sh')]"
                     ]
                 },
                 "type": "CustomScript",
