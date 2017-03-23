@@ -88,7 +88,7 @@
     },
     "variables": {
         "imageReference": {
-            "offer": "STRIIM_OFFER",
+            "offer": "integrationforsqlserveronazure",
             "publisher": "striim",
             "sku": "v372",
             "version": "latest"
