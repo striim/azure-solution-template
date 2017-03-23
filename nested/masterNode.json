@@ -185,10 +185,12 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
                         "[concat(parameters('baseUrl'),'scripts/configureStriimMasterNode.sh')]"
                     ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]"
                 },
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0"
