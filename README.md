@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/striim/azure-solution-template.svg?branch=master)](https://travis-ci.org/striim/azure-solution-template)
+[![Code Health](https://landscape.io/github/striim/azure-solution-template/master/landscape.svg?style=flat)](https://landscape.io/github/striim/azure-solution-template/master)
+[![Requirements Status](https://requires.io/github/striim/azure-solution-template/requirements.svg?branch=master)](https://requires.io/github/striim/azure-solution-template/requirements/?branch=master)
+
 
 # Installs Striim Real-time Integration and Analytics Engine Cluster on Azure
 
@@ -25,12 +28,11 @@ Use the Deploy to Azure button to get started
  * Striim Cluster Name : A unique name for a logical cluster. Node's name would be <clusterName>-node<0-n>
  * Striim Cluster Password : A password for Striim cluster
  * Node Count : Number of nodes required in the cluster
+ * Deployment Type : Standalone or Cluster of 2-8 nodes
  * Size of Cluster Nodes : Desired size for each node. We suggest to use Standard_DS11_v2
  * Admin Username : Admin username of the VM
  * Admin Password : Admin password of the VM as well as the Striim admin user
  * Company Name : Name of the company to which you belong
- * Product Key : Product key if you have got the license. Leave it blank for a trial license which is restricted to 1 node.
- * License Key : License key if you have got the license. Leave it blank for a trial license which is restricted to 1 node
  
  
  
