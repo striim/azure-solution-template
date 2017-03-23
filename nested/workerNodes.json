@@ -206,10 +206,12 @@
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
-                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
                         "[concat(parameters('baseUrl'),'scripts/configureStriimWorkerNode.sh')]"
                     ]
+                },
+                "protectedSettings" :{
+                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]"
                 },
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0"
