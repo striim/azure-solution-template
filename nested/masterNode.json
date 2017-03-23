@@ -187,7 +187,7 @@
                 "settings": {
                     "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
-                        "[concat(parameters('baseUrl'),'/configureStriimMasterNode.sh')]"
+                        "[concat(parameters('baseUrl'),'scripts/configureStriimMasterNode.sh')]"
                     ]
                 },
                 "type": "CustomScript",

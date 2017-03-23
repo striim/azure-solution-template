@@ -208,7 +208,7 @@
                 "settings": {
                     "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
                     "fileUris": [
-                        "[concat(parameters('baseUrl'),'/configureStriimWorkerNode.sh')]"
+                        "[concat(parameters('baseUrl'),'scripts/configureStriimWorkerNode.sh')]"
                     ]
                 },
                 "type": "CustomScript",
