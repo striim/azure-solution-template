@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/striim/azure-solution-template.svg?branch=master)](https://travis-ci.org/striim/azure-solution-template)
+[![Code Health](https://landscape.io/github/striim/azure-solution-template/develop/landscape.svg?style=flat)](https://landscape.io/github/striim/azure-solution-template/develop)
+[![Requirements Status](https://requires.io/github/striim/azure-solution-template/requirements.svg?branch=develop)](https://requires.io/github/striim/azure-solution-template/requirements/?branch=develop)
 
 # Installs Striim Real-time Integration and Analytics Engine Cluster on Azure
 
