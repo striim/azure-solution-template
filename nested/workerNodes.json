@@ -207,7 +207,7 @@
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
                     "fileUris": [
-                        "[concat(parameters('baseUrl'),'scripts/configureStriimWorkerNode.sh')]"
+                        "[concat(parameters('baseUrl'),'/scripts/configureStriimWorkerNode.sh')]"
                     ]
                 },
                 "protectedSettings" :{
