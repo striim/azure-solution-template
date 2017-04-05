@@ -34,12 +34,6 @@
             "type": "string"
         },
         "solutionSize": {
-            "allowedValues": [
-                "Standard_F4s",
-                "Standard_F8s",
-                "Standard_DS4_v2",
-                "Standard_DS5_v2"
-            ],
             "defaultValue": "Standard_F4s",
             "metadata": {
                 "description": "Size of the VM"
@@ -66,7 +60,7 @@
             "type": "securestring"
         },
         "striimAdminPassword": {
-            "defaultvalue": "",
+            "defaultValue": "",
             "metadata": {
                 "description": "Password for 'admin' user of Striim."
             },
@@ -76,14 +70,16 @@
             "type": "string",
             "metadata": {
                 "description": "Location where resources will be provisioned"
-            }
+            },
+            "defaultValue":"[resourceGroup().location]"
         },
         "baseUrl": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/",
             "metadata": {
-                "description": "The base URL for dependent assets"
-            }
+                "description": "The base URL for dependent assets",
+                "artifactsBaseUrl":""
+            },
+            "defaultValue": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/"
         }
     },
     "variables": {
