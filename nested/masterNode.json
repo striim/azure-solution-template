@@ -186,7 +186,7 @@
                 "publisher": "Microsoft.Azure.Extensions",
                 "settings": {
                     "fileUris": [
-                        "[concat(parameters('baseUrl'),'scripts/configureStriimMasterNode.sh')]"
+                        "[concat(parameters('baseUrl'),'/scripts/configureStriimMasterNode.sh')]"
                     ]
                 },
                 "protectedSettings": {

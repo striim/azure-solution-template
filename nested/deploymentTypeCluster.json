@@ -78,7 +78,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('baseUrl'), 'nested/masterNode.json')]",
+                    "uri": "[concat(parameters('baseUrl'), '/nested/masterNode.json')]",
                     "contentVersion": "1.2.2.0"
                 },
                 "parameters": {
@@ -131,7 +131,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('baseUrl'), 'nested/workerNodes.json')]",
+                    "uri": "[concat(parameters('baseUrl'), '/nested/workerNodes.json')]",
                     "contentVersion": "1.2.2.0"
                 },
                 "parameters": {
