@@ -102,6 +102,34 @@
                         "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
                     },
                     {
+                        "name": "solutionSizeStandalone",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Striim Solution Size",
+                        "toolTip": "Select the right size for your requirement. Basic=Standard_F4s, Regular=Standard_F8s, Enterprise=Standard_DS4_v2, Premium=Standard_DS5_v2",
+                        "recommendedSizes": [
+                            "Standard_F4s",
+                            "Standard_F8s",
+                            "Standard_DS4_v2",
+                            "Standard_DS5_v2"
+                        ],  
+                        "constraints": {
+                            "allowedSizes": [
+                                "Standard_F4s",
+                                "Standard_F8s",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2"
+                            ] 
+                        }, 
+                        "osPlatform": "Linux",
+                        "imageReference": {
+                            "offer": "integrationforsqlserveronazure",
+                            "publisher": "striim",
+                            "sku": "v372"
+                        },
+                        "count": "1",
+                        "visible": "[equals(steps('striimSettings').deploymentType, 'Standalone')]"
+                    },
+                    {
                         "name": "solutionSize",
                         "type": "Microsoft.Compute.SizeSelector",
                         "label": "Striim Solution Size",
@@ -218,7 +246,8 @@
             "adminUserName": "[basics('vmUsername')]",
             "adminPassword": "[basics('vmPassword')]",
             "dnsPrefix": "[steps('accessSettings').striimDomainName.domainNameLabel]",
-            "solutionSize": "[steps('striimSettings').solutionSize]",
+            "solutionSizeCluster": "[steps('striimSettings').solutionSize]",
+            "solutionSizeStandalone": "[steps('striimSettings').solutionSizeStandalone]",
             "deploymentType": "[steps('striimSettings').deploymentType]",
             "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
             "clusterName": "[steps('striimSettings').striimClusterName]",
