@@ -65,6 +65,7 @@
                         "name": "clusterVmCount",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Number of VMs in Striim cluster",
+                        "defaultValue": "1",
                         "toolTip": "Number of VMs in the Striim cluster",
                         "constraints": {
                             "allowedValues": [
