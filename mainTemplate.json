@@ -33,7 +33,7 @@
             },
             "type": "string"
         },
-        "solutionSize": {
+        "solutionSizeCluster": {
             "defaultValue": "Standard_F4s",
             "metadata": {
                 "description": "Size of the VM"
@@ -97,6 +97,7 @@
             "version": "latest"
         },
         "companyName": "AzureCompany",
+        "sizeVariable": "[concat('solutionSize',parameters('deploymentType'))]",
         "nestedTemplateUrl":"[concat(parameters('baseUrl'),'/nested/deploymentType',parameters('deploymentType'),'.json')]"
     },
     "resources": [
@@ -144,7 +145,7 @@
                         "value":"[parameters('clusterNodeCount')]"
                     },
                     "clusterVmSize":{
-                        "value":"[coalesce(parameters('solutionSize'),parameters('solutionSizeStandalone'))]"
+                        "value":"[parameters(variables('sizeVariable'))]"
                     },
                     "dnsPrefix":{
                         "value":"[parameters('dnsPrefix')]"
