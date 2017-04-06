@@ -126,8 +126,8 @@
                             "publisher": "striim",
                             "sku": "v372"
                         },
-                        "count": "[steps('striimSettings').clusterVmCount]",
-                        "visible": "[equals(steps('striimSettings').deploymentType, 'Cluster')]"
+                        "count": "[coalesce(steps('striimSettings').clusterVmCount,1)]",
+                        "visible": true
                     },
                     {
                         "name": "striimClusterName",
