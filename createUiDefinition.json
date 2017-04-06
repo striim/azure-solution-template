@@ -247,6 +247,7 @@
             "adminPassword": "[basics('vmPassword')]",
             "dnsPrefix": "[steps('accessSettings').striimDomainName.domainNameLabel]",
             "solutionSize": "[steps('striimSettings').solutionSize]",
+            "solutionSizeStandalone": "[steps('striimSettings').solutionSizeStandalone]",
             "deploymentType": "[steps('striimSettings').deploymentType]",
             "clusterNodeCount": "[steps('striimSettings').clusterVmCount]",
             "clusterName": "[steps('striimSettings').striimClusterName]",

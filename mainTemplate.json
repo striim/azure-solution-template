@@ -40,6 +40,13 @@
             },
             "type": "string"
         },
+        "solutionSizeStandalone": {
+            "defaultValue": "Standard_F4s",
+            "metadata": {
+                "description": "Size of the VM"
+            },
+            "type": "string"
+        },
         "dnsPrefix": {
             "metadata": {
                 "description": "DNS prefix for the VMs. DNS for node would be of form <dnsPrefix>-node0"
@@ -137,7 +144,7 @@
                         "value":"[parameters('clusterNodeCount')]"
                     },
                     "clusterVmSize":{
-                        "value":"[parameters('solutionSize')]"
+                        "value":"[coalesce(parameters('solutionSize'),parameters('solutionSizeStandalone'))]"
                     },
                     "dnsPrefix":{
                         "value":"[parameters('dnsPrefix')]"
