@@ -22,7 +22,7 @@ shift
 ADMIN_PASSWORD="$1" 
 shift
 
-yum install java-1.8.0-openjdk.x86_64
+yum install -y java-1.8.0-openjdk.x86_64
 
 function errorExit() {
     echo "ERROR: $1"
