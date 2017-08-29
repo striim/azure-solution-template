@@ -4,6 +4,6 @@
     "clusterFilters": {
         "types": ["Hadoop", "HBase", "Spark"],
         "tiers": ["Standard", "Premium"],
-        "versions": ["3.4"]
+        "versions": ["3.4","3.5","3.6"]
     }
 }

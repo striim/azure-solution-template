@@ -59,7 +59,7 @@
             }],
             "uninstallScriptActions": [],
             "httpsEndpoints": [{
-                "subDomainSuffix": "strmhd",
+                "subDomainSuffix": "str",
                 "destinationPort": 9081,
                 "accessModes": ["webpage"]
             }],
