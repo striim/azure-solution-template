@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-STRIIM_VERSION="3.7.4";
+STRIIM_VERSION="3.7.5-PreRelease";
 STRIIM_DBMS_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.deb";
 STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz";
 STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
@@ -23,7 +23,7 @@ checkHostNameAndSetClusterName() {
             exit 133
         fi
     fi
-    echo "Cluster Name=$CLUSTERNAME"
+    echo "HDInsight cluster Name=$CLUSTERNAME"
 }
 
 checkJava() {
@@ -32,6 +32,7 @@ checkJava() {
 	elif [[ $OS_VERSION == 16* ]]; then
 		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 	fi
+    echo "Java Home set to $JAVA_HOME"
 }
 
 checkIfRootUser() {
@@ -44,33 +45,39 @@ checkIfRootUser() {
 		echo "Striim is already installed. Exiting ..."
 		exit 0
 	fi
+    echo "Going to install Striim as root user..."
 }
 
 
 downloadAndInstallStriim() {
+    echo "Downloading striim-dbms..."
     wget --no-check-certificate $STRIIM_DBMS_DEB_URI || errorExit "Could not find dbms deb"
     dpkg -i striim-dbms-$STRIIM_VERSION-Linux.deb || errorExit "Could not install dbms deb"
     rm -rf striim-dbms-$STRIIM_VERSION-Linux.deb
+    echo "Installed striim-dbms"
         
+    echo "Downloading striim-samples..."
     wget --no-check-certificate $STRIIM_SAMPLEDB_URI
     if [ $? -eq 0 ]; then
         tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
         rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
     fi
+    echo "Installed striim-samples"
     
+    echo "Downloading striim-node..."
     wget --no-check-certificate $STRIIM_NODE_DEB_URI || errorExit "Could not find node deb"
     dpkg -i striim-node-$STRIIM_VERSION-Linux.deb || errorExit "Could not install node deb"
     rm -rf striim-node-$STRIIM_VERSION-Linux.deb
     
     STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
-    [ -f $STRIIM_CONF_FILE] || errorExit "Striim could not be installed"	
+    [ -f $STRIIM_CONF_FILE ] || errorExit "Striim could not be installed"	
 
-    echo "Installed striim-dbms and striim-node"
+    echo "Installed striim-node"
 }
 
 configureStriim() {
-    cat << 'EOF' > $STRIIM_CONF_FILE
-    function getLocalInterfaceIp() {
+cat << 'EOF' > $STRIIM_CONF_FILE
+function getLocalInterfaceIp() {
     for seq in `seq 20`; do
         IP_ADDR=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
         if [ $IP_ADDR != "" ]; then
@@ -81,10 +88,10 @@ configureStriim() {
     done
     /bin/logger -t striim-node "Cannot start as local interface IP address is not available"
     exit 1
-    }
+}
 
-    getLocalInterfaceIp
-    EOF
+getLocalInterfaceIp
+EOF
 
 cat << EOF >> $STRIIM_CONF_FILE
 
@@ -97,8 +104,8 @@ WA_ADMIN_PASSWORD="strmadmin"
 WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN=`hostname -f`
-WA_PRODUCT_KEY="F7BDD4D28-8CE044FB8-CB68993C"
-WA_LICENSE_KEY="AFA7F6E94-E65059CFA-A093E1F5C-FA736594F-345AE631C-EF25C"
+WA_PRODUCT_KEY="BD0701321-6D3B889CF-D3E5CA30"
+WA_LICENSE_KEY="9F0C62AF5-D1DFAFBD0-C36BFF938-EDB01E714-377BF6F9E-4CF59"
 EOF
 
 
@@ -111,12 +118,14 @@ EOF
 }
 
 setupStriimService() {
- 
+    echo "Configuring Striim as a systemd service" 
     systemctl enable striim-dbms
     systemctl enable striim-node
     ln -s /lib/systemd/system/striim-dbms.service  /etc/systemd/system/multi-user.target.wants/striim-dbms.service
     ln -s /lib/systemd/system/striim-node.service  /etc/systemd/system/multi-user.target.wants/striim-node.service
+    systemctl start striim-dbms
     systemctl start striim-node
+    echo "Striim service started" 
 }
 
 

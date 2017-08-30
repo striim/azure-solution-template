@@ -54,7 +54,7 @@
             },
             "installScriptActions": [{
                 "name": "[concat('strmhd-v0','-',uniquestring(variables('applicationName')))]",
-                "uri": "https://raw.githubusercontent.com/striim/azure-solution-template/blob/develop/hdinsight-templates/configureStriimNode.sh",
+                "uri": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/hdinsight-templates/configureStriimNode.sh",
                 "roles": ["edgenode"]
             }],
             "uninstallScriptActions": [],
