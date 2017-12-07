@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-STRIIM_VERSION="3.7.5-PreRelease";
+STRIIM_VERSION="3.8.0-hdinsight";
 STRIIM_DBMS_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.deb";
 STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz";
 STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
@@ -96,7 +96,7 @@ EOF
 cat << EOF >> $STRIIM_CONF_FILE
 
 WA_VERSION="$STRIIM_VERSION"
-WA_HOME="/opt/Striim-$STRIIM_VERSION"
+WA_HOME="/opt/striim"
 WA_START="Service"
 WA_CLUSTER_NAME="$CLUSTERNAME"
 WA_CLUSTER_PASSWORD="strmhdinsight"
@@ -104,8 +104,8 @@ WA_ADMIN_PASSWORD="strmadmin"
 WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN=`hostname -f`
-WA_PRODUCT_KEY="BD0701321-6D3B889CF-D3E5CA30"
-WA_LICENSE_KEY="9F0C62AF5-D1DFAFBD0-C36BFF938-EDB01E714-377BF6F9E-4CF59"
+WA_PRODUCT_KEY="F7BDD4D28-8CE044FB9-BE15E9C0"
+WA_LICENSE_KEY="AD31E79C3-385926D18-F126993A4-57E8E8EBE-2BC801864-AF8ED"
 EOF
 
 
@@ -119,10 +119,11 @@ EOF
 
 setupStriimService() {
     echo "Configuring Striim as a systemd service" 
+    chown -R striim:striim /var/striim
+    chown -R striim:striim /opt/striim   
+    systemctl daemon-reload
     systemctl enable striim-dbms
     systemctl enable striim-node
-    ln -s /lib/systemd/system/striim-dbms.service  /etc/systemd/system/multi-user.target.wants/striim-dbms.service
-    ln -s /lib/systemd/system/striim-node.service  /etc/systemd/system/multi-user.target.wants/striim-node.service
     systemctl start striim-dbms
     systemctl start striim-node
     echo "Striim service started" 
