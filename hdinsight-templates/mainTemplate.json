@@ -31,35 +31,6 @@
                 "Standard_D3",
                 "Standard_D4"
             ]
-        },
-        "clusterPassword": {
-            "defaultValue": "",
-            "metadata": {
-                "description": "Password for the Striim cluster"
-            },
-            "type": "securestring"
-        },
-        "striimAdminPassword": {
-            "defaultValue": "",
-            "metadata": {
-                "description": "Password for 'admin' user of Striim."
-            },
-            "type": "securestring"
-        },
-        "location": {
-            "type": "string",
-            "metadata": {
-                "description": "Location where resources will be provisioned"
-            },
-            "defaultValue":"[resourceGroup().location]"
-        },
-        "baseUrl": {
-            "type": "string",
-            "metadata": {
-                "description": "The base URL for dependent assets",
-                "artifactsBaseUrl":""
-            },
-            "defaultValue": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/hdinsight-templates"
         }
     },
     "variables": {
@@ -83,8 +54,7 @@
             },
             "installScriptActions": [{
                 "name": "[concat('strmhd-v0','-',uniquestring(variables('applicationName')))]",
-                "uri": "[concat(parameters('baseUrl'), '/configureStriimNode.sh')]",
-                "parameters":"[concat(parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]",
+                "uri": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/hdinsight-templates/configureStriimNode.sh",
                 "roles": ["edgenode"]
             }],
             "uninstallScriptActions": [],
