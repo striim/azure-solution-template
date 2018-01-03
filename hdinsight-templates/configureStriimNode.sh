@@ -12,6 +12,29 @@ function errorExit() {
     exit 1;
 }
 
+usage() {
+    echo ""
+    echo "Usage : sudo -E bash configureStriimNode.sh <clusterPassword> <striimAdminPassword>"
+    echo ""
+}
+
+validateInputParameters() {
+    if [ -z "$1" ]; then
+        usage
+        echo "Cluster password must be provided and can't be empty"
+        exit 137
+    fi
+    STRIIM_CLUSTER_PASSWORD=$1
+
+    if [ -z "$2" ]; then
+        usage
+        echo "Admin password must be provided and can't be empty"
+        exit 138
+    fi
+    STRIIM_ADMIN_PASSWORD=$2
+
+}
+
 checkHostNameAndSetClusterName() {
     fullHostName=$(hostname -f)
     echo "fullHostName=$fullHostName"
@@ -99,8 +122,8 @@ WA_VERSION="$STRIIM_VERSION"
 WA_HOME="/opt/striim"
 WA_START="Service"
 WA_CLUSTER_NAME="$CLUSTERNAME"
-WA_CLUSTER_PASSWORD="strmhdinsight"
-WA_ADMIN_PASSWORD="strmadmin"
+WA_CLUSTER_PASSWORD="$STRIIM_CLUSTER_PASSWORD"
+WA_ADMIN_PASSWORD="$STRIIM_ADMIN_PASSWORD"
 WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN=`hostname -f`
@@ -132,6 +155,7 @@ setupStriimService() {
 
 checkJava
 checkIfRootUser
+validateInputParameters
 checkHostNameAndSetClusterName
 downloadAndInstallStriim
 configureStriim
