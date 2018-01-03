@@ -27,6 +27,9 @@ checkHostNameAndSetClusterName() {
 }
 
 checkJava() {
+    echo "Parameters for Scripts $1 and $2"
+    logger "Parameters for Scripts are $1 and $2"
+
 	if [[ $OS_VERSION == 14* ]]; then
 		export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 	elif [[ $OS_VERSION == 16* ]]; then
