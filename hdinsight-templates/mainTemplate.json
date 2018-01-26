@@ -31,6 +31,13 @@
                 "Standard_D3",
                 "Standard_D4"
             ]
+        },
+        "clusterPassword": {
+            "defaultValue": "",
+            "metadata": {
+                "description": "Password for the Striim cluster"
+            },
+            "type": "securestring"
         }
     },
     "variables": {

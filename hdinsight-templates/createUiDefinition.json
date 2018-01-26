@@ -5,5 +5,29 @@
         "types": ["Hadoop", "HBase","Storm" ,"Spark","Kafka"],
         "tiers": ["Standard", "Premium"],
         "versions": ["3.6"]
+    },
+    "parameters": {
+        "basics": [
+            {
+                "name": "striimClusterPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                    "password": "Striim Cluster password",
+                    "confirmPassword": "Confirm cluster password"
+                },
+                "toolTip": "",
+                "constraints": {
+                    "required": true,
+                    "regex": "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])).{12,72}$",
+                    "validationMessage": "Password must be at least 12 characters long and have 3 out of the following: one number, one lower case, one upper case, or one special character"
+                },
+                "options": {
+                    "hideConfirmation": false
+                }
+            }
+        ],
+        "outputs": {
+            "clusterPassword": "[basics('striimClusterPassword')]"
+        }
     }
 }
