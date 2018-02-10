@@ -9,7 +9,7 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.7.2C";
+STRIIM_VERSION="3.8.2A";
 
 VM_FQDN="$1"
 shift
@@ -35,19 +35,17 @@ function installStriim() {
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
     
+    STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
+    [[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 }
 
-installStriim
 
-STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
-
-[[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
-
+configureStriim() {
 
 cat << 'EOF' > $STRIIM_CONF_FILE
 function getLocalInterfaceIp() {
     for seq in `seq 20`; do
-       IP_ADDR=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
+       IP_ADDR=`ifconfig |grep -v 127.0.0.1 | grep -v inet6 | awk '/inet/{print $2}'`
        if [ $IP_ADDR != "" ]; then
            WA_IP_ADDRESS=$IP_ADDR
            return 0
@@ -63,7 +61,7 @@ EOF
 
 cat << EOF >> $STRIIM_CONF_FILE
 WA_VERSION="$STRIIM_VERSION"
-WA_HOME="/opt/Striim-$STRIIM_VERSION"
+WA_HOME="/opt/striim"
 WA_START="Service"
 WA_CLUSTER_NAME="$CLUSTER_NAME"
 WA_CLUSTER_PASSWORD="$CLUSTER_PASSWORD"
@@ -89,7 +87,7 @@ EFHOST
 
 EOF
 
-cat << 'EOF' > /opt/Striim-$STRIIM_VERSION/conf/log4j.console.properties
+cat << 'EOF' > /opt/Striim/conf/log4j.console.properties
 log4j.rootLogger=warn, R
 
 # output to the terminal
@@ -115,8 +113,19 @@ log4j.appender.R.layout.ConversionPattern=%d - %p %t %C.%M (%F:%L) %m%n
 #log4j.logger.com.webaction.metaRepository.MDCache=TRACE
 #log4j.logger.com.webaction.tungsten.Tungsten=TRACE
 EOF
+}
 
-start striim-node;
+setupStriimService() {
+    echo "Configuring Striim as a systemd service" 
+    chown -R striim:striim /opt/striim   
+    systemctl daemon-reload
+    systemctl enable striim-node
+    systemctl start striim-node
+    echo "Striim service started" 
+}
 
+installStriim
+configureStriim
+setupStriimService
 
 
