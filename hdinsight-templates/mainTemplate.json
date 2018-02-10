@@ -32,12 +32,20 @@
                 "Standard_D4"
             ]
         },
-        "clusterPassword": {
-            "defaultValue": "",
+        "edgeNodePrefix": {
+            "defaultValue": "st",
+            "minLength": 2,
+            "maxLength": 2,
+            "type": "String",
             "metadata": {
-                "description": "Password for the Striim cluster"
-            },
-            "type": "securestring"
+                "description": "Two character edgenode prefix"
+            }
+        },
+        "licenseKey": {
+            "type": "String",
+            "metadata": {
+                "description": "Striim license key. Contact support@striim.com to get an evaluation license"
+            }
         }
     },
     "variables": {
@@ -62,14 +70,19 @@
             "installScriptActions": [{
                 "name": "[concat('strmhd-v0','-',uniquestring(variables('applicationName')))]",
                 "uri": "https://raw.githubusercontent.com/striim/azure-solution-template/develop/hdinsight-templates/configureStriimNode.sh",
-                "parameters":"good parameters",
+                "parameters": "[concat(parameters('licenseKey'),' ', parameters('edgeNodePrefix'),' ',resourceGroup().name,' ',subscription().subscriptionId,' ',subscription().tenantId)]",
                 "roles": ["edgenode"]
             }],
             "uninstallScriptActions": [],
             "httpsEndpoints": [{
                 "subDomainSuffix": "str",
-                "destinationPort": 9081,
-                "accessModes": ["webpage"]
+                "destinationRole": "edgenode",
+                "destinationPort": 9080,
+                "description": "Striim Portal",
+                "disableGatewayAuth": true,
+                "accessModes": [
+                    "WebPage"
+                ]
             }],
             "applicationType": "CustomApplication"
         }

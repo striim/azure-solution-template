@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-STRIIM_VERSION="3.8.0-hdinsight";
+STRIIM_VERSION="3.8.2";
 STRIIM_DBMS_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.deb";
 STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz";
 STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
@@ -132,6 +132,16 @@ setupStriimService() {
     echo "Striim service started" 
 }
 
+licenseKey=$1
+edgeNodePrefix=$2
+resourceGroupName=$3
+subscriptionId=$4
+subscriptionTenantId=$5
+
+if [[ -z ${licenseKey} ]]; then
+  echo "licenseKey (license key name) is required."
+  exit 1
+fi
 
 checkJava
 checkIfRootUser
