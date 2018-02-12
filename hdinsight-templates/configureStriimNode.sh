@@ -63,17 +63,17 @@ parseLicenseKey() {
     	errorExit "licenseKey (license key name) is required."
     fi
 
-    LICENSE_KEY=`echo $licenseKey |cut -d ';' -f1`
+    LICENSE_KEY=`echo $licenseKey |cut -d ',' -f1`
 	if [[ -z ${LICENSE_KEY}  ]]; then 
-		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY;PRODUCT_KEY;COMPANY_NAME"
+		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY,PRODUCT_KEY,COMPANY_NAME"
 	fi
-    PRODUCT_KEY=`echo $licenseKey |cut -d ';' -f2`
+    PRODUCT_KEY=`echo $licenseKey |cut -d ',' -f2`
 	if [[ -z ${PRODUCT_KEY}  ]]; then 
-		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY;PRODUCT_KEY;COMPANY_NAME"
+		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY,PRODUCT_KEY,COMPANY_NAME"
 	fi
-    COMPANY_NAME=`echo $licenseKey |cut -d ';' -f3`
+    COMPANY_NAME=`echo $licenseKey |cut -d ',' -f3`
 	if [[ -z ${COMPANY_NAME}  ]]; then 
-		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY;PRODUCT_KEY;COMPANY_NAME"
+		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY,PRODUCT_KEY,COMPANY_NAME"
 	fi
 
 }
