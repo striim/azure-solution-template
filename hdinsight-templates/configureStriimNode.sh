@@ -80,13 +80,13 @@ parseLicenseKey() {
 
 downloadAndInstallStriim() {
     echo "Downloading striim-dbms..."
-    wget --no-check-certificate $STRIIM_DBMS_DEB_URI || errorExit "Could not find dbms deb"
+    wget -q --no-check-certificate $STRIIM_DBMS_DEB_URI || errorExit "Could not find dbms deb"
     dpkg -i striim-dbms-$STRIIM_VERSION-Linux.deb || errorExit "Could not install dbms deb"
     rm -rf striim-dbms-$STRIIM_VERSION-Linux.deb
     echo "Installed striim-dbms"
         
     echo "Downloading striim-samples..."
-    wget --no-check-certificate $STRIIM_SAMPLEDB_URI
+    wget -q --no-check-certificate $STRIIM_SAMPLEDB_URI
     if [ $? -eq 0 ]; then
         tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
         rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
@@ -94,7 +94,7 @@ downloadAndInstallStriim() {
     echo "Installed striim-samples"
     
     echo "Downloading striim-node..."
-    wget --no-check-certificate $STRIIM_NODE_DEB_URI || errorExit "Could not find node deb"
+    wget -q --no-check-certificate $STRIIM_NODE_DEB_URI || errorExit "Could not find node deb"
     dpkg -i striim-node-$STRIIM_VERSION-Linux.deb || errorExit "Could not install node deb"
     rm -rf striim-node-$STRIIM_VERSION-Linux.deb
     

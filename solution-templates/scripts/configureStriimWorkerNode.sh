@@ -33,7 +33,7 @@ function errorExit() {
 
 function installStriim() {
     
-    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
+    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
     

@@ -30,17 +30,17 @@ function errorExit() {
 }
 
 function installStriim() {
-    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
+    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
     rpm -i -v striim-dbms-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-dbms-$STRIIM_VERSION-Linux.rpm
         
-    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
+    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
     if [ $? -eq 0 ]; then
         tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
         rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
     fi
     
-    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
+    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
     
