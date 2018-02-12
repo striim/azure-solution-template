@@ -7,6 +7,16 @@ STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STR
 STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
 STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
+#We might not need all these parameters
+#but it is good to save all these as these are the parameters passed to 
+# the custom script
+
+licenseKey=$1
+edgeNodePrefix=$2
+resourceGroupName=$3
+subscriptionId=$4
+subscriptionTenantId=$5
+
 function errorExit() {
     echo "ERROR: $1"
     exit 1;
@@ -27,9 +37,6 @@ checkHostNameAndSetClusterName() {
 }
 
 checkJava() {
-    echo "Parameters for Scripts $1 and $2"
-    logger "Parameters for Scripts are $1 and $2"
-
 	if [[ $OS_VERSION == 14* ]]; then
 		export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 	elif [[ $OS_VERSION == 16* ]]; then
@@ -51,6 +58,25 @@ checkIfRootUser() {
     echo "Going to install Striim as root user..."
 }
 
+parseLicenseKey() {
+    if [[ -z ${licenseKey} ]]; then
+    	errorExit "licenseKey (license key name) is required."
+    fi
+
+    LICENSE_KEY=`echo $licenseKey |cut -d ';' -f1`
+	if [[ -z ${LICENSE_KEY}  ]]; then 
+		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY;PRODUCT_KEY;COMPANY_NAME"
+	fi
+    PRODUCT_KEY=`echo $licenseKey |cut -d ';' -f2`
+	if [[ -z ${PRODUCT_KEY}  ]]; then 
+		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY;PRODUCT_KEY;COMPANY_NAME"
+	fi
+    COMPANY_NAME=`echo $licenseKey |cut -d ';' -f3`
+	if [[ -z ${COMPANY_NAME}  ]]; then 
+		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY;PRODUCT_KEY;COMPANY_NAME"
+	fi
+
+}
 
 downloadAndInstallStriim() {
     echo "Downloading striim-dbms..."
@@ -104,11 +130,11 @@ WA_START="Service"
 WA_CLUSTER_NAME="$CLUSTERNAME"
 WA_CLUSTER_PASSWORD="strmhdinsight"
 WA_ADMIN_PASSWORD="strmadmin"
-WA_COMPANY_NAME="AzureCompany"
+WA_COMPANY_NAME="$COMPANY_NAME"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN=`hostname -f`
-WA_PRODUCT_KEY="F7BDD4D28-8CE044FB9-BE15E9C0"
-WA_LICENSE_KEY="AD31E79C3-385926D18-F126993A4-57E8E8EBE-2BC801864-AF8ED"
+WA_PRODUCT_KEY="$PRODUCT_KEY"
+WA_LICENSE_KEY="$LICENSE_KEY"
 EOF
 
 
@@ -132,20 +158,12 @@ setupStriimService() {
     echo "Striim service started" 
 }
 
-licenseKey=$1
-edgeNodePrefix=$2
-resourceGroupName=$3
-subscriptionId=$4
-subscriptionTenantId=$5
 
-if [[ -z ${licenseKey} ]]; then
-  echo "licenseKey (license key name) is required."
-  exit 1
-fi
 
 checkJava
 checkIfRootUser
 checkHostNameAndSetClusterName
+parseLicenseKey
 downloadAndInstallStriim
 configureStriim
 setupStriimService
