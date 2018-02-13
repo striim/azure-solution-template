@@ -1,0 +1,9 @@
+{
+    "handler": "Microsoft.HDInsight",
+    "version": "0.0.1",
+    "clusterFilters": {
+        "types": ["Hadoop", "HBase","Storm" ,"Spark","Kafka"],
+        "tiers": ["Standard", "Premium"],
+        "versions": ["3.6"]
+    }
+}
