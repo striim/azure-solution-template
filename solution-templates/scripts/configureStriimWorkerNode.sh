@@ -9,7 +9,7 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.7.5-IoT-PreRelease";
+STRIIM_VERSION="3.8.2A";
 
 VM_FQDN="$1"
 shift
@@ -24,8 +24,6 @@ shift
 ADMIN_PASSWORD="$1" 
 shift
 
-yum install -y java-1.8.0-openjdk.x86_64
-
 function errorExit() {
     echo "ERROR: $1"
     exit 1;
@@ -33,23 +31,21 @@ function errorExit() {
 
 function installStriim() {
     
-    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
+    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
     
+    STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
+    [[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 }
 
-installStriim
 
-STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
-
-[[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
-
+configureStriim() {
 
 cat << 'EOF' > $STRIIM_CONF_FILE
 function getLocalInterfaceIp() {
     for seq in `seq 20`; do
-       IP_ADDR=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
+       IP_ADDR=`ifconfig |grep -v 127.0.0.1 | grep -v inet6 | awk '/inet/{print $2}'`
        if [ $IP_ADDR != "" ]; then
            WA_IP_ADDRESS=$IP_ADDR
            return 0
@@ -65,7 +61,7 @@ EOF
 
 cat << EOF >> $STRIIM_CONF_FILE
 WA_VERSION="$STRIIM_VERSION"
-WA_HOME="/opt/Striim-$STRIIM_VERSION"
+WA_HOME="/opt/striim"
 WA_START="Service"
 WA_CLUSTER_NAME="$CLUSTER_NAME"
 WA_CLUSTER_PASSWORD="$CLUSTER_PASSWORD"
@@ -74,10 +70,9 @@ WA_COMPANY_NAME="AzureCompany"
 WA_DEPLOYMENT_GROUPS="default"
 WA_SERVER_FQDN="$VM_FQDN"
 WA_MASTER_NODE_FQDN="$MASTER_NODE_FQDN"
-WA_PRODUCT_KEY="F7BDD4D28-8CE044FBB-687399E7"
-WA_LICENSE_KEY="A41E5A6E8-E98C6797D-E97281F50-256CB886E-5D6C8AA23-D10CC"
 EOF
 
+cat /etc/striim/product.conf >> $STRIIM_CONF_FILE
 
 cat << 'EOF' >> $STRIIM_CONF_FILE
 WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`
@@ -92,7 +87,7 @@ EFHOST
 
 EOF
 
-cat << 'EOF' > /opt/Striim-$STRIIM_VERSION/conf/log4j.console.properties
+cat << 'EOF' > /opt/Striim/conf/log4j.console.properties
 log4j.rootLogger=warn, R
 
 # output to the terminal
@@ -118,8 +113,19 @@ log4j.appender.R.layout.ConversionPattern=%d - %p %t %C.%M (%F:%L) %m%n
 #log4j.logger.com.webaction.metaRepository.MDCache=TRACE
 #log4j.logger.com.webaction.tungsten.Tungsten=TRACE
 EOF
+}
 
-start striim-node;
+setupStriimService() {
+    echo "Configuring Striim as a systemd service" 
+    chown -R striim:striim /opt/striim   
+    systemctl daemon-reload
+    systemctl enable striim-node
+    systemctl start striim-node
+    echo "Striim service started" 
+}
 
+installStriim
+configureStriim
+setupStriimService
 
 
