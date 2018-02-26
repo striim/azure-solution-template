@@ -23,6 +23,7 @@ CLUSTER_PASSWORD="$1"
 shift
 ADMIN_PASSWORD="$1" 
 shift
+VM_IP_ADDRESS=`hostname -i`
 
 function errorExit() {
     echo "ERROR: $1"
@@ -45,7 +46,7 @@ configureStriim() {
 cat << 'EOF' > $STRIIM_CONF_FILE
 function getLocalInterfaceIp() {
     for seq in `seq 20`; do
-       IP_ADDR=`ifconfig |grep -v 127.0.0.1 | grep -v inet6 | awk '/inet/{print $2}'`
+       IP_ADDR=`hostname -i`
        if [ $IP_ADDR != "" ]; then
            WA_IP_ADDRESS=$IP_ADDR
            return 0
@@ -79,13 +80,13 @@ WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`
 
 WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d ${WA_MASTER_NODE_FQDN} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
 
+EOF
+
 cat << EFHOST > /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-${WA_IP_ADDRESS} ${WA_SERVER_FQDN}
+${VM_IP_ADDRESS} ${VM_FQDN}
 EFHOST
-
-EOF
 
 cat << 'EOF' > /opt/Striim/conf/log4j.console.properties
 log4j.rootLogger=warn, R
