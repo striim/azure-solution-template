@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-STRIIM_VERSION="3.8.2";
+STRIIM_VERSION="3.8.3-webconfig-hdinsight-PreRelease";
 STRIIM_DBMS_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.deb";
 STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz";
 STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
