@@ -44,6 +44,13 @@ checkJava() {
     echo "Java Home set to $JAVA_HOME"
 }
 
+checkNodeJs() {
+  if ! [ -x "$(command -v npm)" ]; then
+      curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+      apt-get install -y nodejs
+  fi
+}
+
 checkIfRootUser() {
 
 	if [ "$(id -u)" != "0" ]; then
@@ -129,13 +136,13 @@ EOF
 setupStriimService() {
     echo "Configuring Striim as a systemd service" 
     chown -R striim:striim /var/striim
-    chown -R striim:striim /opt/striim   
+    chown -R striim:striim /opt/striim
     systemctl daemon-reload
     systemctl enable striim-dbms
     systemctl enable striim-node
     systemctl start striim-dbms
     systemctl start striim-node
-    echo "Striim service started" 
+    echo "Striim service started"
 }
 
 
@@ -143,6 +150,7 @@ setupStriimService() {
 checkJava
 checkIfRootUser
 checkHostNameAndSetClusterName
+checkNodeJs
 downloadAndInstallStriim
 configureStriim
 setupStriimService
