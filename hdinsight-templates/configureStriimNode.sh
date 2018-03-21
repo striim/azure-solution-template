@@ -11,11 +11,10 @@ STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 #but it is good to save all these as these are the parameters passed to 
 # the custom script
 
-licenseKey=$1
-edgeNodePrefix=$2
-resourceGroupName=$3
-subscriptionId=$4
-subscriptionTenantId=$5
+edgeNodePrefix=$1
+resourceGroupName=$2
+subscriptionId=$3
+subscriptionTenantId=$4
 
 function errorExit() {
     echo "ERROR: $1"
@@ -58,25 +57,6 @@ checkIfRootUser() {
     echo "Going to install Striim as root user..."
 }
 
-parseLicenseKey() {
-    if [[ -z ${licenseKey} ]]; then
-    	errorExit "licenseKey (license key name) is required."
-    fi
-
-    LICENSE_KEY=`echo $licenseKey |cut -d ',' -f1`
-	if [[ -z ${LICENSE_KEY}  ]]; then 
-		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY,PRODUCT_KEY,COMPANY_NAME"
-	fi
-    PRODUCT_KEY=`echo $licenseKey |cut -d ',' -f2`
-	if [[ -z ${PRODUCT_KEY}  ]]; then 
-		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY,PRODUCT_KEY,COMPANY_NAME"
-	fi
-    COMPANY_NAME=`echo $licenseKey |cut -d ',' -f3`
-	if [[ -z ${COMPANY_NAME}  ]]; then 
-		errorExit "LicenseKey input should be semi-colon delimted value of LICENSE_KEY,PRODUCT_KEY,COMPANY_NAME"
-	fi
-
-}
 
 downloadAndInstallStriim() {
     echo "Downloading striim-dbms..."
@@ -163,7 +143,6 @@ setupStriimService() {
 checkJava
 checkIfRootUser
 checkHostNameAndSetClusterName
-parseLicenseKey
 downloadAndInstallStriim
 configureStriim
 setupStriimService
