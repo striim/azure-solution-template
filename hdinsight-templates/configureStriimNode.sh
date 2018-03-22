@@ -93,6 +93,10 @@ downloadAndInstallStriim() {
 
 configureStriim() {
     rm $STRIIM_CONF_FILE
+    if pushd /opt/striim/webconfig; then
+      npm install
+      popd
+    fi
 }
 
 setupStriimService() {
