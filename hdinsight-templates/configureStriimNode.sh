@@ -92,45 +92,7 @@ downloadAndInstallStriim() {
 }
 
 configureStriim() {
-cat << 'EOF' > $STRIIM_CONF_FILE
-function getLocalInterfaceIp() {
-    for seq in `seq 20`; do
-        IP_ADDR=`ifconfig |grep -v 127.0.0.1 | awk '/inet addr/{print substr($2,6)}'`
-        if [ $IP_ADDR != "" ]; then
-            WA_IP_ADDRESS=$IP_ADDR
-            return 0
-        fi
-        /bin/sleep 1
-    done
-    /bin/logger -t striim-node "Cannot start as local interface IP address is not available"
-    exit 1
-}
-
-getLocalInterfaceIp
-EOF
-
-cat << EOF >> $STRIIM_CONF_FILE
-
-WA_VERSION="$STRIIM_VERSION"
-WA_HOME="/opt/striim"
-WA_START="Service"
-WA_CLUSTER_NAME="$CLUSTERNAME"
-WA_CLUSTER_PASSWORD="strmhdinsight"
-WA_ADMIN_PASSWORD="strmadmin"
-WA_COMPANY_NAME="$COMPANY_NAME"
-WA_DEPLOYMENT_GROUPS="default"
-WA_SERVER_FQDN=`hostname -f`
-WA_PRODUCT_KEY="$PRODUCT_KEY"
-WA_LICENSE_KEY="$LICENSE_KEY"
-EOF
-
-
-cat << 'EOF' >> $STRIIM_CONF_FILE
-WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`
-
-WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d ${WA_NODE_PUBLIC_IP} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
-
-EOF
+    rm $STRIIM_CONF_FILE
 }
 
 setupStriimService() {
@@ -140,8 +102,9 @@ setupStriimService() {
     systemctl daemon-reload
     systemctl enable striim-dbms
     systemctl enable striim-node
+    systemctl enable striim-webconfig
     systemctl start striim-dbms
-    systemctl start striim-node
+    systemctl start striim-webconfig
     echo "Striim service started"
 }
 
