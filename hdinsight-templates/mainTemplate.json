@@ -70,22 +70,22 @@
             "uninstallScriptActions": [],
             "httpsEndpoints": [
               {
-                "subDomainSuffix": "str",
+                "subDomainSuffix": "stc",
                 "destinationRole": "edgenode",
-                "destinationPort": 9080,
-                "description": "Striim Portal",
+                "destinationPort": 9070,
+                "description": "Striim Configuration",
                 "disableGatewayAuth": true,
                 "accessModes": [
                   "WebPage"
                 ]
               },
               {
-                "subDomainSuffix": "stc",
+                "subDomainSuffix": "str",
                 "destinationRole": "edgenode",
-                "destinationPort": 9070,
-                "description": "Striim Configuration",
+                "destinationPort": 9080,
+                "description": "Striim Portal",
                 "disableGatewayAuth": true
-              },
+              }
             ],
             "applicationType": "CustomApplication"
         }
