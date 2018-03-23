@@ -49,6 +49,9 @@ checkNodeJs() {
       curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       apt-get install -y nodejs
   fi
+
+  echo "striim  ALL=(ALL:ALL) ALL" >> /etc/sudoers
+  echo "striim  ALL=NOPASSWD: /bin/systemctl" >> /etc/sudoers
 }
 
 checkIfRootUser() {
