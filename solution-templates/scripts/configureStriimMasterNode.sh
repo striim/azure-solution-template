@@ -46,19 +46,14 @@ function installStriim() {
     rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
     rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
     
-	STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
-	[[ -f $STRIIM_CONF_FILE ]] || errorExit "Striim Server not installed" 
 	ln -s /var/striim/Samples /opt/striim/Samples
 }
 
-
-configureStriim() {
-cat << 'EOF' > $STRIIM_CONF_FILE
 function getLocalInterfaceIp() {
     for seq in `seq 20`; do
        IP_ADDR=`hostname -i`
        if [ $IP_ADDR != "" ]; then
-           WA_IP_ADDRESS=$IP_ADDR
+           eval "$1=$IP_ADDR"
            return 0
        fi
        /bin/sleep 1
@@ -67,30 +62,28 @@ function getLocalInterfaceIp() {
     exit 1
 }
 
-getLocalInterfaceIp
-EOF
+configureStriim() {
 
-cat << EOF >> $STRIIM_CONF_FILE
+PASSWORD_ENCRYPTOR_FILE=`find /opt/ -name passwordEncryptor.sh`;
+[[ -f $PASSWORD_ENCRYPTOR_FILE ]] || errorExit "Striim Server not installed properly. Missing passwordEncryptor.sh"
 
-WA_VERSION="$STRIIM_VERSION"
-WA_HOME="/opt/striim"
-WA_START="Service"
-WA_CLUSTER_NAME="$CLUSTER_NAME"
-WA_CLUSTER_PASSWORD="$CLUSTER_PASSWORD"
-WA_ADMIN_PASSWORD="$ADMIN_PASSWORD"
-WA_COMPANY_NAME="AzureCompany"
-WA_DEPLOYMENT_GROUPS="default"
-WA_SERVER_FQDN="$VM_FQDN"
-EOF
+STARTUP_PROPERTIES_FILE=/opt/striim/conf/startUp.properties
+source /etc/striim/product.conf
+getLocalInterfaceIp WA_IP_ADDRESS
+WA_CLUSTER_PASSWORD=`$PASSWORD_ENCRYPTOR_FILE $CLUSTER_PASSWORD`
+WA_ADMIN_PASSWORD=`$PASSWORD_ENCRYPTOR_FILE $ADMIN_PASSWORD`
+WA_NODE_PUBLIC_IP=`dig +short ${VM_FQDN}`
 
-cat /etc/striim/product.conf >> $STRIIM_CONF_FILE
-
-cat << 'EOF' >> $STRIIM_CONF_FILE
-WA_NODE_PUBLIC_IP=`dig +short ${WA_SERVER_FQDN}`
-
-WA_OPTS="-c ${WA_CLUSTER_NAME} -p ${WA_CLUSTER_PASSWORD} -i ${WA_IP_ADDRESS} -a ${WA_ADMIN_PASSWORD}  -N "${WA_COMPANY_NAME}" -G ${WA_DEPLOYMENT_GROUPS} -P ${WA_PRODUCT_KEY} -L ${WA_LICENSE_KEY} -t True -d ${WA_NODE_PUBLIC_IP} -f ${WA_SERVER_FQDN} -q ${WA_NODE_PUBLIC_IP}"
-EOF
-
+echo "WAClusterName=$CLUSTER_NAME" > $STARTUP_PROPERTIES_FILE
+echo "CompanyName=AzureCompany" >> $STARTUP_PROPERTIES_FILE
+echo "Interfaces=$WA_IP_ADDRESS"  >> $STARTUP_PROPERTIES_FILE
+echo "WAClusterPassword=$WA_CLUSTER_PASSWORD" >> $STARTUP_PROPERTIES_FILE
+echo "WAAdminPassword=$WA_ADMIN_PASSWORD" >> $STARTUP_PROPERTIES_FILE
+echo "ProductKey=$WA_PRODUCT_KEY" >> $STARTUP_PROPERTIES_FILE
+echo "LicenceKey=$WA_LICENSE_KEY" >> $STARTUP_PROPERTIES_FILE
+echo "DeploymentGroups=default" >> $STARTUP_PROPERTIES_FILE
+echo "ServerFqdn=$VM_FQDN" >> $STARTUP_PROPERTIES_FILE
+echo "NodePublicAddress=$WA_NODE_PUBLIC_IP" >> $STARTUP_PROPERTIES_FILE
 
 cat << EFHOST > /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
