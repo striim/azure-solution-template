@@ -86,6 +86,7 @@ echo "ServerFqdn=$VM_FQDN" >> $STARTUP_PROPERTIES_FILE
 echo "NodePublicAddress=$WA_NODE_PUBLIC_IP" >> $STARTUP_PROPERTIES_FILE
 echo "ServerNodeAddress=$WA_NODE_PUBLIC_IP" >> $STARTUP_PROPERTIES_FILE
 echo "IsTcpIpCluster=true" >> $STARTUP_PROPERTIES_FILE
+echo "MetaDataRepositoryLocation=$VM_FQDN" >> $STARTUP_PROPERTIES_FILE
 
 cat << EFHOST > /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4

@@ -124,6 +124,20 @@
                             "priority": 150,
                             "direction": "Inbound"
                         }
+                    },
+                    {
+                        "name": "derby",
+                        "properties": {
+                            "description": "Allows derby traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "1527",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 200,
+                            "direction": "Inbound"
+                        }
                     }
                 ]
             }
