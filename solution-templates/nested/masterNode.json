@@ -201,6 +201,10 @@
         "striimMasterNodeFqdn": {
             "type": "string",
             "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
+        },
+        "striimMasterNodePrivateInterface": {
+            "type": "string",
+            "value": "[reference(variables('nicName')).ipConfigurations.privateIPAddress]"
         }
     }
 }

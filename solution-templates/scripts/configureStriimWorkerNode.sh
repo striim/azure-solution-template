@@ -23,6 +23,8 @@ CLUSTER_PASSWORD="$1"
 shift
 ADMIN_PASSWORD="$1" 
 shift
+MASTER_NODE_PRIVATE_INTERFACE="$1"
+shift
 VM_IP_ADDRESS=`hostname -i`
 
 function errorExit() {
@@ -74,7 +76,7 @@ echo "ServerFqdn=$VM_FQDN" >> $STARTUP_PROPERTIES_FILE
 echo "NodePublicAddress=$WA_NODE_PUBLIC_IP" >> $STARTUP_PROPERTIES_FILE
 echo "ServerNodeAddress=$MASTER_NODE_FQDN" >> $STARTUP_PROPERTIES_FILE
 echo "IsTcpIpCluster=true" >> $STARTUP_PROPERTIES_FILE
-echo "MetaDataRepositoryLocation=$MASTER_NODE_FQDN" >> $STARTUP_PROPERTIES_FILE
+echo "MetaDataRepositoryLocation=$MASTER_NODE_PRIVATE_INTERFACE" >> $STARTUP_PROPERTIES_FILE
 
 cat << EFHOST > /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
