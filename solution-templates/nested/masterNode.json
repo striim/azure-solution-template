@@ -190,7 +190,7 @@
                     ]
                 },
                 "protectedSettings": {
-                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]"
+                    "commandToExecute": "[concat('bash configureStriimMasterNode.sh ',reference(variables('publicIPAddressName')).dnsSettings.fqdn,' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',reference(variables('nicName')).ipConfigurations[3] )]"
                 },
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0"
