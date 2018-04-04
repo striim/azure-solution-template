@@ -5,6 +5,7 @@ STRIIM_VERSION="3.8.3";
 STRIIM_DBMS_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.deb";
 STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz";
 STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
+STRIIM_SAMPLES_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-samples-$STRIIM_VERSION-Linux.deb";
 STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
 #We might not need all these parameters
@@ -81,6 +82,12 @@ downloadAndInstallStriim() {
         tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
         rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
     fi
+    wget -q --no-check-certificate $STRIIM_SAMPLES_DEB_URI
+    if [ $? -eq 0 ]; then
+      dpkg -i striim-samples-$STRIIM_VERSION-Linux.deb
+      rm -rf striim-samples-$STRIIM_VERSION-Linux.deb
+    fi
+
     echo "Installed striim-samples"
     
     echo "Downloading striim-node..."
