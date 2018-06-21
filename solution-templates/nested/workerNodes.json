@@ -69,6 +69,12 @@
             },
             "type": "string"
         },
+        "masterNodePrivateInterface": {
+            "metadata": {
+                "description": "Striim Master node private ip"
+            },
+            "type": "string"
+        },
         "location": {
             "type": "string"
         },
@@ -211,7 +217,7 @@
                     ]
                 },
                 "protectedSettings" :{
-                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'))]"
+                    "commandToExecute": "[concat('bash configureStriimWorkerNode.sh ',reference(concat(variables('publicIPAddressName'),copyIndex())).dnsSettings.fqdn,' ',parameters('masterNodeFqdn'),' ',parameters('companyName'),' ',parameters('clusterName'),' ',parameters('clusterPassword'),' ',parameters('striimAdminPassword'),' ',parameters('masterNodePrivateInterface'))]"
                 },
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0"

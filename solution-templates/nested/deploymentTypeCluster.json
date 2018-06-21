@@ -168,6 +168,9 @@
                     "masterNodeFqdn": {
                         "value": "[reference('master-node').outputs.striimMasterNodeFqdn.value]"
                     },
+                    "masterNodePrivateInterface": {
+                        "value": "[reference('master-node').outputs.striimMasterNodePrivateInterface.value]"
+                    },
                     "location": {
                         "value": "[parameters('location')]"
                     },
