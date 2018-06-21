@@ -9,7 +9,7 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.8.4-deepak_az1-PreRelease";
+STRIIM_VERSION="3.8.2A";
 dbms_rpm="striim-dbms-$STRIIM_VERSION-Linux.rpm"
 node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
 sampleapps_tgz="SampleAppsDB-$STRIIM_VERSION.tgz"
