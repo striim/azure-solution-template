@@ -10,6 +10,9 @@
 ###################################################
 
 STRIIM_VERSION="3.8.2A";
+node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
+S3_STRIIM_DOWNLOADS="https://striim-downloads.s3.amazonaws.com/"
+NODE_PATH=$S3_STRIIM_DOWNLOADS$node_rpm
 
 VM_FQDN="$1"
 shift
@@ -33,10 +36,9 @@ function errorExit() {
 }
 
 function installStriim() {
-    
-    wget --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
-    rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
-    rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
+    wget -q --no-check-certificate $NODE_PATH -O $node_rpm || errorExit "Could not find node rpm"
+    rpm -i -v $node_rpm
+    rm -rf $node_rpm
 }
 
 function getLocalInterfaceIp() {

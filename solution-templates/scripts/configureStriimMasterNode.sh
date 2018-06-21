@@ -9,7 +9,15 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.8.2A";
+STRIIM_VERSION="3.8.4-deepak_az1-PreRelease";
+dbms_rpm="striim-dbms-$STRIIM_VERSION-Linux.rpm"
+node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
+sampleapps_tgz="SampleAppsDB-$STRIIM_VERSION.tgz"
+
+S3_STRIIM_DOWNLOADS="https://striim-downloads.s3.amazonaws.com/"
+DBMS_PATH=$S3_STRIIM_DOWNLOADS$dbms_rpm
+NODE_PATH=$S3_STRIIM_DOWNLOADS$node_rpm
+SAMPLEAPPS_PATH=$S3_STRIIM_DOWNLOADS$sampleapps_tgz
 
 VM_FQDN="$1"
 shift
@@ -30,21 +38,21 @@ function errorExit() {
 
 function installStriim() {
 	echo "Installing MDR"
-    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find dbms rpm"
-    rpm -i -v striim-dbms-$STRIIM_VERSION-Linux.rpm 
-    rm -rf striim-dbms-$STRIIM_VERSION-Linux.rpm
+    wget -q --no-check-certificate $DBMS_PATH -O $dbms_rpm || errorExit "Could not find dbms rpm"
+    rpm -i -v $dbms_rpm
+    rm -rf $dbms_rpm
     
 	echo "Installing Sample Apps"    
-    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz"
+    wget -q --no-check-certificate $SAMPLEAPPS_PATH -O $sampleapps_tgz
     if [ $? -eq 0 ]; then
-        tar xzf "SampleAppsDB-$STRIIM_VERSION.tgz" && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
-        rm -rf "SampleAppsDB-$STRIIM_VERSION.tgz"
+        tar xzf $sampleapps_tgz && rm -rf /var/striim/wactionrepos && mv wactionrepos /var/striim/
+        rm -rf $sampleapps_tgz
     fi
     
 	echo "Installing node"
-    wget -q --no-check-certificate "https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.rpm" || errorExit "Could not find node rpm"
-    rpm -i -v striim-node-$STRIIM_VERSION-Linux.rpm 
-    rm -rf striim-node-$STRIIM_VERSION-Linux.rpm
+    wget -q --no-check-certificate $NODE_PATH -O $node_rpm || errorExit "Could not find node rpm"
+    rpm -i -v $node_rpm
+    rm -rf $node_rpm
     
 	ln -s /var/striim/Samples /opt/striim/Samples
 }
