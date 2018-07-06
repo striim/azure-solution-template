@@ -9,15 +9,17 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.8.2A";
+STRIIM_VERSION="3.8.4";
 dbms_rpm="striim-dbms-$STRIIM_VERSION-Linux.rpm"
 node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
+samples_rpm="striim-samples-$STRIIM_VERSION-Linux.rpm"
 sampleapps_tgz="SampleAppsDB-$STRIIM_VERSION.tgz"
 
-S3_STRIIM_DOWNLOADS="https://striim-downloads.s3.amazonaws.com/"
+S3_STRIIM_DOWNLOADS="https://s3-us-west-1.amazonaws.com/striim-downloads/Releases/$STRIIM_VERSION/"
 DBMS_PATH=$S3_STRIIM_DOWNLOADS$dbms_rpm
 NODE_PATH=$S3_STRIIM_DOWNLOADS$node_rpm
 SAMPLEAPPS_PATH=$S3_STRIIM_DOWNLOADS$sampleapps_tgz
+SAMPLESDATA_PATH=$S3_STRIIM_DOWNLOADS$samples_rpm
 
 VM_FQDN="$1"
 shift
@@ -53,7 +55,12 @@ function installStriim() {
     wget -q --no-check-certificate $NODE_PATH -O $node_rpm || errorExit "Could not find node rpm"
     rpm -i -v $node_rpm
     rm -rf $node_rpm
-    
+
+	echo "Installing Samples data folder"
+    wget -q --no-check-certificate $SAMPLESDATA_PATH -O $samples_rpm || errorExit "Could not find Samples data rpm"
+    rpm -i -v $samples_rpm
+    rm -rf $samples_rpm
+
 	ln -s /var/striim/Samples /opt/striim/Samples
 }
 
