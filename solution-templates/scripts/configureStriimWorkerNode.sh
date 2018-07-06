@@ -9,10 +9,12 @@
 #
 ###################################################
 
-STRIIM_VERSION="3.8.2A";
+STRIIM_VERSION="3.8.4";
 node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
-S3_STRIIM_DOWNLOADS="https://striim-downloads.s3.amazonaws.com/"
+samples_rpm="striim-samples-$STRIIM_VERSION-Linux.rpm"
+S3_STRIIM_DOWNLOADS="https://s3-us-west-1.amazonaws.com/striim-downloads/Releases/$STRIIM_VERSION/"
 NODE_PATH=$S3_STRIIM_DOWNLOADS$node_rpm
+SAMPLESDATA_PATH=$S3_STRIIM_DOWNLOADS$samples_rpm
 
 VM_FQDN="$1"
 shift
@@ -36,9 +38,15 @@ function errorExit() {
 }
 
 function installStriim() {
+	echo "Installing node rpm in worker node"
     wget -q --no-check-certificate $NODE_PATH -O $node_rpm || errorExit "Could not find node rpm"
     rpm -i -v $node_rpm
     rm -rf $node_rpm
+
+	echo "Installing Samples data folder in worker node"
+    wget -q --no-check-certificate $SAMPLESDATA_PATH -O $samples_rpm || errorExit "Could not find Samples data rpm"
+    rpm -i -v $samples_rpm
+    rm -rf $samples_rpm
 }
 
 function getLocalInterfaceIp() {
