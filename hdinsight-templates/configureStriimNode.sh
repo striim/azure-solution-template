@@ -8,7 +8,6 @@ STRIIM_DBMS_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-dbms-$STRIIM_VERSION-Linux.deb"
 STRIIM_SAMPLEDB_URI="$S3_STRIIM_DOWNLOADS/SampleAppsDB-$STRIIM_VERSION.tgz";
 STRIIM_NODE_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-node-$STRIIM_VERSION-Linux.deb";
 STRIIM_SAMPLES_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-samples-$STRIIM_VERSION-Linux.deb";
-STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
 #We might not need all these parameters
 #but it is good to save all these as these are the parameters passed to 
@@ -97,14 +96,10 @@ downloadAndInstallStriim() {
     dpkg -i striim-node-$STRIIM_VERSION-Linux.deb || errorExit "Could not install node deb"
     rm -rf striim-node-$STRIIM_VERSION-Linux.deb
     
-    STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
-    [ -f $STRIIM_CONF_FILE ] || errorExit "Striim could not be installed"	
-
     echo "Installed striim-node"
 }
 
 configureStriim() {
-    rm $STRIIM_CONF_FILE
     if pushd /opt/striim/webconfig; then
       npm install
       popd
