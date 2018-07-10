@@ -1,11 +1,13 @@
 #!/bin/bash
 
 
-STRIIM_VERSION="3.8.3";
-STRIIM_DBMS_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-dbms-$STRIIM_VERSION-Linux.deb";
-STRIIM_SAMPLEDB_URI="https://striim-downloads.s3.amazonaws.com/SampleAppsDB-$STRIIM_VERSION.tgz";
-STRIIM_NODE_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-node-$STRIIM_VERSION-Linux.deb";
-STRIIM_SAMPLES_DEB_URI="https://striim-downloads.s3.amazonaws.com/striim-samples-$STRIIM_VERSION-Linux.deb";
+STRIIM_VERSION="3.8.4";
+S3_STRIIM_DOWNLOADS="https://s3-us-west-1.amazonaws.com/striim-downloads/Releases/$STRIIM_VERSION"
+
+STRIIM_DBMS_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-dbms-$STRIIM_VERSION-Linux.deb";
+STRIIM_SAMPLEDB_URI="$S3_STRIIM_DOWNLOADS/SampleAppsDB-$STRIIM_VERSION.tgz";
+STRIIM_NODE_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-node-$STRIIM_VERSION-Linux.deb";
+STRIIM_SAMPLES_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-samples-$STRIIM_VERSION-Linux.deb";
 STRIIM_CONF_FILE=`find /opt/ -name striim.conf`;
 
 #We might not need all these parameters
