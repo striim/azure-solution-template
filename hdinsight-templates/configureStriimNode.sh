@@ -2,12 +2,12 @@
 
 
 STRIIM_VERSION="3.8.4";
-S3_STRIIM_DOWNLOADS="https://s3-us-west-1.amazonaws.com/striim-downloads/Releases/$STRIIM_VERSION"
+AZURE_STRIIM_DOWNLOADS="https://striimreleases.blob.core.windows.net/striimreleases/$STRIIM_VERSION"
 
-STRIIM_DBMS_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-dbms-$STRIIM_VERSION-Linux.deb";
-STRIIM_SAMPLEDB_URI="$S3_STRIIM_DOWNLOADS/SampleAppsDB-$STRIIM_VERSION.tgz";
-STRIIM_NODE_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-node-$STRIIM_VERSION-Linux.deb";
-STRIIM_SAMPLES_DEB_URI="$S3_STRIIM_DOWNLOADS/striim-samples-$STRIIM_VERSION-Linux.deb";
+STRIIM_DBMS_DEB_URI="$AZURE_STRIIM_DOWNLOADS/striim-dbms-$STRIIM_VERSION-Linux.deb";
+STRIIM_SAMPLEDB_URI="$AZURE_STRIIM_DOWNLOADS/SampleAppsDB-$STRIIM_VERSION.tgz";
+STRIIM_NODE_DEB_URI="$AZURE_STRIIM_DOWNLOADS/striim-node-$STRIIM_VERSION-Linux.deb";
+STRIIM_SAMPLES_DEB_URI="$AZURE_STRIIM_DOWNLOADS/striim-samples-$STRIIM_VERSION-Linux.deb";
 
 #We might not need all these parameters
 #but it is good to save all these as these are the parameters passed to 

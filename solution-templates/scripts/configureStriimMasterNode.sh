@@ -15,11 +15,11 @@ node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
 samples_rpm="striim-samples-$STRIIM_VERSION-Linux.rpm"
 sampleapps_tgz="SampleAppsDB-$STRIIM_VERSION.tgz"
 
-S3_STRIIM_DOWNLOADS="https://s3-us-west-1.amazonaws.com/striim-downloads/Releases/$STRIIM_VERSION/"
-DBMS_PATH=$S3_STRIIM_DOWNLOADS$dbms_rpm
-NODE_PATH=$S3_STRIIM_DOWNLOADS$node_rpm
-SAMPLEAPPS_PATH=$S3_STRIIM_DOWNLOADS$sampleapps_tgz
-SAMPLESDATA_PATH=$S3_STRIIM_DOWNLOADS$samples_rpm
+AZURE_STRIIM_DOWNLOADS="https://striimreleases.blob.core.windows.net/striimreleases/$STRIIM_VERSION/"
+DBMS_PATH=$AZURE_STRIIM_DOWNLOADS$dbms_rpm
+NODE_PATH=$AZURE_STRIIM_DOWNLOADS$node_rpm
+SAMPLEAPPS_PATH=$AZURE_STRIIM_DOWNLOADS$sampleapps_tgz
+SAMPLESDATA_PATH=$AZURE_STRIIM_DOWNLOADS$samples_rpm
 
 VM_FQDN="$1"
 shift
