@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-STRIIM_VERSION="3.8.4";
+STRIIM_VERSION="3.8.4A";
 AZURE_STRIIM_DOWNLOADS="https://striimreleases.blob.core.windows.net/striimreleases/$STRIIM_VERSION"
 
 STRIIM_DBMS_DEB_URI="$AZURE_STRIIM_DOWNLOADS/striim-dbms-$STRIIM_VERSION-Linux.deb";
