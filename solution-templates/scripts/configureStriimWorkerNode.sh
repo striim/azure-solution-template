@@ -12,9 +12,11 @@
 STRIIM_VERSION="3.8.4";
 node_rpm="striim-node-$STRIIM_VERSION-Linux.rpm"
 samples_rpm="striim-samples-$STRIIM_VERSION-Linux.rpm"
+
 AZURE_STRIIM_DOWNLOADS="https://striimreleases.blob.core.windows.net/striimreleases/$STRIIM_VERSION/"
 NODE_PATH=$AZURE_STRIIM_DOWNLOADS$node_rpm
 SAMPLESDATA_PATH=$AZURE_STRIIM_DOWNLOADS$samples_rpm
+
 
 VM_FQDN="$1"
 shift
